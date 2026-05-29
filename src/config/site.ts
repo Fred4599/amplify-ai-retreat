@@ -4,8 +4,8 @@ export const SITE = {
   title: 'Amplify AI Retreat — Three Days, One AI Breakthrough',
   description:
     'A 3-day immersive AI implementation retreat for business owners. Bring your biggest bottleneck. Leave with a real AI-powered path forward. Only 50 seats.',
-  /** Set PUBLIC_SITE_URL in Vercel (e.g. https://amplifyairetreat.com) */
-  url: import.meta.env.PUBLIC_SITE_URL ?? 'https://amplifyairetreat.com',
+  /** Set PUBLIC_SITE_URL in Vercel (e.g. https://retreat.amplifyai.dev) */
+  url: import.meta.env.PUBLIC_SITE_URL ?? 'https://retreat.amplifyai.dev',
   locale: 'en_US',
   twitterHandle: '@amplifyai',
   ogImage:

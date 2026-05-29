@@ -24,7 +24,7 @@ Open [http://localhost:4321](http://localhost:4321).
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `PUBLIC_SITE_URL` | Production | Canonical domain (e.g. `https://amplifyairetreat.com`). Used for SEO, sitemap, and Open Graph. |
+| `PUBLIC_SITE_URL` | Production | Canonical domain (e.g. `https://retreat.amplifyai.dev`). Used for SEO, sitemap, and Open Graph. |
 | `PUBLIC_APPLICATION_WEBHOOK` | Production | n8n (or other) webhook URL for the `/apply` form. |
 
 Copy `.env.example` to `.env` for local development. **Do not commit `.env`.**
@@ -34,7 +34,7 @@ Copy `.env.example` to `.env` for local development. **Do not commit `.env`.**
 - Meta tags, Open Graph, and Twitter cards in `src/layouts/BaseLayout.astro`
 - JSON-LD structured data (`Event`, `Organization`, `FAQPage`) in `src/components/StructuredData.astro`
 - Auto-generated sitemap via `@astrojs/sitemap` (homepage only; `/apply` excluded)
-- `public/robots.txt` — update the sitemap URL if your production domain differs from `amplifyairetreat.com`
+- `public/robots.txt` — update the sitemap URL if your production domain differs from `retreat.amplifyai.dev`
 - Site copy and defaults in `src/config/site.ts`
 
 ## Deploy to GitHub

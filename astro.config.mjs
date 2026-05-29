@@ -3,7 +3,7 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
-const site = process.env.PUBLIC_SITE_URL ?? 'https://amplifyairetreat.com';
+const site = process.env.PUBLIC_SITE_URL ?? 'https://retreat.amplifyai.dev';
 
 export default defineConfig({
   site,
