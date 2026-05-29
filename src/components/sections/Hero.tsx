@@ -41,7 +41,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-[200px] sm:h-[300px] bg-gradient-to-b from-transparent to-black z-0 pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 h-full min-h-[100svh] pt-24 sm:pt-28 md:pt-32 lg:pt-[150px] pb-6 sm:pb-0">
+      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 h-full min-h-[100svh] w-full max-w-full overflow-x-hidden pt-24 sm:pt-28 md:pt-32 lg:pt-[150px] pb-6 sm:pb-0">
         <motion.div
           {...fade(0.2)}
           className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full"

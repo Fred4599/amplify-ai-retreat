@@ -19,7 +19,7 @@ export default function FeaturesChess() {
   const hydrated = useHydrated();
 
   return (
-    <section id="experience" className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-16 sm:gap-24 md:gap-32">
+    <section id="experience" className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-16 sm:gap-24 md:gap-32 overflow-x-hidden">
       <div className="flex flex-col items-center text-center mb-4 sm:mb-8">
         <motion.div
           {...inView(hydrated, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1 })}
@@ -39,8 +39,8 @@ export default function FeaturesChess() {
 
       <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 lg:gap-20">
         <motion.div
-          {...inView(hydrated, { opacity: 0, x: -50 }, { opacity: 1, x: 0 }, { duration: 0.8 })}
-          className="flex-1 space-y-5 sm:space-y-6 w-full"
+          {...inView(hydrated, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, { duration: 0.8 })}
+          className="flex-1 space-y-5 sm:space-y-6 w-full max-w-full"
         >
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight leading-tight">
             Build with AI during the day.
@@ -66,8 +66,8 @@ export default function FeaturesChess() {
         </motion.div>
 
         <motion.div
-          {...inView(hydrated, { opacity: 0, x: 50 }, { opacity: 1, x: 0 }, { duration: 0.8 })}
-          className="flex-1 w-full"
+          {...inView(hydrated, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, { duration: 0.8 })}
+          className="flex-1 w-full max-w-full"
         >
           <div className="liquid-glass rounded-2xl p-2 w-full aspect-video md:aspect-[4/3] overflow-hidden group">
             <LazyVideo
@@ -83,8 +83,8 @@ export default function FeaturesChess() {
 
       <div className="flex flex-col lg:flex-row-reverse items-center gap-8 sm:gap-12 lg:gap-20">
         <motion.div
-          {...inView(hydrated, { opacity: 0, x: 50 }, { opacity: 1, x: 0 }, { duration: 0.8 })}
-          className="flex-1 space-y-5 sm:space-y-6 lg:pl-10 w-full"
+          {...inView(hydrated, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, { duration: 0.8 })}
+          className="flex-1 space-y-5 sm:space-y-6 lg:pl-10 w-full max-w-full"
         >
           <div className="liquid-glass rounded-full px-3 py-1 inline-flex w-fit">
             <span className="text-white/80 text-[10px] font-medium font-body uppercase tracking-widest">
@@ -104,8 +104,8 @@ export default function FeaturesChess() {
         </motion.div>
 
         <motion.div
-          {...inView(hydrated, { opacity: 0, x: -50 }, { opacity: 1, x: 0 }, { duration: 0.8 })}
-          className="flex-1 w-full"
+          {...inView(hydrated, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, { duration: 0.8 })}
+          className="flex-1 w-full max-w-full"
         >
           <div className="liquid-glass rounded-2xl p-2 w-full aspect-video md:aspect-[4/3] overflow-hidden group">
             <LazyVideo

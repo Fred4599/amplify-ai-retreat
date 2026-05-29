@@ -15,9 +15,9 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
 
 <BaseLayout path="/" structuredData="home">
   <Navbar client:load />
-  <main id="main-content" class="bg-black relative w-full h-full">
+  <main id="main-content" class="bg-black relative w-full max-w-full overflow-x-hidden">
     <Hero client:load />
-    <div class="relative z-10 bg-black w-full flex flex-col items-center">
+    <div class="relative z-10 bg-black w-full max-w-full overflow-x-hidden flex flex-col items-center">
       <HlsSection
         src={HLS_BACKGROUNDS.start}
         sectionClass="w-full min-h-[min(85svh,700px)] flex items-center justify-center py-20 sm:py-32"
