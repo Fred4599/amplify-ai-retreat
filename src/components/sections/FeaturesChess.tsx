@@ -95,8 +95,9 @@ export default function FeaturesChess() {
             Connect as humans in the evening.
           </h3>
           <p className="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed max-w-md">
-            River floating, zip lining, fire walks, dinners, and outdoor experiences designed for
-            relationship-building. High-touch, energizing, and relational—not chairs all day.
+            When the sun goes down, we shift from building to connecting. Evenings are for shared
+            experiences, real conversation, and relationship-building—high-touch, energizing, and
+            human, not more time in chairs.
           </p>
           <ApplyTrigger className="liquid-glass-strong hover:bg-white/5 transition-colors rounded-full px-6 py-3 text-white font-medium text-sm mt-2 sm:mt-4 inline-flex items-center justify-center min-h-[44px]">
             Apply to Attend

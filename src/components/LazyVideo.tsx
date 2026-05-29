@@ -21,6 +21,7 @@ export default function LazyVideo({
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(priority);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     if (priority || active) return;
@@ -60,15 +61,27 @@ export default function LazyVideo({
 
     return () => {
       video.pause();
+      setVideoReady(false);
     };
   }, [active, src]);
 
   return (
-    <div ref={containerRef} className={wrapperClassName}>
+    <div ref={containerRef} className={`relative ${wrapperClassName}`}>
+      <img
+        src={poster}
+        alt=""
+        aria-hidden="true"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out pointer-events-none ${
+          videoReady ? 'opacity-0' : 'opacity-100'
+        }`}
+        fetchPriority={priority ? 'high' : 'auto'}
+        decoding="async"
+      />
       <video
         ref={videoRef}
-        className={className}
-        poster={poster}
+        className={`${className} transition-opacity duration-700 ease-out ${
+          videoReady ? 'opacity-100' : 'opacity-0'
+        }`}
         muted
         loop
         playsInline
@@ -78,7 +91,7 @@ export default function LazyVideo({
         onLoadedMetadata={(e) => {
           if (playbackRate) e.currentTarget.playbackRate = playbackRate;
         }}
-        onPlaying={(e) => e.currentTarget.removeAttribute('poster')}
+        onPlaying={() => setVideoReady(true)}
       />
     </div>
   );

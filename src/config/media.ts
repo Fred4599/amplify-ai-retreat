@@ -1,9 +1,12 @@
-/** Self-hosted posters (in /public/media) — fast LCP, served from Vercel edge. */
+/** Self-hosted posters (in /public/media) — first frame of each video; run `node scripts/generate-posters.mjs` to refresh. */
 export const MEDIA = {
   posters: {
     hero: '/media/hero-poster.webp',
     featureDay: '/media/feature-day-poster.webp',
     featureEvening: '/media/feature-evening-poster.webp',
+    hlsStart: '/media/hls-start-poster.webp',
+    hlsStats: '/media/hls-stats-poster.webp',
+    hlsCta: '/media/hls-cta-poster.webp',
     og: '/media/og-image.webp',
   },
   /** MP4 clips — lazy-loaded; posters show until in view. */

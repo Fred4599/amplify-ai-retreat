@@ -1,22 +1,43 @@
 ---
 interface Props {
   src: string;
+  poster: string;
+  /** Opacity applied once the HLS stream is playing (poster stays visible until then). */
+  videoOpacity?: number;
   videoClass?: string;
   sectionClass?: string;
   contentClass?: string;
   id?: string;
 }
 
-const { src, videoClass = '', sectionClass = '', contentClass = '', id } = Astro.props;
+const {
+  src,
+  poster,
+  videoOpacity = 1,
+  videoClass = '',
+  sectionClass = '',
+  contentClass = '',
+  id,
+} = Astro.props;
 ---
 
 <section
   id={id}
   class:list={['relative overflow-hidden', sectionClass]}
 >
+  <img
+    src={poster}
+    alt=""
+    aria-hidden="true"
+    class="hls-poster absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700 ease-out"
+    loading="lazy"
+    decoding="async"
+  />
   <video
-    class:list={['hls-background', 'absolute inset-0 w-full h-full object-cover z-0', videoClass]}
+    class:list={['hls-background', 'absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700 ease-out', videoClass]}
     data-hls-src={src}
+    data-play-opacity={videoOpacity}
+    style="opacity: 0"
     muted
     loop
     playsinline

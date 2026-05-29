@@ -19,9 +19,10 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
     <Hero client:load />
     <div class="relative z-10 bg-black w-full max-w-full overflow-x-hidden flex flex-col items-center">
       <HlsSection
-        src={HLS_BACKGROUNDS.start}
+        src={HLS_BACKGROUNDS.start.src}
+        poster={HLS_BACKGROUNDS.start.poster}
         sectionClass="w-full min-h-[min(85svh,700px)] flex items-center justify-center py-20 sm:py-32"
-        videoClass="opacity-80"
+        videoOpacity={0.8}
       >
         <div slot="overlays">
           <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
@@ -36,9 +37,11 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
 
       <HlsSection
         id="outcomes"
-        src={HLS_BACKGROUNDS.stats}
+        src={HLS_BACKGROUNDS.stats.src}
+        poster={HLS_BACKGROUNDS.stats.poster}
         sectionClass="w-full py-20 sm:py-32 md:py-48 flex items-center justify-center"
-        videoClass="opacity-40 saturate-0"
+        videoOpacity={0.4}
+        videoClass="saturate-0"
       >
         <div slot="overlays">
           <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
@@ -52,10 +55,11 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
 
       <HlsSection
         id="apply"
-        src={HLS_BACKGROUNDS.cta}
+        src={HLS_BACKGROUNDS.cta.src}
+        poster={HLS_BACKGROUNDS.cta.poster}
         sectionClass="w-full min-h-[min(100svh,900px)] flex flex-col"
         contentClass="flex flex-col flex-1 justify-end"
-        videoClass="opacity-60"
+        videoOpacity={0.6}
       >
         <div slot="overlays">
           <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
