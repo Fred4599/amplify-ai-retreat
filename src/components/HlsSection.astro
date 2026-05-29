@@ -20,7 +20,8 @@ const { src, videoClass = '', sectionClass = '', contentClass = '', id } = Astro
     muted
     loop
     playsinline
-    autoplay
+    preload="none"
+    aria-hidden="true"
   ></video>
 
   <slot name="overlays" />

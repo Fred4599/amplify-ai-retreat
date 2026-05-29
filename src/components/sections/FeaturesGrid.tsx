@@ -30,7 +30,7 @@ export default function FeaturesGrid() {
   const hydrated = useHydrated();
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-6 py-24 md:py-32">
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
       <div className="flex flex-col items-center text-center mb-16">
         <motion.div
           {...inView(hydrated, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1 })}

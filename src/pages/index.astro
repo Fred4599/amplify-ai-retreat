@@ -20,7 +20,7 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
     <div class="relative z-10 bg-black w-full flex flex-col items-center">
       <HlsSection
         src={HLS_BACKGROUNDS.start}
-        sectionClass="w-full min-h-[700px] flex items-center justify-center py-32"
+        sectionClass="w-full min-h-[min(85svh,700px)] flex items-center justify-center py-20 sm:py-32"
         videoClass="opacity-80"
       >
         <div slot="overlays">
@@ -37,7 +37,7 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
       <HlsSection
         id="outcomes"
         src={HLS_BACKGROUNDS.stats}
-        sectionClass="w-full py-32 md:py-48 flex items-center justify-center"
+        sectionClass="w-full py-20 sm:py-32 md:py-48 flex items-center justify-center"
         videoClass="opacity-40 saturate-0"
       >
         <div slot="overlays">
@@ -53,7 +53,7 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
       <HlsSection
         id="apply"
         src={HLS_BACKGROUNDS.cta}
-        sectionClass="w-full min-h-[900px] flex flex-col"
+        sectionClass="w-full min-h-[min(100svh,900px)] flex flex-col"
         contentClass="flex flex-col flex-1 justify-end"
         videoClass="opacity-60"
       >

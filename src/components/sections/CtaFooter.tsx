@@ -35,7 +35,7 @@ export default function CtaFooter() {
 
   return (
     <>
-      <div className="flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full mb-20 pt-32">
+      <div className="flex flex-col items-center text-center px-4 sm:px-6 max-w-5xl mx-auto w-full mb-12 sm:mb-20 pt-20 sm:pt-32">
         <motion.div
           {...inView(hydrated, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1 })}
           className="liquid-glass rounded-full px-4 py-1.5 mb-6"

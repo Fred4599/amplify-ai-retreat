@@ -8,8 +8,7 @@ export const SITE = {
   url: import.meta.env.PUBLIC_SITE_URL ?? 'https://retreat.amplifyai.dev',
   locale: 'en_US',
   twitterHandle: '@amplifyai',
-  ogImage:
-    'https://d8j0ntlcm91z4.cloudfront.net/user_37kxLwJsfncQ2oMMpHzKiXdRCcJ/hf_20260529_002227_85b4b9bf-5754-49f2-8e95-a6cefa33b080.png',
+  ogImage: '/media/og-image.webp',
   logoPath: '/logo.png',
   keywords: [
     'AI retreat',

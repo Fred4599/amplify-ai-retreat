@@ -3,6 +3,7 @@ import '../styles/global.css';
 import 'iconify-icon';
 import StructuredData from '../components/StructuredData.astro';
 import { SITE, absoluteUrl } from '../config/site';
+import { MEDIA } from '../config/media';
 
 interface Props {
   title?: string;
@@ -24,15 +25,16 @@ const {
 } = Astro.props;
 
 const canonical = absoluteUrl(path);
-const ogImage = SITE.ogImage;
+const ogImage = absoluteUrl(MEDIA.posters.og);
 const robots = noindex ? 'noindex, follow' : 'index, follow';
+const heroPoster = MEDIA.posters.hero;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="keywords" content={SITE.keywords.join(', ')} />
     <meta name="author" content={SITE.name} />
@@ -65,13 +67,27 @@ const robots = noindex ? 'noindex, follow' : 'index, follow';
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net" />
-    <link rel="preconnect" href="https://stream.mux.com" />
+    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
+    <link rel="dns-prefetch" href="https://d8j0ntlcm91z4.cloudfront.net" />
+
+    {structuredData === 'home' && (
+      <link rel="preload" as="image" href={heroPoster} type="image/webp" fetchpriority="high" />
+    )}
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500&display=swap"
+      />
+    </noscript>
 
     <StructuredData type={structuredData} />
-
-    <script is:inline src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-    <script is:inline src="https://cdn.jsdelivr.net/npm/hls.js@1.6.15/dist/hls.min.js"></script>
   </head>
   <body class="bg-black text-white antialiased selection:bg-white/20">
     <a
@@ -84,8 +100,41 @@ const robots = noindex ? 'noindex, follow' : 'index, follow';
       <slot />
     </div>
     <script is:inline>
-      function initHlsBackgrounds() {
-        document.querySelectorAll('video.hls-background[data-hls-src]').forEach(function (video) {
+      (function () {
+        var hlsInstances = new WeakMap();
+        var hlsScriptPromise = null;
+
+        function isMobile() {
+          return window.matchMedia('(max-width: 768px)').matches;
+        }
+
+        function loadHlsScript() {
+          if (window.Hls) return Promise.resolve();
+          if (hlsScriptPromise) return hlsScriptPromise;
+          hlsScriptPromise = new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.6.15/dist/hls.min.js';
+            s.async = true;
+            s.onload = function () {
+              resolve();
+            };
+            s.onerror = reject;
+            document.head.appendChild(s);
+          });
+          return hlsScriptPromise;
+        }
+
+        function destroyHls(video) {
+          var hls = hlsInstances.get(video);
+          if (hls) {
+            hls.destroy();
+            hlsInstances.delete(video);
+          }
+          video.removeAttribute('src');
+          video.dataset.hlsReady = 'false';
+        }
+
+        function attachHls(video) {
           if (video.dataset.hlsReady === 'true') return;
 
           var src = video.getAttribute('data-hls-src');
@@ -95,42 +144,75 @@ const robots = noindex ? 'noindex, follow' : 'index, follow';
             video.play().catch(function () {});
           };
 
-          if (window.Hls && Hls.isSupported()) {
-            video.dataset.hlsReady = 'true';
-            var hls = new Hls({ startLevel: 2 });
-            hls.loadSource(src);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, play);
-            hls.on(Hls.Events.ERROR, function (_event, data) {
-              if (!data.fatal) return;
-              if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-                hls.startLoad();
-              } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-                hls.recoverMediaError();
+          var startLevel = isMobile() ? 0 : 1;
+
+          loadHlsScript()
+            .then(function () {
+              if (window.Hls && Hls.isSupported()) {
+                video.dataset.hlsReady = 'true';
+                var hls = new Hls({
+                  startLevel: startLevel,
+                  capLevelToPlayerSize: true,
+                  maxBufferLength: 12,
+                  maxMaxBufferLength: 24,
+                });
+                hlsInstances.set(video, hls);
+                hls.loadSource(src);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, play);
+                hls.on(Hls.Events.ERROR, function (_event, data) {
+                  if (!data.fatal) return;
+                  if (data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
+                  else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+                });
+                return;
               }
-            });
+
+              if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.dataset.hlsReady = 'true';
+                video.src = src;
+                video.addEventListener('loadedmetadata', play, { once: true });
+              }
+            })
+            .catch(function () {});
+        }
+
+        function initLazyHls() {
+          var videos = document.querySelectorAll('video.hls-background[data-hls-src]');
+          if (!videos.length) return;
+
+          if (!('IntersectionObserver' in window)) {
+            videos.forEach(attachHls);
             return;
           }
 
-          if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.dataset.hlsReady = 'true';
-            video.src = src;
-            video.addEventListener('loadedmetadata', play, { once: true });
-          }
-        });
-      }
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                var video = entry.target;
+                if (entry.isIntersecting) {
+                  attachHls(video);
+                } else if (entry.intersectionRatio === 0) {
+                  destroyHls(video);
+                }
+              });
+            },
+            { rootMargin: '120px 0px', threshold: 0.05 },
+          );
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHlsBackgrounds);
-      } else {
-        initHlsBackgrounds();
-      }
+          videos.forEach(function (video) {
+            observer.observe(video);
+          });
+        }
 
-      [100, 500, 1500].forEach(function (delay) {
-        setTimeout(initHlsBackgrounds, delay);
-      });
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initLazyHls);
+        } else {
+          initLazyHls();
+        }
 
-      document.addEventListener('astro:page-load', initHlsBackgrounds);
+        document.addEventListener('astro:page-load', initLazyHls);
+      })();
     </script>
   </body>
 </html>
