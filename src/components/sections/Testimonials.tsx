@@ -44,7 +44,7 @@ export default function Testimonials() {
         <BlurText
           as="h2"
           text="Implementation. Mindset. Strategy."
-          className="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] justify-center text-white"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] justify-center text-white px-1"
         />
       </div>
 
@@ -58,7 +58,7 @@ export default function Testimonials() {
               { opacity: 1, y: 0 },
               { delay: idx * 0.15, duration: 0.6 },
             )}
-            className="liquid-glass rounded-2xl p-8 flex flex-col justify-between h-full"
+            className="liquid-glass rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full"
           >
             <div className="mb-8">
               <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">

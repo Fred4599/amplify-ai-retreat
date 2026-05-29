@@ -38,13 +38,13 @@ const faqs = [
 ];
 ---
 
-<section id="faq" class="w-full max-w-3xl mx-auto px-6 py-24 md:py-32">
-  <div class="flex flex-col items-center text-center mb-16">
+<section id="faq" class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
+  <div class="flex flex-col items-center text-center mb-12 sm:mb-16">
     <div class="liquid-glass rounded-full px-4 py-1.5 mb-6">
       <span class="text-white text-xs font-medium font-body uppercase tracking-wider">FAQ</span>
     </div>
 
-    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] text-white">
+    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] text-white px-1">
       Questions before you apply.
     </h2>
   </div>
@@ -53,8 +53,8 @@ const faqs = [
     {
       faqs.map((faq, idx) => (
         <details class="faq-item liquid-glass rounded-2xl group" open={idx === 0}>
-          <summary class="faq-summary relative z-10 w-full flex items-center justify-between gap-4 p-6 text-left cursor-pointer list-none">
-            <span class="text-lg font-heading italic text-white tracking-tight">{faq.question}</span>
+          <summary class="faq-summary relative z-10 w-full flex items-center justify-between gap-3 p-4 sm:p-6 text-left cursor-pointer list-none">
+            <span class="text-base sm:text-lg font-heading italic text-white tracking-tight leading-snug">{faq.question}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -71,7 +71,7 @@ const faqs = [
               <path d="m6 9 6 6 6-6" />
             </svg>
           </summary>
-          <p class="px-6 pb-6 text-white/60 font-body font-light text-base leading-relaxed">{faq.answer}</p>
+          <p class="px-4 sm:px-6 pb-4 sm:pb-6 text-white/60 font-body font-light text-sm sm:text-base leading-relaxed">{faq.answer}</p>
         </details>
       ))
     }

@@ -29,7 +29,7 @@ export default function Hero() {
     );
 
   return (
-    <section className="relative overflow-hidden w-full min-h-[100svh] max-h-[1100px] h-[min(100svh,1000px)]">
+    <section className="relative w-full min-h-[100svh] h-auto sm:h-[min(100svh,1000px)] sm:max-h-[1100px] overflow-x-hidden">
       <LazyVideo
         priority
         src={MEDIA.videos.hero}
@@ -41,7 +41,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-[200px] sm:h-[300px] bg-gradient-to-b from-transparent to-black z-0 pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 h-full pt-24 sm:pt-28 md:pt-32 lg:pt-[150px]">
+      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 h-full min-h-[100svh] pt-24 sm:pt-28 md:pt-32 lg:pt-[150px] pb-6 sm:pb-0">
         <motion.div
           {...fade(0.2)}
           className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full"
@@ -100,10 +100,10 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        <div className="mt-auto pb-8 sm:pb-12 pt-10 sm:pt-16 flex flex-col items-center w-full">
+        <div className="mt-auto pb-8 sm:pb-12 pt-8 sm:pt-16 flex flex-col items-center w-full shrink-0">
           <motion.div
             {...onMount(hydrated, { opacity: 0 }, { opacity: 1 }, { delay: 1.5, duration: 1 })}
-            className="liquid-glass rounded-full px-4 py-1.5 mb-6 sm:mb-8"
+            className="rounded-full px-4 py-1.5 mb-4 sm:mb-8 sm:liquid-glass"
           >
             <span className="text-white/50 text-xs font-body uppercase tracking-widest">
               Your Guides
@@ -112,15 +112,15 @@ export default function Hero() {
 
           <motion.div
             {...onMount(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 1.6, duration: 1 })}
-            className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-8 md:gap-16 opacity-80 w-full px-2"
+            className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 sm:gap-8 md:gap-16 opacity-80 w-full max-w-sm sm:max-w-none px-2"
           >
             {guides.map(({ name, Icon }) => (
               <div
                 key={name}
-                className="flex items-center justify-center gap-2 sm:gap-3 text-xl sm:text-2xl md:text-3xl font-heading italic text-white"
+                className="flex items-center justify-center gap-2 sm:gap-3 text-lg sm:text-2xl md:text-3xl font-heading italic text-white w-full sm:w-auto"
               >
-                <Icon className="w-6 h-6 sm:w-7 sm:h-7 opacity-80 shrink-0" aria-hidden="true" />
-                {name}
+                <Icon className="w-5 h-5 sm:w-7 sm:h-7 opacity-80 shrink-0" aria-hidden="true" />
+                <span className="whitespace-nowrap">{name}</span>
               </div>
             ))}
           </motion.div>

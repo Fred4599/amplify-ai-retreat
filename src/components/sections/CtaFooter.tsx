@@ -48,12 +48,12 @@ export default function CtaFooter() {
         <BlurText
           as="h2"
           text="Apply to attend."
-          className="text-5xl md:text-6xl lg:text-7xl font-heading italic tracking-tight leading-[0.85] justify-center text-white mb-6"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading italic tracking-tight leading-[0.85] justify-center text-white mb-6 px-1"
         />
 
         <motion.p
           {...inView(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 0.4, duration: 0.8 })}
-          className="text-white/60 font-body font-light text-lg mb-12 max-w-xl mx-auto"
+          className="text-white/60 font-body font-light text-base sm:text-lg mb-12 max-w-xl mx-auto px-1"
         >
           This is a curated, high-touch experience capped at 50 seats. Tell us about your business and
           the problem you want to solve—we'll review every application personally.
@@ -95,22 +95,22 @@ export default function CtaFooter() {
       </div>
 
       <div className="relative z-10 w-full border-t border-white/10 mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex flex-col items-center md:items-start gap-1 text-center md:text-left">
-            <p className="text-white/40 text-xs font-body font-light">
+            <p className="text-white/40 text-xs font-body font-light leading-relaxed">
               © 2026 Amplify AI Retreat. Unlock human potential through AI.
             </p>
             <a
               href={VENUE.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/40 hover:text-white/70 text-xs font-body font-light transition-colors"
+              className="text-white/40 hover:text-white/70 text-xs font-body font-light transition-colors text-center md:text-left"
             >
               {venueAddressLine()}
             </a>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {footerLinks.map((item) => (
               <a
                 key={item.label}

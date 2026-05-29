@@ -46,7 +46,7 @@ export default function FeaturesGrid() {
         <BlurText
           as="h2"
           text="Built for operators, not spectators."
-          className="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] justify-center text-white"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] justify-center text-white px-1"
         />
       </div>
 
@@ -60,7 +60,7 @@ export default function FeaturesGrid() {
               { opacity: 1, y: 0 },
               { delay: idx * 0.1, duration: 0.6 },
             )}
-            className="liquid-glass rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300"
+            className="liquid-glass rounded-2xl p-6 sm:p-8 hover:-translate-y-1 transition-transform duration-300"
           >
             <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">
               <Icon className="w-[22px] h-[22px] text-white/90" aria-hidden="true" />
