@@ -57,7 +57,7 @@ export default function Hero() {
         <BlurText
           as="h1"
           text="Three days. One breakthrough."
-          className="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem] font-heading italic text-white leading-[0.9] max-w-4xl tracking-tight justify-center px-1"
+          className="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem] font-heading italic text-white max-w-4xl tracking-tight justify-center px-1"
           delay={0.1}
           stagger={0.12}
           animateOnMount

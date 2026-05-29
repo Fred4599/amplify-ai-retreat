@@ -62,6 +62,12 @@ video {
   max-width: 100%;
 }
 
+/* Instrument Serif italic descenders extend past sub-1 line-heights */
+.font-heading {
+  line-height: 1.12;
+  padding-bottom: 0.08em;
+}
+
 /* LIQUID GLASS UTILITIES */
 .liquid-glass {
   background: rgba(255, 255, 255, 0.01);

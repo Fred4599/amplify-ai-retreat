@@ -33,7 +33,7 @@ export default function FeaturesChess() {
         <BlurText
           as="h2"
           text="We don't just talk about AI. We help you apply it."
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.95] sm:leading-[0.9] justify-center text-white px-2"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight justify-center text-white px-2"
         />
       </div>
 
@@ -42,7 +42,7 @@ export default function FeaturesChess() {
           {...inView(hydrated, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, { duration: 0.8 })}
           className="flex-1 space-y-5 sm:space-y-6 w-full max-w-full"
         >
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight">
             Build with AI during the day.
           </h3>
           <p className="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed max-w-md">
@@ -91,7 +91,7 @@ export default function FeaturesChess() {
               Beyond the Classroom
             </span>
           </div>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight">
             Connect as humans in the evening.
           </h3>
           <p className="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed max-w-md">

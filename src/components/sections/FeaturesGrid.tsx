@@ -46,7 +46,7 @@ export default function FeaturesGrid() {
         <BlurText
           as="h2"
           text="Built for operators, not spectators."
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] justify-center text-white px-1"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight justify-center text-white px-1"
         />
       </div>
 

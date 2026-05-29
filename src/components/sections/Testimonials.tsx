@@ -44,7 +44,7 @@ export default function Testimonials() {
         <BlurText
           as="h2"
           text="Implementation. Mindset. Strategy."
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] justify-center text-white px-1"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight justify-center text-white px-1"
         />
       </div>
 
@@ -67,7 +67,7 @@ export default function Testimonials() {
               <div className="text-white/50 text-[10px] uppercase tracking-widest font-body mb-3">
                 {role}
               </div>
-              <h4 className="text-2xl font-heading italic tracking-tight text-white mb-4 leading-tight">
+              <h4 className="text-2xl font-heading italic tracking-tight text-white mb-4">
                 {name}
               </h4>
               <p className="text-white/70 font-body font-light text-base leading-relaxed">{body}</p>

@@ -26,13 +26,15 @@ export default function BlurText({
 
   if (!hydrated) {
     return (
-      <Tag className={`flex flex-wrap max-w-full overflow-hidden ${className ?? ''}`}>
-        {words.map((word, index) => (
-          <span key={index} className="mr-[0.25em] inline-block last:mr-0">
-            {word}
-          </span>
-        ))}
-      </Tag>
+      <div className="max-w-full overflow-hidden pb-[0.12em]">
+        <Tag className={`flex flex-wrap max-w-full ${className ?? ''}`}>
+          {words.map((word, index) => (
+            <span key={index} className="mr-[0.25em] inline-block last:mr-0">
+              {word}
+            </span>
+          ))}
+        </Tag>
+      </div>
     );
   }
 
@@ -69,19 +71,21 @@ export default function BlurText({
   };
 
   return (
-    <MotionTag
-      className={`flex flex-wrap max-w-full overflow-hidden ${className ?? ''}`}
-      variants={container}
-      initial="hidden"
-      animate={animateOnMount ? 'visible' : undefined}
-      whileInView={animateOnMount ? undefined : 'visible'}
-      viewport={animateOnMount ? undefined : { once: true, margin: '-100px' }}
-    >
-      {words.map((word, index) => (
-        <motion.span variants={child} key={index} className="mr-[0.25em] inline-block last:mr-0">
-          {word}
-        </motion.span>
-      ))}
-    </MotionTag>
+    <div className="max-w-full overflow-hidden pb-[0.12em]">
+      <MotionTag
+        className={`flex flex-wrap max-w-full ${className ?? ''}`}
+        variants={container}
+        initial="hidden"
+        animate={animateOnMount ? 'visible' : undefined}
+        whileInView={animateOnMount ? undefined : 'visible'}
+        viewport={animateOnMount ? undefined : { once: true, margin: '-100px' }}
+      >
+        {words.map((word, index) => (
+          <motion.span variants={child} key={index} className="mr-[0.25em] inline-block last:mr-0">
+            {word}
+          </motion.span>
+        ))}
+      </MotionTag>
+    </div>
   );
 }

@@ -48,7 +48,7 @@ export default function CtaFooter() {
         <BlurText
           as="h2"
           text="Apply to attend."
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading italic tracking-tight leading-[0.85] justify-center text-white mb-6 px-1"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading italic tracking-tight justify-center text-white mb-6 px-1"
         />
 
         <motion.p
