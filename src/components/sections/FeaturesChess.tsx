@@ -75,7 +75,7 @@ export default function FeaturesChess() {
               poster={MEDIA.posters.featureDay}
               playbackRate={0.5}
               className="w-full h-full object-cover rounded-xl opacity-90 group-hover:opacity-100 transition-opacity duration-500"
-              wrapperClassName="w-full h-full"
+              wrapperClassName="relative w-full h-full"
             />
           </div>
         </motion.div>
@@ -114,7 +114,7 @@ export default function FeaturesChess() {
               poster={MEDIA.posters.featureEvening}
               playbackRate={0.5}
               className="w-full h-full object-cover rounded-xl opacity-90 group-hover:opacity-100 transition-opacity duration-500"
-              wrapperClassName="w-full h-full"
+              wrapperClassName="relative w-full h-full"
             />
           </div>
         </motion.div>

@@ -16,12 +16,19 @@ export default function LazyVideo({
   className = '',
   priority = false,
   playbackRate,
-  wrapperClassName = '',
+  wrapperClassName = 'relative w-full h-full',
 }: LazyVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(priority);
   const [videoReady, setVideoReady] = useState(false);
+  const revealedRef = useRef(false);
+
+  const markReady = () => {
+    if (revealedRef.current) return;
+    revealedRef.current = true;
+    setVideoReady(true);
+  };
 
   useEffect(() => {
     if (priority || active) return;
@@ -61,12 +68,11 @@ export default function LazyVideo({
 
     return () => {
       video.pause();
-      setVideoReady(false);
     };
   }, [active, src]);
 
   return (
-    <div ref={containerRef} className={`relative ${wrapperClassName}`}>
+    <div ref={containerRef} className={wrapperClassName}>
       <img
         src={poster}
         alt=""
@@ -82,6 +88,7 @@ export default function LazyVideo({
         className={`${className} transition-opacity duration-700 ease-out ${
           videoReady ? 'opacity-100' : 'opacity-0'
         }`}
+        poster={poster}
         muted
         loop
         playsInline
@@ -91,7 +98,7 @@ export default function LazyVideo({
         onLoadedMetadata={(e) => {
           if (playbackRate) e.currentTarget.playbackRate = playbackRate;
         }}
-        onPlaying={() => setVideoReady(true)}
+        onPlaying={markReady}
       />
     </div>
   );

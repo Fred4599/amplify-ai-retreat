@@ -34,8 +34,8 @@ export default function Hero() {
         priority
         src={MEDIA.videos.hero}
         poster={MEDIA.posters.hero}
-        wrapperClassName="absolute inset-0 z-0"
-        className="absolute left-0 w-full h-full object-cover"
+        wrapperClassName="absolute inset-0 z-0 w-full h-full"
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
       <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
