@@ -1,23 +1,25 @@
 import { motion } from 'motion/react';
+import { BarChart2, Cpu, Heart } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import BlurText from '../BlurText';
 import { useHydrated } from '../useHydrated';
 import { inView } from '../motionPresets';
 
-const guides = [
+const guides: { Icon: LucideIcon; role: string; name: string; body: string }[] = [
   {
-    icon: 'solar:cpu-bolt-bold-duotone',
+    Icon: Cpu,
     role: 'AI Strategist & Builder',
     name: 'Braydon Carter',
     body: 'Simplifies complex AI into clear business solutions. Helps you identify the right tool, system, or workflow for your specific problem—and leave with real next steps.',
   },
   {
-    icon: 'solar:heart-shine-bold-duotone',
+    Icon: Heart,
     role: 'Mindset & Transformation',
     name: 'Tony Child',
     body: 'Helps you understand resistance to change and connect purpose, vision, and identity to implementation. Moves you from fear and uncertainty to possibility and action.',
   },
   {
-    icon: 'solar:chart-2-bold-duotone',
+    Icon: BarChart2,
     role: 'Sales & Event Strategy',
     name: 'Bill Banta',
     body: 'Frames the commercial opportunity, positions solutions clearly, and connects the retreat experience to long-term business value.',
@@ -47,9 +49,9 @@ export default function Testimonials() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {guides.map((item, idx) => (
+        {guides.map(({ Icon, role, name, body }, idx) => (
           <motion.div
-            key={item.name}
+            key={name}
             {...inView(
               hydrated,
               { opacity: 0, y: 30 },
@@ -60,15 +62,15 @@ export default function Testimonials() {
           >
             <div className="mb-8">
               <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">
-                <iconify-icon icon={item.icon} width="22" className="text-white/90" />
+                <Icon className="w-[22px] h-[22px] text-white/90" aria-hidden="true" />
               </div>
               <div className="text-white/50 text-[10px] uppercase tracking-widest font-body mb-3">
-                {item.role}
+                {role}
               </div>
               <h4 className="text-2xl font-heading italic tracking-tight text-white mb-4 leading-tight">
-                {item.name}
+                {name}
               </h4>
-              <p className="text-white/70 font-body font-light text-base leading-relaxed">{item.body}</p>
+              <p className="text-white/70 font-body font-light text-base leading-relaxed">{body}</p>
             </div>
           </motion.div>
         ))}

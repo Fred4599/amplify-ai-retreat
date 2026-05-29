@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
-import { ArrowUpRight, MapPin, Play } from 'lucide-react';
+import { ArrowUpRight, BarChart2, Cpu, Heart, MapPin, Play } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { VENUE, venueAddressLine } from '../../config/site';
 import { MEDIA } from '../../config/media';
 import ApplyTrigger from '../ApplyTrigger';
@@ -8,10 +9,10 @@ import LazyVideo from '../LazyVideo';
 import { useHydrated } from '../useHydrated';
 import { onMount } from '../motionPresets';
 
-const guides = [
-  { name: 'Braydon Carter', icon: 'solar:cpu-bolt-bold-duotone' },
-  { name: 'Tony Child', icon: 'solar:heart-shine-bold-duotone' },
-  { name: 'Bill Banta', icon: 'solar:chart-2-bold-duotone' },
+const guides: { name: string; Icon: LucideIcon }[] = [
+  { name: 'Braydon Carter', Icon: Cpu },
+  { name: 'Tony Child', Icon: Heart },
+  { name: 'Bill Banta', Icon: BarChart2 },
 ];
 
 export default function Hero() {
@@ -43,12 +44,12 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 h-full pt-24 sm:pt-28 md:pt-32 lg:pt-[150px]">
         <motion.div
           {...fade(0.2)}
-          className="liquid-glass rounded-full px-1 py-1 pr-3 sm:pr-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 max-w-full"
+          className="liquid-glass rounded-2xl sm:rounded-full px-3 py-2.5 sm:px-1 sm:py-1 sm:pr-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mb-6 sm:mb-8 w-auto max-w-[calc(100%-0.5rem)]"
         >
-          <span className="bg-white text-black rounded-full px-3 py-1 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+          <span className="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
             50 Seats Only
           </span>
-          <span className="text-white/80 font-body text-xs sm:text-sm font-medium">
+          <span className="text-white/80 font-body text-sm font-medium text-center sm:text-left leading-snug">
             3-Day Implementation Retreat
           </span>
         </motion.div>
@@ -113,14 +114,13 @@ export default function Hero() {
             {...onMount(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 1.6, duration: 1 })}
             className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-8 md:gap-16 opacity-80 w-full px-2"
           >
-            {guides.map((guide) => (
+            {guides.map(({ name, Icon }) => (
               <div
-                key={guide.name}
+                key={name}
                 className="flex items-center justify-center gap-2 sm:gap-3 text-xl sm:text-2xl md:text-3xl font-heading italic text-white"
               >
-                <iconify-icon icon={guide.icon} width="24" className="opacity-80 sm:hidden" />
-                <iconify-icon icon={guide.icon} width="28" className="opacity-80 hidden sm:block" />
-                {guide.name}
+                <Icon className="w-6 h-6 sm:w-7 sm:h-7 opacity-80 shrink-0" aria-hidden="true" />
+                {name}
               </div>
             ))}
           </motion.div>

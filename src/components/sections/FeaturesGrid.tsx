@@ -1,26 +1,28 @@
 import { motion } from 'motion/react';
+import { Briefcase, Rocket, Settings, Star } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import BlurText from '../BlurText';
 import { useHydrated } from '../useHydrated';
 import { inView } from '../motionPresets';
 
-const pillars = [
+const pillars: { Icon: LucideIcon; title: string; desc: string }[] = [
   {
-    icon: 'solar:case-round-bold-duotone',
+    Icon: Briefcase,
     title: 'Business Owners',
     desc: "You know AI matters but haven't implemented it well yet. You're ready to stop researching and start solving.",
   },
   {
-    icon: 'solar:rocket-2-bold-duotone',
+    Icon: Rocket,
     title: 'Founders & Entrepreneurs',
     desc: "You're bottlenecked and need clarity, not more hype. You want a real path forward, not another keynote.",
   },
   {
-    icon: 'solar:settings-bold-duotone',
+    Icon: Settings,
     title: 'Operators & Leaders',
     desc: 'Repetitive tasks, admin overload, and broken follow-up systems are costing you time, money, and growth.',
   },
   {
-    icon: 'solar:star-bold-duotone',
+    Icon: Star,
     title: 'High Performers Ready to Act',
     desc: 'You value strategic thinking, implementation, and real connection over vendor pitches and tool demos.',
   },
@@ -49,9 +51,9 @@ export default function FeaturesGrid() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {pillars.map((feature, idx) => (
+        {pillars.map(({ Icon, title, desc }, idx) => (
           <motion.div
-            key={feature.title}
+            key={title}
             {...inView(
               hydrated,
               { opacity: 0, y: 30 },
@@ -61,10 +63,10 @@ export default function FeaturesGrid() {
             className="liquid-glass rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300"
           >
             <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">
-              <iconify-icon icon={feature.icon} width="22" className="text-white/90" />
+              <Icon className="w-[22px] h-[22px] text-white/90" aria-hidden="true" />
             </div>
-            <h4 className="text-xl font-heading italic tracking-tight text-white mb-3">{feature.title}</h4>
-            <p className="text-white/60 font-body font-light text-sm leading-relaxed">{feature.desc}</p>
+            <h4 className="text-xl font-heading italic tracking-tight text-white mb-3">{title}</h4>
+            <p className="text-white/60 font-body font-light text-sm leading-relaxed">{desc}</p>
           </motion.div>
         ))}
       </div>

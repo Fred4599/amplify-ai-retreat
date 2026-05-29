@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 import ApplyTrigger from './ApplyTrigger';
 
 const navItems = [
@@ -72,12 +72,11 @@ export default function Navbar() {
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((v) => !v)}
         >
-          <iconify-icon
-            icon={open ? 'solar:close-circle-linear' : 'solar:hamburger-menu-linear'}
-            width="24"
-            height="24"
-            className="text-white"
-          />
+          {open ? (
+            <X className="w-6 h-6 text-white" aria-hidden="true" />
+          ) : (
+            <Menu className="w-6 h-6 text-white" aria-hidden="true" />
+          )}
         </button>
       </nav>
 
