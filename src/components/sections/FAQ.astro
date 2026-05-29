@@ -1,0 +1,107 @@
+---
+const faqs = [
+  {
+    question: 'Do I need AI experience?',
+    answer:
+      'No. You need a real business problem and willingness to implement. We translate AI into practical steps for business owners, not engineers.',
+  },
+  {
+    question: 'What kind of business is this for?',
+    answer:
+      'Any owner, founder, or operator with a bottleneck costing time, money, energy, or growth—marketing, ops, sales, admin, fulfillment, and more.',
+  },
+  {
+    question: 'Will I really leave with something practical?',
+    answer:
+      'Yes. The goal is clarity, direction, and likely a prototype, system concept, workflow, or implementation plan—not inspiration alone.',
+  },
+  {
+    question: 'Is this for beginners or advanced users?',
+    answer:
+      "Both. Ideal if you know AI matters but haven't implemented it well yet. We meet you where you are and focus on your specific problem.",
+  },
+  {
+    question: "What's included?",
+    answer:
+      '3 days of working sessions, masterminds, implementation support, connection experiences, meals and activities as outlined, and access to three expert guides.',
+  },
+  {
+    question: 'Why only 50 seats?',
+    answer:
+      'Intimacy and quality. We cap attendance so you get real support, not a conference hall experience.',
+  },
+  {
+    question: 'How do I get a seat?',
+    answer:
+      'Submit an application. We review each one to ensure the room is filled with the right entrepreneurs and the right problems—not everyone who applies will be accepted.',
+  },
+];
+---
+
+<section id="faq" class="w-full max-w-3xl mx-auto px-6 py-24 md:py-32">
+  <div class="flex flex-col items-center text-center mb-16">
+    <div class="liquid-glass rounded-full px-4 py-1.5 mb-6">
+      <span class="text-white text-xs font-medium font-body uppercase tracking-wider">FAQ</span>
+    </div>
+
+    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] text-white">
+      Questions before you apply.
+    </h2>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    {
+      faqs.map((faq, idx) => (
+        <details class="faq-item liquid-glass rounded-2xl group" open={idx === 0}>
+          <summary class="faq-summary relative z-10 w-full flex items-center justify-between gap-4 p-6 text-left cursor-pointer list-none">
+            <span class="text-lg font-heading italic text-white tracking-tight">{faq.question}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="faq-chevron w-5 h-5 text-white/50 shrink-0 transition-transform duration-300"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </summary>
+          <p class="px-6 pb-6 text-white/60 font-body font-light text-base leading-relaxed">{faq.answer}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::marker {
+    content: '';
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  const faqItems = document.querySelectorAll('#faq .faq-item');
+
+  faqItems.forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+
+      faqItems.forEach((other) => {
+        if (other !== item) other.open = false;
+      });
+    });
+  });
+</script>

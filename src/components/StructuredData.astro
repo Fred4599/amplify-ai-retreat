@@ -1,0 +1,107 @@
+---
+import { SITE, VENUE, absoluteUrl } from '../config/site';
+
+interface Props {
+  type?: 'home' | 'apply';
+}
+
+const { type = 'home' } = Astro.props;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: SITE.url,
+  logo: absoluteUrl(SITE.logoPath),
+  description: SITE.description,
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  publisher: { '@type': 'Organization', name: SITE.name },
+};
+
+const event = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: SITE.name,
+  description: SITE.description,
+  url: SITE.url,
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  location: {
+    '@type': 'Place',
+    name: VENUE.name,
+    url: VENUE.url,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: VENUE.streetAddress,
+      addressLocality: VENUE.addressLocality,
+      addressRegion: VENUE.addressRegion,
+      postalCode: VENUE.postalCode,
+      addressCountry: 'US',
+    },
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+  },
+  offers: {
+    '@type': 'Offer',
+    url: absoluteUrl('/apply'),
+    availability: 'https://schema.org/LimitedAvailability',
+    description: 'Limited to 50 seats. Application required.',
+  },
+};
+
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Do I need AI experience?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. You need a real business problem and willingness to implement. We translate AI into practical steps for business owners, not engineers.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What kind of business is this for?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Any owner, founder, or operator with a bottleneck costing time, money, energy, or growth—marketing, ops, sales, admin, fulfillment, and more.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Will I really leave with something practical?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. The goal is clarity, direction, and likely a prototype, system concept, workflow, or implementation plan—not inspiration alone.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Why only 50 seats?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Intentional capacity so every attendee gets meaningful attention, problem-solving, and implementation support—not a crowded conference experience.',
+      },
+    },
+  ],
+};
+
+const graphs =
+  type === 'home'
+    ? [organization, website, event, faqPage]
+    : [organization, website];
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(graphs)} />

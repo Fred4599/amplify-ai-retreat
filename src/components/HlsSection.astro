@@ -1,0 +1,31 @@
+---
+interface Props {
+  src: string;
+  videoClass?: string;
+  sectionClass?: string;
+  contentClass?: string;
+  id?: string;
+}
+
+const { src, videoClass = '', sectionClass = '', contentClass = '', id } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['relative overflow-hidden', sectionClass]}
+>
+  <video
+    class:list={['hls-background', 'absolute inset-0 w-full h-full object-cover z-0', videoClass]}
+    data-hls-src={src}
+    muted
+    loop
+    playsinline
+    autoplay
+  ></video>
+
+  <slot name="overlays" />
+
+  <div class:list={['relative z-10 w-full', contentClass]}>
+    <slot />
+  </div>
+</section>

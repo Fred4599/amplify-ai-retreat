@@ -1,0 +1,136 @@
+---
+import '../styles/global.css';
+import 'iconify-icon';
+import StructuredData from '../components/StructuredData.astro';
+import { SITE, absoluteUrl } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path for canonical URL, e.g. `/apply` */
+  path?: string;
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  structuredData?: 'home' | 'apply';
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  path = '/',
+  noindex = false,
+  ogType = 'website',
+  structuredData = 'home',
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const ogImage = SITE.ogImage;
+const robots = noindex ? 'noindex, follow' : 'index, follow';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={SITE.keywords.join(', ')} />
+    <meta name="author" content={SITE.name} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#000000" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Amplify AI Retreat — immersive mountain retreat experience" />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {SITE.twitterHandle && <meta name="twitter:site" content={SITE.twitterHandle} />}
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href={SITE.logoPath} />
+    <link rel="apple-touch-icon" href={SITE.logoPath} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net" />
+    <link rel="preconnect" href="https://stream.mux.com" />
+
+    <StructuredData type={structuredData} />
+
+    <script is:inline src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/hls.js@1.6.15/dist/hls.min.js"></script>
+  </head>
+  <body class="bg-black text-white antialiased selection:bg-white/20">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-white focus:text-black focus:text-sm focus:font-medium"
+    >
+      Skip to main content
+    </a>
+    <div class="bg-black min-h-screen w-full relative selection:bg-white/30 selection:text-white">
+      <slot />
+    </div>
+    <script is:inline>
+      function initHlsBackgrounds() {
+        document.querySelectorAll('video.hls-background[data-hls-src]').forEach(function (video) {
+          if (video.dataset.hlsReady === 'true') return;
+
+          var src = video.getAttribute('data-hls-src');
+          if (!src) return;
+
+          var play = function () {
+            video.play().catch(function () {});
+          };
+
+          if (window.Hls && Hls.isSupported()) {
+            video.dataset.hlsReady = 'true';
+            var hls = new Hls({ startLevel: 2 });
+            hls.loadSource(src);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, play);
+            hls.on(Hls.Events.ERROR, function (_event, data) {
+              if (!data.fatal) return;
+              if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+                hls.startLoad();
+              } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                hls.recoverMediaError();
+              }
+            });
+            return;
+          }
+
+          if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.dataset.hlsReady = 'true';
+            video.src = src;
+            video.addEventListener('loadedmetadata', play, { once: true });
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHlsBackgrounds);
+      } else {
+        initHlsBackgrounds();
+      }
+
+      [100, 500, 1500].forEach(function (delay) {
+        setTimeout(initHlsBackgrounds, delay);
+      });
+
+      document.addEventListener('astro:page-load', initHlsBackgrounds);
+    </script>
+  </body>
+</html>

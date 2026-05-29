@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ApplyNavbar from '../components/ApplyNavbar.astro';
+
+const webhook = import.meta.env.PUBLIC_APPLICATION_WEBHOOK ?? '';
+
+const aiUsageOptions = [
+  'Not using it yet',
+  'Experimenting a little',
+  'Using it in a few areas',
+  "It's already part of our workflow",
+];
+
+const inputClass =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30 transition-colors';
+
+const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
+---
+
+<BaseLayout
+  title="Apply — Amplify AI Retreat"
+  description="Apply to attend the Amplify AI Retreat. Share your business bottleneck and goals — only 50 seats available. We review every application personally."
+  path="/apply"
+  noindex={true}
+  structuredData="apply"
+>
+  <ApplyNavbar />
+
+  <main id="main-content" class="min-h-screen pt-28 pb-16 px-6 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent pointer-events-none"></div>
+
+    <div class="relative max-w-xl mx-auto w-full">
+      <div id="application-form-panel" class="rounded-3xl overflow-hidden w-full border border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl">
+        <div class="px-6 pt-8 pb-4 border-b border-white/10">
+          <p class="text-white/50 text-xs font-body uppercase tracking-widest mb-1">
+            Retreat Application
+          </p>
+          <h1 class="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
+            Apply to attend
+          </h1>
+          <p class="text-white/60 font-body font-light text-sm md:text-base mt-3 max-w-lg">
+            Tell us about your business and the problem you want to solve. We review every
+            application personally — only 50 seats available.
+          </p>
+        </div>
+
+        <div class="px-6 py-6">
+          <div id="application-success" class="hidden py-12 text-center">
+            <p class="text-2xl font-heading italic text-white mb-3">Application received</p>
+            <p class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
+              Thanks for applying. We review every submission personally and will be in touch soon.
+            </p>
+            <a
+              href="/"
+              class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
+            >
+              Back to homepage
+            </a>
+          </div>
+
+          <form id="application-form" class="flex flex-col gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="sm:col-span-2">
+                <label for="fullName" class={labelClass}>Full Name</label>
+                <input id="fullName" name="fullName" type="text" required autocomplete="name" class={inputClass} />
+              </div>
+
+              <div>
+                <label for="email" class={labelClass}>Email Address</label>
+                <input id="email" name="email" type="email" required autocomplete="email" class={inputClass} />
+              </div>
+
+              <div>
+                <label for="phone" class={labelClass}>Phone Number</label>
+                <input id="phone" name="phone" type="tel" required autocomplete="tel" class={inputClass} />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="companyWebsite" class={labelClass}>Company Name + Website</label>
+                <input
+                  id="companyWebsite"
+                  name="companyWebsite"
+                  type="text"
+                  required
+                  placeholder="Acme Co — acme.com"
+                  class={inputClass}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="businessDescription" class={labelClass}>
+                What do you do, and what kind of business are you building?
+              </label>
+              <textarea id="businessDescription" name="businessDescription" required rows="3" class={`${inputClass} resize-none`}></textarea>
+            </div>
+
+            <div>
+              <label for="bottleneck" class={labelClass}>
+                What is the biggest bottleneck or problem in your business right now that you want help solving?
+              </label>
+              <textarea id="bottleneck" name="bottleneck" required rows="3" class={`${inputClass} resize-none`}></textarea>
+            </div>
+
+            <fieldset>
+              <legend class={labelClass}>How are you currently using AI in your business?</legend>
+              <div class="flex flex-col gap-2 mt-1">
+                {aiUsageOptions.map((option) => (
+                  <label class="flex items-center gap-3 rounded-xl px-4 py-3 cursor-pointer border border-white/10 bg-white/5 hover:border-white/20 transition-colors has-[:checked]:bg-white/10 has-[:checked]:border-white/30">
+                    <input type="radio" name="aiUsage" value={option} required class="accent-white" />
+                    <span class="text-sm text-white/90 font-body">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <div>
+              <label for="successOutcome" class={labelClass}>
+                If this event is a huge win for you, what would you walk away with?
+              </label>
+              <textarea id="successOutcome" name="successOutcome" required rows="3" class={`${inputClass} resize-none`}></textarea>
+            </div>
+
+            <p id="application-error" class="hidden text-red-400/90 text-sm font-body" role="alert"></p>
+
+            <button
+              type="submit"
+              id="application-submit"
+              class="bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full px-8 py-3.5 font-medium text-sm w-full sm:w-auto sm:self-center"
+            >
+              Submit Application
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script define:vars={{ webhook }}>
+    const form = document.getElementById('application-form');
+    const success = document.getElementById('application-success');
+    const errorEl = document.getElementById('application-error');
+    const submitBtn = document.getElementById('application-submit');
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!webhook) {
+        errorEl.textContent = 'Application form is not configured yet. Please try again later.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+      errorEl.classList.add('hidden');
+
+      const data = new FormData(form);
+      const payload = {
+        fullName: data.get('fullName'),
+        email: data.get('email'),
+        phone: data.get('phone'),
+        companyWebsite: data.get('companyWebsite'),
+        businessDescription: data.get('businessDescription'),
+        bottleneck: data.get('bottleneck'),
+        aiUsage: data.get('aiUsage'),
+        successOutcome: data.get('successOutcome'),
+        submittedAt: new Date().toISOString(),
+      };
+
+      try {
+        const res = await fetch(webhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Submission failed');
+
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      } catch {
+        errorEl.textContent = 'Something went wrong. Please try again or email us directly.';
+        errorEl.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Application';
+      }
+    });
+  </script>
+</BaseLayout>

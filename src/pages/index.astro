@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar';
+import Hero from '../components/sections/Hero';
+import HlsSection from '../components/HlsSection.astro';
+import StartSection from '../components/sections/StartSection';
+import FeaturesChess from '../components/sections/FeaturesChess';
+import FeaturesGrid from '../components/sections/FeaturesGrid';
+import Stats from '../components/sections/Stats';
+import Testimonials from '../components/sections/Testimonials';
+import FAQ from '../components/sections/FAQ.astro';
+import CtaFooter from '../components/sections/CtaFooter';
+import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
+---
+
+<BaseLayout path="/" structuredData="home">
+  <Navbar client:load />
+  <main id="main-content" class="bg-black relative w-full h-full">
+    <Hero client:load />
+    <div class="relative z-10 bg-black w-full flex flex-col items-center">
+      <HlsSection
+        src={HLS_BACKGROUNDS.start}
+        sectionClass="w-full min-h-[700px] flex items-center justify-center py-32"
+        videoClass="opacity-80"
+      >
+        <div slot="overlays">
+          <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute inset-0 bg-black/40 z-[1] pointer-events-none"></div>
+        </div>
+        <StartSection client:load />
+      </HlsSection>
+
+      <FeaturesChess client:load />
+      <FeaturesGrid client:load />
+
+      <HlsSection
+        id="outcomes"
+        src={HLS_BACKGROUNDS.stats}
+        sectionClass="w-full py-32 md:py-48 flex items-center justify-center"
+        videoClass="opacity-40 saturate-0"
+      >
+        <div slot="overlays">
+          <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-black to-transparent z-[1] pointer-events-none"></div>
+        </div>
+        <Stats client:load />
+      </HlsSection>
+
+      <Testimonials client:load />
+      <FAQ />
+
+      <HlsSection
+        id="apply"
+        src={HLS_BACKGROUNDS.cta}
+        sectionClass="w-full min-h-[900px] flex flex-col"
+        contentClass="flex flex-col flex-1 justify-end"
+        videoClass="opacity-60"
+      >
+        <div slot="overlays">
+          <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute inset-0 bg-black/40 z-[1] pointer-events-none"></div>
+        </div>
+        <CtaFooter client:load />
+      </HlsSection>
+    </div>
+  </main>
+</BaseLayout>
