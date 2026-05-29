@@ -44,12 +44,12 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 h-full pt-24 sm:pt-28 md:pt-32 lg:pt-[150px]">
         <motion.div
           {...fade(0.2)}
-          className="liquid-glass rounded-2xl sm:rounded-full px-3 py-2.5 sm:px-1 sm:py-1 sm:pr-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mb-6 sm:mb-8 w-auto max-w-[calc(100%-0.5rem)]"
+          className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full"
         >
-          <span className="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
+          <span className="bg-white text-black rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
             50 Seats Only
           </span>
-          <span className="text-white/80 font-body text-sm font-medium text-center sm:text-left leading-snug">
+          <span className="text-white/85 font-body text-sm font-medium text-center sm:text-left leading-snug max-w-[18rem] sm:max-w-none">
             3-Day Implementation Retreat
           </span>
         </motion.div>
