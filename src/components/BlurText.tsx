@@ -26,7 +26,7 @@ export default function BlurText({
 
   if (!hydrated) {
     return (
-      <Tag className={`flex flex-wrap max-w-full overflow-x-hidden ${className ?? ''}`}>
+      <Tag className={`flex flex-wrap max-w-full overflow-hidden ${className ?? ''}`}>
         {words.map((word, index) => (
           <span key={index} className="mr-[0.25em] inline-block last:mr-0">
             {word}
@@ -70,7 +70,7 @@ export default function BlurText({
 
   return (
     <MotionTag
-      className={`flex flex-wrap max-w-full overflow-x-hidden ${className ?? ''}`}
+      className={`flex flex-wrap max-w-full overflow-hidden ${className ?? ''}`}
       variants={container}
       initial="hidden"
       animate={animateOnMount ? 'visible' : undefined}
