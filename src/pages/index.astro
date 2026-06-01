@@ -6,6 +6,7 @@ import HlsSection from '../components/HlsSection.astro';
 import StartSection from '../components/sections/StartSection';
 import FeaturesChess from '../components/sections/FeaturesChess';
 import FeaturesGrid from '../components/sections/FeaturesGrid';
+import CaseStudies from '../components/sections/CaseStudies';
 import Stats from '../components/sections/Stats';
 import Testimonials from '../components/sections/Testimonials';
 import FAQ from '../components/sections/FAQ.astro';
@@ -34,6 +35,7 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
 
       <FeaturesChess client:load />
       <FeaturesGrid client:load />
+      <CaseStudies client:load />
 
       <HlsSection
         id="outcomes"

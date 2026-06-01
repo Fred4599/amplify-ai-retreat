@@ -1,0 +1,7 @@
+---
+import deckHtml from '../../deck/sales-deck.html?raw';
+
+return new Response(deckHtml, {
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+});
+---

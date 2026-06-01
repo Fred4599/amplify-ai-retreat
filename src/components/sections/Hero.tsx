@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
-import { ArrowUpRight, BarChart2, Cpu, Heart, Play } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { ArrowUpRight, Play } from 'lucide-react';
 import { eventDatesLine } from '../../config/site';
 import { MEDIA } from '../../config/media';
 import ApplyTrigger from '../ApplyTrigger';
@@ -8,12 +7,6 @@ import BlurText from '../BlurText';
 import LazyVideo from '../LazyVideo';
 import { useHydrated } from '../useHydrated';
 import { onMount } from '../motionPresets';
-
-const guides: { name: string; Icon: LucideIcon }[] = [
-  { name: 'Braydon Carter', Icon: Cpu },
-  { name: 'Tony Child', Icon: Heart },
-  { name: 'Bill Banta', Icon: BarChart2 },
-];
 
 export default function Hero() {
   const hydrated = useHydrated();
@@ -86,32 +79,6 @@ export default function Hero() {
             See the Experience
           </a>
         </motion.div>
-
-        <div className="mt-auto pb-8 sm:pb-12 pt-8 sm:pt-16 flex flex-col items-center w-full shrink-0">
-          <motion.div
-            {...onMount(hydrated, { opacity: 0 }, { opacity: 1 }, { delay: 1.5, duration: 1 })}
-            className="rounded-full px-4 py-1.5 mb-4 sm:mb-8 sm:liquid-glass"
-          >
-            <span className="text-white/50 text-xs font-body uppercase tracking-widest">
-              Your Guides
-            </span>
-          </motion.div>
-
-          <motion.div
-            {...onMount(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 1.6, duration: 1 })}
-            className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 sm:gap-8 md:gap-16 opacity-80 w-full max-w-sm sm:max-w-none px-2"
-          >
-            {guides.map(({ name, Icon }) => (
-              <div
-                key={name}
-                className="flex items-center justify-center gap-2 sm:gap-3 text-lg sm:text-2xl md:text-3xl font-heading italic text-white w-full sm:w-auto"
-              >
-                <Icon className="w-5 h-5 sm:w-7 sm:h-7 opacity-80 shrink-0" aria-hidden="true" />
-                <span className="whitespace-nowrap">{name}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
       </div>
     </section>
   );

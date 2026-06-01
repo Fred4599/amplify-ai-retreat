@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amplify AI Retreat — Sales Deck</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.6);
+      --muted-soft: rgba(255, 255, 255, 0.45);
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --accent: #ffffff;
+      --font-heading: 'Instrument Serif', serif;
+      --font-body: 'Barlow', sans-serif;
+      --slide-pad: clamp(28px, 5vw, 72px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slide-deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    @media (min-width: 769px) {
+      .slide-deck {
+        max-width: calc(100vh * 16 / 9);
+        max-height: calc(100vw * 9 / 16);
+        margin: auto;
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: var(--slide-pad);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.45s ease, visibility 0.45s;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+
+    .slide-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.88) 55%, #000 100%);
+    }
+
+    .slide-bg.overlay-heavy::after {
+      background: linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0.96) 100%);
+    }
+
+    /* Larger layout for text-heavy slides that felt too empty */
+    .slide-filled .slide-content {
+      gap: clamp(14px, 2.4vh, 26px);
+      max-width: 1180px;
+    }
+
+    .slide-filled h2 {
+      font-size: clamp(2rem, 5.8vw, 4.25rem);
+      max-width: 22ch;
+    }
+
+    .slide-filled .lead {
+      font-size: clamp(1rem, 2.15vw, 1.38rem);
+      max-width: 46rem;
+    }
+
+    .slide-filled .eyebrow {
+      font-size: 11px;
+      padding: 8px 18px;
+    }
+
+    .slide-filled .card {
+      padding: clamp(18px, 2.6vw, 30px);
+    }
+
+    .slide-filled .card h4 {
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    }
+
+    .slide-filled .card p,
+    .slide-filled .metric-label {
+      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+    }
+
+    .slide-filled .metric {
+      font-size: clamp(1.75rem, 4.2vw, 2.85rem);
+    }
+
+    .slide-filled .gap-stat .num {
+      font-size: clamp(2.75rem, 9vw, 5.25rem);
+    }
+
+    .slide-filled .gap-stat {
+      padding: clamp(20px, 3vw, 32px);
+    }
+
+    .slide-filled .contrast {
+      gap: clamp(16px, 2.5vw, 24px);
+    }
+
+    .slide-filled .contrast .card {
+      padding: clamp(22px, 3vw, 36px);
+    }
+
+    .slide-filled .contrast h4 {
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .slide-filled .contrast ul {
+      font-size: clamp(0.88rem, 1.65vw, 1.08rem);
+      line-height: 1.55;
+    }
+
+    .slide-filled .contrast ul li {
+      padding: 6px 0;
+      padding-left: 16px;
+    }
+
+    .slide-filled .source-note {
+      font-size: clamp(0.68rem, 1.1vw, 0.78rem);
+    }
+
+    .slide-filled .grid-3,
+    .slide-filled .grid-4 {
+      gap: clamp(12px, 1.8vw, 18px);
+    }
+
+    .slide-filled .objection-card .q {
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
+    }
+
+    .slide-filled .objection-card .a {
+      font-size: clamp(0.82rem, 1.45vw, 0.95rem);
+    }
+
+    /* Compact case study row (3 across) */
+    .case-study-grid {
+      width: 100%;
+    }
+
+    .case-study-card {
+      text-align: left;
+      padding: clamp(14px, 2vw, 20px) !important;
+    }
+
+    .case-study-card .cs-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .case-study-card .cs-cat {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-soft);
+    }
+
+    .case-study-card .cs-metric {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+      line-height: 1;
+      color: #fff;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .case-study-card .cs-metric span {
+      display: block;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted-soft);
+      margin-top: 2px;
+    }
+
+    .case-study-card h4 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .case-study-card p {
+      font-size: clamp(0.68rem, 1.2vw, 0.8rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .slide-proof .grid-4 {
+      margin-bottom: clamp(10px, 1.5vh, 14px) !important;
+    }
+
+    .slide-proof .grid-4 .card {
+      padding: clamp(12px, 1.8vw, 18px) !important;
+    }
+
+    .slide-proof .grid-4 .metric {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1100px;
+      max-height: 100%;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: clamp(12px, 2vh, 24px);
+    }
+
+    .slide-content.align-left {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .eyebrow-dark {
+      background: #fff;
+      color: #000;
+      border: none;
+      letter-spacing: 0.08em;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: clamp(2.4rem, 7vw, 5.5rem); max-width: 14ch; }
+    h2 { font-size: clamp(1.85rem, 5vw, 3.75rem); max-width: 18ch; }
+    h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+
+    .lead {
+      font-size: clamp(0.95rem, 2vw, 1.25rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 42rem;
+    }
+
+    .logo {
+      height: 36px;
+      width: auto;
+      margin-bottom: 8px;
+      opacity: 0.95;
+    }
+
+    /* Liquid glass cards */
+    .glass {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 2vw, 20px);
+      width: 100%;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(10px, 1.5vw, 16px);
+      width: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(8px, 1.2vw, 14px);
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      padding: clamp(14px, 2vw, 22px);
+      text-align: left;
+    }
+
+    .card h4 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .metric {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      color: #fff;
+    }
+
+    .metric-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted-soft);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    /* Contrast pair (What Is / What Could Be) */
+    .contrast {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+
+    @media (max-width: 700px) {
+      .contrast { grid-template-columns: 1fr; }
+    }
+
+    .contrast-bad {
+      border-color: rgba(255, 100, 100, 0.2);
+      background: rgba(255, 60, 60, 0.04);
+    }
+
+    .contrast-good {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .contrast h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-family: var(--font-body);
+      font-style: normal;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--muted-soft);
+    }
+
+    .contrast-good h4 { color: rgba(255,255,255,0.9); }
+
+    .contrast ul {
+      list-style: none;
+      font-size: clamp(0.78rem, 1.5vw, 0.92rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .contrast ul li {
+      padding: 4px 0;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .contrast ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      opacity: 0.4;
+    }
+
+    /* Guide cards */
+    .guide-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: clamp(16px, 2vw, 24px);
+    }
+
+    .guide-card img {
+      width: clamp(72px, 12vw, 96px);
+      height: clamp(72px, 12vw, 96px);
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--glass-border);
+      margin-bottom: 12px;
+    }
+
+    .guide-role {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-soft);
+      margin-bottom: 4px;
+    }
+
+    /* Value stack */
+    .stack-table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+      font-size: clamp(0.72rem, 1.35vw, 0.9rem);
+    }
+
+    .stack-table th,
+    .stack-table td {
+      padding: clamp(8px, 1.2vh, 12px) clamp(10px, 1.5vw, 14px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-weight: 300;
+    }
+
+    .stack-table th {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-soft);
+      font-weight: 500;
+    }
+
+    .stack-table td:last-child,
+    .stack-table th:last-child {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stack-table tr.total td {
+      border-bottom: none;
+      padding-top: 14px;
+      font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+      color: #fff;
+    }
+
+    .stack-table tr.total td:first-child {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+    }
+
+    .stack-table tr.investment td {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .stack-table tr.investment td:last-child {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    }
+
+    .stack-note {
+      font-size: clamp(0.65rem, 1.1vw, 0.75rem);
+      color: var(--muted-soft);
+      margin-top: 8px;
+      max-width: 52rem;
+      line-height: 1.4;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+
+    @media (max-width: 700px) {
+      .timeline { grid-template-columns: 1fr; }
+    }
+
+    .timeline .day-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted-soft);
+      margin-bottom: 6px;
+    }
+
+    /* Split layout with image */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(16px, 3vw, 32px);
+      width: 100%;
+      align-items: center;
+    }
+
+    @media (max-width: 800px) {
+      .split { grid-template-columns: 1fr; }
+    }
+
+    .split img,
+    .split .img-frame {
+      width: 100%;
+      border-radius: 16px;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border: 1px solid var(--glass-border);
+    }
+
+    .img-frame {
+      overflow: hidden;
+      padding: 6px;
+      background: var(--glass);
+    }
+
+    .img-frame img {
+      border-radius: 12px;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      padding: 14px 28px;
+      border-radius: 999px;
+      margin-top: 8px;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.03);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .cta-secondary {
+      background: transparent;
+      color: #fff;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .cta-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .highlight-stat {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #fff;
+    }
+
+    /* Nav */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: #fff;
+      transition: width 0.3s;
+      z-index: 1000;
+    }
+
+    .nav-controls {
+      position: fixed;
+      bottom: clamp(16px, 3vh, 28px);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 1000;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .nav-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .nav-btn:hover { background: rgba(255,255,255,0.2); }
+
+    .slide-counter {
+      color: var(--muted);
+      font-size: 12px;
+      min-width: 48px;
+      text-align: center;
+    }
+
+    .brand-footer {
+      position: fixed;
+      bottom: clamp(16px, 3vh, 28px);
+      right: clamp(16px, 3vw, 28px);
+      z-index: 999;
+      opacity: 0.35;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Print / PDF export — all slides visible, one per page */
+    @page {
+      size: 13.333in 7.5in;
+      margin: 0;
+    }
+
+    .export-bar {
+      position: fixed;
+      top: clamp(12px, 2vh, 20px);
+      left: clamp(12px, 2vw, 20px);
+      z-index: 1002;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .export-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: #fff;
+      color: #000;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .export-btn:hover {
+      transform: scale(1.03);
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    .export-btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .export-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    @media print {
+      .export-bar,
+      .notes-hint,
+      .notes-panel,
+      .nav-controls,
+      .progress-bar,
+      .brand-footer {
+        display: none !important;
+      }
+
+      html, body {
+        overflow: visible !important;
+        height: auto !important;
+        background: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .slide-deck {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+
+      .slide {
+        position: relative !important;
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        page-break-after: always;
+        break-after: page;
+        width: 100% !important;
+        min-height: 7.5in;
+        height: 7.5in !important;
+        max-height: 7.5in !important;
+        overflow: hidden !important;
+        padding: 0.45in 0.55in !important;
+        box-sizing: border-box !important;
+      }
+
+      .slide:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .slide-bg,
+      .slide-bg::after {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .slide-content {
+        overflow: hidden !important;
+        max-height: 100% !important;
+      }
+    }
+
+    /* Implementation gap */
+    .gap-hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(12px, 3vw, 28px);
+      flex-wrap: wrap;
+      width: 100%;
+      margin: 8px 0;
+    }
+
+    .gap-stat {
+      text-align: center;
+      padding: clamp(16px, 2.5vw, 24px);
+      min-width: min(100%, 200px);
+      flex: 1;
+    }
+
+    .gap-stat .num {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      line-height: 1;
+      color: #fff;
+    }
+
+    .gap-stat .num.muted-num {
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .gap-arrow {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    .source-note {
+      font-size: clamp(0.6rem, 1vw, 0.72rem);
+      color: var(--muted-soft);
+      line-height: 1.45;
+      max-width: 40rem;
+      margin-top: 4px;
+    }
+
+    /* Objections */
+    .objection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(10px, 1.5vw, 14px);
+      width: 100%;
+      text-align: left;
+    }
+
+    @media (max-width: 700px) {
+      .objection-grid { grid-template-columns: 1fr; }
+    }
+
+    .objection-card .q {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .objection-card .a {
+      font-size: clamp(0.72rem, 1.3vw, 0.85rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* Speaker notes */
+    .notes-hint {
+      position: fixed;
+      top: 12px;
+      right: clamp(12px, 2vw, 24px);
+      z-index: 1001;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      pointer-events: none;
+    }
+
+    .notes-panel {
+      position: fixed;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, 720px);
+      max-height: 28vh;
+      overflow-y: auto;
+      z-index: 1001;
+      background: rgba(10, 10, 10, 0.95);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      backdrop-filter: blur(20px);
+      display: none;
+    }
+
+    .notes-panel.visible { display: block; }
+
+    .notes-panel .notes-title {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted-soft);
+      margin-bottom: 8px;
+    }
+
+    .notes-panel .notes-body {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.88);
+      text-align: left;
+    }
+
+    .notes-panel .notes-body strong {
+      font-weight: 500;
+      color: #fff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slide { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="notes-hint" id="notesHint">Press N for speaker notes</div>
+  <div class="notes-panel" id="notesPanel" aria-live="polite">
+    <div class="notes-title">Speaker notes · Slide <span id="notesSlideNum">1</span></div>
+    <div class="notes-body" id="notesBody"></div>
+  </div>
+
+  <div class="slide-deck" id="deck">
+
+    <!-- 1. Title -->
+    <section class="slide active" data-slide="1">
+      <div class="slide-bg" style="background-image: url('/media/hero-poster.webp')"></div>
+      <div class="slide-content">
+        <img src="/logo.png" alt="Amplify AI" class="logo" width="140" height="36" />
+        <span class="eyebrow eyebrow-dark">50 Seats Only</span>
+        <h1>Three days.<br />One breakthrough.</h1>
+        <p class="lead">
+          A 3-day AI implementation retreat for business owners who are done researching and ready to solve.
+        </p>
+        <p class="lead" style="font-size: clamp(0.8rem, 1.5vw, 0.95rem); margin-top: -4px;">
+          July 29–31, 2026 · The Hive Event Center · Logan, Utah
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Implementation gap (market) -->
+    <section class="slide slide-filled" data-slide="2">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-gap.webp')"></div>
+      <div class="slide-content" style="max-width: 1000px;">
+        <span class="eyebrow">The Market</span>
+        <h2>Everyone's trying AI.<br />Almost nobody's running it.</h2>
+        <p class="lead">
+          Small businesses aren't behind on AI awareness—they're behind on <em>integration</em>.
+          That's the gap this retreat closes.
+        </p>
+        <div class="gap-hero">
+          <div class="glass gap-stat">
+            <div class="num">76%</div>
+            <div class="metric-label">of SMBs report using AI today</div>
+          </div>
+          <div class="gap-arrow" aria-hidden="true">→</div>
+          <div class="glass gap-stat">
+            <div class="num muted-num">14%</div>
+            <div class="metric-label">say AI is fully embedded in core operations</div>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top: 4px;">
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">73%</div>
+            <div class="metric-label">want more training &amp; implementation support</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">83%</div>
+            <div class="metric-label">of <em>growing</em> SMBs use AI vs 55% declining</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">93%</div>
+            <div class="metric-label">of AI users report positive business impact</div>
+          </div>
+        </div>
+        <p class="source-note">
+          Goldman Sachs 10,000 Small Businesses Voices, Mar 2026 (n≈1,256). U.S. Chamber of Commerce Empowering Small Business Report, 2025.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. Problem hook -->
+    <section class="slide slide-filled" data-slide="3">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-reality.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow">The Reality</span>
+        <h2>You already know AI matters.</h2>
+        <p class="lead">
+          You've watched the demos. Saved the threads. Maybe even paid for a tool or two. But your biggest bottleneck?
+          Still sitting there—costing you time, money, energy, and growth every single week.
+        </p>
+        <div class="grid-4" style="margin-top: 8px;">
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">Research</div>
+            <div class="metric-label">Endless tabs, no implementation</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">Hype</div>
+            <div class="metric-label">Keynotes that don't change your ops</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">Bottleneck</div>
+            <div class="metric-label">Same problem, louder tools</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">Alone</div>
+            <div class="metric-label">No one to build it with you</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Cost of inaction -->
+    <section class="slide slide-filled" data-slide="4">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-cost.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow">Cost of Waiting</span>
+        <h2>The gap is costing you every month.</h2>
+        <p class="lead">
+          While most owners experiment with ChatGPT, the ones pulling ahead are wiring AI into ops.
+          Every month without implementation is hours and revenue you don't get back.
+        </p>
+        <div class="grid-3">
+          <div class="glass card">
+            <div class="metric">10–25+</div>
+            <div class="metric-label">Hours per week Amplify clients recover after implementation</div>
+          </div>
+          <div class="glass card">
+            <div class="metric">83%</div>
+            <div class="metric-label">of growing SMBs use AI—vs 55% of declining businesses</div>
+          </div>
+          <div class="glass card">
+            <div class="metric">Monday</div>
+            <div class="metric-label">Same bottleneck if you leave with slides, not a plan</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. What Is / What Could Be -->
+    <section class="slide slide-filled" data-slide="5">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-shift.webp')"></div>
+      <div class="slide-content" style="max-width: 1040px;">
+        <span class="eyebrow">The Shift</span>
+        <h2 style="max-width: 100%;">Not another AI conference.</h2>
+        <div class="contrast">
+          <div class="glass card contrast-bad">
+            <h4>What is (today)</h4>
+            <ul>
+              <li>Sit in rows. Take notes. Go home inspired.</li>
+              <li>Vendor pitches disguised as education</li>
+              <li>Theory without your business context</li>
+              <li>No prototype, workflow, or plan in hand</li>
+              <li>You're still the bottleneck on Monday</li>
+            </ul>
+          </div>
+          <div class="glass card contrast-good">
+            <h4>What could be (3 days)</h4>
+            <ul>
+              <li>Working sessions on your actual problem</li>
+              <li>Build with AI in the room—not slides about it</li>
+              <li>Three guides: implementation, mindset, strategy</li>
+              <li>Leave with clarity, direction, and momentum</li>
+              <li>50 operators who become your network</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Solution -->
+    <section class="slide" data-slide="6">
+      <div class="slide-bg" style="background-image: url('/media/hls-start-poster.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow">The Solution</span>
+        <h2>Amplify AI Retreat</h2>
+        <p class="lead">
+          A 3-day immersive implementation retreat. Bring your biggest business bottleneck.
+          Leave with a real AI-powered path forward—not inspiration alone.
+        </p>
+        <div class="grid-3" style="margin-top: 4px;">
+          <div class="glass card" style="text-align:center;">
+            <h4>Practical AI</h4>
+            <p>Systems, workflows, and tools mapped to your problem</p>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <h4>Strategic Thinking</h4>
+            <p>Priorities and decisions that make implementation stick</p>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <h4>Human Connection</h4>
+            <p>High-value relationships with entrepreneurs who execute</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Who it's for -->
+    <section class="slide slide-filled" data-slide="7">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-operators.webp')"></div>
+      <div class="slide-content" style="max-width: 1080px;">
+        <span class="eyebrow">Who It's For</span>
+        <h2>Built for operators, not spectators.</h2>
+        <div class="grid-4">
+          <div class="glass card">
+            <h4>Business Owners</h4>
+            <p>You know AI matters but haven't implemented it well. Ready to stop researching and start solving.</p>
+          </div>
+          <div class="glass card">
+            <h4>Founders</h4>
+            <p>Bottlenecked and need clarity—not another keynote. You want a path forward you can run.</p>
+          </div>
+          <div class="glass card">
+            <h4>Operators & Leaders</h4>
+            <p>Admin overload and broken follow-up systems are costing you time, money, and growth.</p>
+          </div>
+          <div class="glass card">
+            <h4>High Performers</h4>
+            <p>You value implementation and real connection over vendor pitches and tool demos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Day experience -->
+    <section class="slide" data-slide="8">
+      <div class="slide-content align-left" style="max-width: 1000px;">
+        <div class="split">
+          <div>
+            <span class="eyebrow">The Experience · Day</span>
+            <h2 style="max-width: 14ch;">Build with AI during the day.</h2>
+            <p class="lead" style="text-align: left;">
+              Working sessions, masterminds, and real-time problem solving. Workshop solutions in the room
+              and leave with a prototype, workflow, or implementation direction—not theory.
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top: 12px;">
+              <span class="eyebrow" style="font-size:9px;">Working Sessions</span>
+              <span class="eyebrow" style="font-size:9px;">Masterminds</span>
+              <span class="eyebrow" style="font-size:9px;">AI Systems</span>
+              <span class="eyebrow" style="font-size:9px;">Workflow Design</span>
+            </div>
+          </div>
+          <div class="img-frame glass">
+            <img src="/media/feature-day-poster.webp" alt="Day sessions at the retreat" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Evening experience -->
+    <section class="slide" data-slide="9">
+      <div class="slide-content align-left" style="max-width: 1000px;">
+        <div class="split">
+          <div class="img-frame glass">
+            <img src="/media/feature-evening-poster.webp" alt="Evening connection at the retreat" />
+          </div>
+          <div>
+            <span class="eyebrow">The Experience · Evening</span>
+            <h2 style="max-width: 14ch;">Connect as humans after dark.</h2>
+            <p class="lead" style="text-align: left;">
+              When the sun goes down, we shift from building to connecting. Evenings are for shared experiences,
+              real conversation, and relationship-building—energizing and human, not more time in chairs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. 3-day arc -->
+    <section class="slide slide-filled" data-slide="10">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-logan.webp')"></div>
+      <div class="slide-content" style="max-width: 1000px;">
+        <span class="eyebrow">Your 3 Days</span>
+        <h2>July 29–31, 2026</h2>
+        <p class="lead">The Hive Event Center · Downtown Logan, Utah</p>
+        <div class="timeline">
+          <div class="glass card">
+            <div class="day-label">Day 1</div>
+            <h4>Diagnose &amp; Design</h4>
+            <p>Clarify your bottleneck. Map the AI opportunity. Align mindset and strategy with your guides.</p>
+          </div>
+          <div class="glass card">
+            <div class="day-label">Day 2</div>
+            <h4>Build &amp; Breakthrough</h4>
+            <p>Working sessions and masterminds. Prototype, workflow, or system direction—built in the room.</p>
+          </div>
+          <div class="glass card">
+            <div class="day-label">Day 3</div>
+            <h4>Deploy &amp; Connect</h4>
+            <p>Lock your implementation plan. Relationships that extend well beyond the weekend.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Guides -->
+    <section class="slide" data-slide="11">
+      <div class="slide-content" style="max-width: 1000px;">
+        <span class="eyebrow">Meet Your Guides</span>
+        <h2>Implementation. Mindset. Strategy.</h2>
+        <div class="grid-3">
+          <div class="glass guide-card">
+            <img src="/media/guide-braydon-carter.webp" alt="Braydon Carter" />
+            <div class="guide-role">AI Strategist &amp; Builder</div>
+            <h4>Braydon Carter</h4>
+            <p>Simplifies complex AI into clear business solutions. You leave with the right tool, system, or workflow—and real next steps.</p>
+          </div>
+          <div class="glass guide-card">
+            <img src="/media/guide-tony-child.webp" alt="Tony Child" />
+            <div class="guide-role">Mindset &amp; Transformation</div>
+            <h4>Tony Child</h4>
+            <p>Moves you from fear and uncertainty to possibility and action—connecting purpose and identity to implementation.</p>
+          </div>
+          <div class="glass guide-card">
+            <img src="/media/guide-bill-banta.webp" alt="Bill Banta" />
+            <div class="guide-role">Coaching &amp; Strategy</div>
+            <h4>Bill Banta</h4>
+            <p>Aligns priorities and positioning so your AI breakthrough becomes a plan you actually run—not just a retreat high.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. Proof -->
+    <section class="slide slide-filled slide-proof" data-slide="12">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-proof.webp')"></div>
+      <div class="slide-content" style="max-width: 1080px;">
+        <span class="eyebrow">Proof It Works</span>
+        <h2>Implementation—not theory—is what we do.</h2>
+        <div class="grid-4">
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">30+</div>
+            <div class="metric-label">Businesses implemented</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">40%</div>
+            <div class="metric-label">Dead contacts recovered (VC)</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">25+</div>
+            <div class="metric-label">Hours saved per week (peak)</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="metric">8</div>
+            <div class="metric-label">Industry categories</div>
+          </div>
+        </div>
+        <div class="grid-3 case-study-grid">
+          <div class="glass card case-study-card">
+            <div class="cs-top">
+              <span class="cs-cat">Finance &amp; Law</span>
+              <div class="cs-metric">40%<span>contacts recovered</span></div>
+            </div>
+            <h4>Venture Capital Firm</h4>
+            <p>Lead enrichment platform with multi-step verification. Recovered 40% of dead contacts—enabling high-value acquisition.</p>
+          </div>
+          <div class="glass card case-study-card">
+            <div class="cs-top">
+              <span class="cs-cat">HR &amp; Admin</span>
+              <div class="cs-metric">25+<span>hrs/week saved</span></div>
+            </div>
+            <h4>Automotive Repair Shop</h4>
+            <p>Custom SMS AI agent mirroring the owner's voice for FAQs and records—cut admin burden by 25+ hours per week.</p>
+          </div>
+          <div class="glass card case-study-card">
+            <div class="cs-top">
+              <span class="cs-cat">E-commerce &amp; Ops</span>
+              <div class="cs-metric">10+<span>hrs/week saved</span></div>
+            </div>
+            <h4>E-commerce Operations</h4>
+            <p>Inventory automation across spreadsheets and Shopify—saved ops teams 10+ hours weekly on reconciliation.</p>
+          </div>
+        </div>
+        <p class="stack-note" style="text-align:center;margin-top:6px;">
+          More wins at amplifyai.dev — construction, healthcare, recruiting, agencies
+        </p>
+      </div>
+    </section>
+
+    <!-- 13. Outcomes -->
+    <section class="slide" data-slide="13">
+      <div class="slide-bg" style="background-image: url('/media/hls-stats-poster.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow">What You Leave With</span>
+        <h2>Not slides. A path forward.</h2>
+        <div class="grid-4">
+          <div class="glass card" style="text-align:center;">
+            <div class="highlight-stat">Clarity</div>
+            <div class="metric-label">On your biggest bottleneck</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="highlight-stat">Direction</div>
+            <div class="metric-label">AI solution path for your business</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="highlight-stat">Momentum</div>
+            <div class="metric-label">Implementation plan you can act on</div>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <div class="highlight-stat">Connection</div>
+            <div class="metric-label">Relationships with operators in the room</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. VALUE STACK -->
+    <section class="slide slide-filled" data-slide="14">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-stack.webp')"></div>
+      <div class="slide-content align-left" style="max-width: 820px;">
+        <span class="eyebrow">Everything Included</span>
+        <h2 style="max-width: 100%;">The full stack—if you bought it separately.</h2>
+        <table class="stack-table glass" style="padding: 0; overflow: hidden; display: block;">
+          <thead>
+            <tr>
+              <th style="padding-left:16px;">What's included</th>
+              <th style="padding-right:16px;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding-left:16px;">3-Day Implementation Intensive (working sessions + masterminds)</td><td style="padding-right:16px;">$4,500</td></tr>
+            <tr><td style="padding-left:16px;">AI Strategist &amp; Builder — Braydon Carter (in-room, all 3 days)</td><td>$2,500</td></tr>
+            <tr><td style="padding-left:16px;">Mindset &amp; Transformation Coach — Tony Child</td><td>$1,500</td></tr>
+            <tr><td style="padding-left:16px;">Business Strategy Coach — Bill Banta</td><td>$1,500</td></tr>
+            <tr><td style="padding-left:16px;">Hands-on AI build support (prototype, workflow, or system direction)</td><td>$2,500</td></tr>
+            <tr><td style="padding-left:16px;">Evening connection experiences &amp; curated networking</td><td>$750</td></tr>
+            <tr><td style="padding-left:16px;">Meals &amp; activities (as outlined for attendees)</td><td>$500</td></tr>
+            <tr><td style="padding-left:16px;">Curated room of 50 entrepreneurs (application-only)</td><td>$1,500</td></tr>
+            <tr class="total"><td style="padding-left:16px;">Total value</td><td style="padding-right:16px;">$15,250+</td></tr>
+            <tr class="investment"><td style="padding-left:16px;">Retreat investment</td><td style="padding-right:16px;">$3,000</td></tr>
+          </tbody>
+        </table>
+        <p class="stack-note">
+          Comparable to three days of private consulting, mastermind access, and implementation support—without the six-figure invoice.
+        </p>
+      </div>
+    </section>
+
+    <!-- 15. Objections -->
+    <section class="slide slide-filled" data-slide="15">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-objections.webp')"></div>
+      <div class="slide-content" style="max-width: 1040px;">
+        <span class="eyebrow">Common Questions</span>
+        <h2>What owners ask before they apply.</h2>
+        <div class="objection-grid">
+          <div class="glass card objection-card">
+            <div class="q">"I'm not technical enough."</div>
+            <div class="a">You don't need to be. Bring a real business problem—we translate AI into practical steps. No engineering background required.</div>
+          </div>
+          <div class="glass card objection-card">
+            <div class="q">"I don't have time for 3 days."</div>
+            <div class="a">You don't have time <em>not</em> to. Three focused days beats 12 months of tabs, tools, and false starts. You leave with a plan for Monday.</div>
+          </div>
+          <div class="glass card objection-card">
+            <div class="q">"Will I actually leave with something?"</div>
+            <div class="a">Yes—clarity on your bottleneck, an AI solution path, and likely a prototype, workflow, or implementation plan. Not inspiration alone.</div>
+          </div>
+          <div class="glass card objection-card">
+            <div class="q">"How is this different from a conference?"</div>
+            <div class="a">Working sessions on <em>your</em> problem, three guides in the room, 50 seats max. We build—not lecture.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16. Scarcity -->
+    <section class="slide slide-filled" data-slide="16">
+      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-intimacy.webp')"></div>
+      <div class="slide-content" style="max-width: 1000px;">
+        <span class="eyebrow eyebrow-dark">50 Seats Only</span>
+        <h2>Intimacy is the product.</h2>
+        <p class="lead">
+          We cap attendance so you get real support—not a conference hall. Every application is reviewed personally.
+          The room is curated for the right entrepreneurs and the right problems.
+        </p>
+        <div class="grid-3">
+          <div class="glass card" style="text-align:center;">
+            <h4>Not everyone gets in</h4>
+            <p>Application required. We optimize for fit and implementation readiness.</p>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <h4>Your problem, not ours</h4>
+            <p>Sessions adapt to what's broken in your business—not a generic curriculum.</p>
+          </div>
+          <div class="glass card" style="text-align:center;">
+            <h4>July 29–31, 2026</h4>
+            <p>One weekend. One breakthrough. Logan, Utah.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17. CTA -->
+    <section class="slide" data-slide="17">
+      <div class="slide-bg" style="background-image: url('/media/hls-cta-poster.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow">Next Step</span>
+        <h2>You belong in this room.</h2>
+        <p class="lead">
+          Tell us about your business and the bottleneck costing you the most.
+          We'll review your application personally.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px;">
+          <a class="cta-btn" href="https://retreat.amplifyai.dev/apply" target="_blank" rel="noopener">
+            Start Application →
+          </a>
+          <a class="cta-btn cta-secondary" href="https://retreat.amplifyai.dev" target="_blank" rel="noopener">
+            View the Experience
+          </a>
+        </div>
+        <p class="stack-note" style="text-align:center;margin-top:16px;">
+          retreat.amplifyai.dev · The Hive Event Center · 255 S Main St, Logan UT
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="brand-footer">Amplify AI Retreat</div>
+
+  <div class="export-bar" id="exportBar">
+    <a class="export-btn" id="downloadPdfLink" href="/downloads/Amplify-AI-Retreat-Sales-Deck.pdf" download="Amplify-AI-Retreat-Sales-Deck.pdf">
+      Download PDF
+    </a>
+    <button type="button" class="export-btn export-btn-secondary" onclick="window.print()">
+      Print / Save as PDF
+    </button>
+  </div>
+
+  <div class="nav-controls">
+    <button class="nav-btn" type="button" onclick="prevSlide()" aria-label="Previous slide">←</button>
+    <span class="slide-counter"><span id="current">1</span> / <span id="total">15</span></span>
+    <button class="nav-btn" type="button" onclick="nextSlide()" aria-label="Next slide">→</button>
+  </div>
+
+  <script>
+    const SPEAKER_NOTES = [
+      '<strong>Goal:</strong> Set the tone. This is implementation, not hype.<br><strong>Say:</strong> "Three days in Logan — you bring your biggest bottleneck, you leave with a real path forward. Only 50 seats."<br><strong>Ask:</strong> "What made you curious enough to look at this?"',
+      '<strong>Goal:</strong> Third-party credibility — this isn\'t our opinion, it\'s the market.<br><strong>Say:</strong> "76% of small businesses are using AI. Only 14% have it wired into core operations. That gap is exactly why we built this."<br><strong>Ask:</strong> "Where would you put yourself — experimenting, or actually running something in the business?"<br><strong>If they push back on numbers:</strong> Surveys measure differently, but every source shows the same pattern: lots of use, very little integration.',
+      '<strong>Goal:</strong> Make it personal.<br><strong>Say:</strong> "This probably sounds familiar — demos, saved threads, maybe a tool or two. But the thing costing you the most? Still there."<br><strong>Ask:</strong> "What\'s the one bottleneck you\'d fix if you had 72 hours and the right people in the room?"',
+      '<strong>Goal:</strong> Urgency without fear-mongering.<br><strong>Say:</strong> "Growing businesses are using AI at 83% vs 55% for declining ones. This isn\'t about FOMO on tools — it\'s about compounding advantage."<br><strong>Bridge:</strong> "Our clients recover 10–25 hours a week once they implement. That\'s what three focused days can unlock."',
+      '<strong>Goal:</strong> Contrast — kill the conference comparison early.<br><strong>Say:</strong> "Left column is every AI event you\'ve been to. Right column is what we actually do."<br><strong>Ask:</strong> "Which side sounds more like what you need right now?"',
+      '<strong>Goal:</strong> Name the offer clearly.<br><strong>Say:</strong> "Amplify AI Retreat — practical AI, strategic thinking, and real connection. You\'re not paying to learn AI exists. You\'re paying to solve your problem with it."',
+      '<strong>Goal:</strong> Qualify the prospect.<br><strong>Say:</strong> "This is for operators who are ready to act — not spectators."<br><strong>Ask:</strong> "Which of these four sounds most like you?" (Listen for fit.)',
+      '<strong>Goal:</strong> Show the day experience.<br><strong>Say:</strong> "Days are working sessions — masterminds, problem solving, building in the room. You leave with a prototype or workflow direction, not a notebook full of quotes."',
+      '<strong>Goal:</strong> Human element differentiator.<br><strong>Say:</strong> "Evenings aren\'t more content. They\'re connection — the relationships in this room are part of the value."',
+      '<strong>Goal:</strong> Walk the arc — Logan sets the scene.<br><strong>Say:</strong> "July 29–31 at The Hive in downtown Logan. Day 1 diagnose, Day 2 build, Day 3 deploy. You walk out with a plan for Monday."',
+      '<strong>Goal:</strong> Trust the guides.<br><strong>Say:</strong> "Three guides — Braydon on AI build, Tony on mindset, Bill on strategy. You\'re not figuring this out alone."<br><strong>Tip:</strong> If they know Braydon/Amplify, lean into case study credibility here.',
+      '<strong>Goal:</strong> Prove implementation works — point to the case study closest to them.<br><strong>Say:</strong> "30+ businesses across 8 industries. VC firm: 40% of dead contacts recovered. Repair shop: 25+ hours back per week. E-commerce: 10+ hours on inventory."<br><strong>Extra wins (if asked):</strong> HR screening, contractors quoting, recruiting BD — amplifyai.dev.',
+      '<strong>Goal:</strong> Outcomes over features.<br><strong>Say:</strong> "You leave with clarity, direction, momentum, and connection. Not slides."<br><strong>Ask:</strong> "Which of these four would change your business most if you had it by August?"',
+      '<strong>Goal:</strong> Value stack — go line by line if they\'re price-sensitive.<br><strong>Say:</strong> "If you bought these separately — three days of consulting, three guides, build support — you\'re looking at $15K+. The retreat investment is $3,000."<br><strong>Bridge:</strong> "That\'s less than a week of a single consultant—and you get three guides plus the room."',
+      '<strong>Goal:</strong> Pre-handle objections before they stall.<br><strong>Say:</strong> "These are the four we hear most. Which one is top of mind for you?"<br><strong>Listen</strong> — don\'t rush to the next slide until they nod.',
+      '<strong>Goal:</strong> Scarcity + curation.<br><strong>Say:</strong> "50 seats, application-only. We review every one personally. This isn\'t a conference hall — it\'s a room of the right people with the right problems."',
+      '<strong>Goal:</strong> Close to application.<br><strong>Say:</strong> "Next step is the application — tell us your business, your bottleneck, and what success looks like. Takes a few minutes. Want me to send the link or walk through it now?"',
+    ];
+
+    let current = 1;
+    let notesVisible = false;
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    const notesPanel = document.getElementById('notesPanel');
+    const notesBody = document.getElementById('notesBody');
+    const notesSlideNum = document.getElementById('notesSlideNum');
+    const notesHint = document.getElementById('notesHint');
+
+    document.getElementById('total').textContent = total;
+
+    function updateNotes() {
+      notesSlideNum.textContent = current;
+      notesBody.innerHTML = SPEAKER_NOTES[current - 1] || '';
+    }
+
+    function toggleNotes() {
+      notesVisible = !notesVisible;
+      notesPanel.classList.toggle('visible', notesVisible);
+      notesHint.style.opacity = notesVisible ? '0.7' : '0.35';
+      if (notesVisible) updateNotes();
+    }
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > total) n = total;
+      current = n;
+      slides.forEach((s, i) => s.classList.toggle('active', i === n - 1));
+      document.getElementById('current').textContent = n;
+      document.getElementById('progressBar').style.width = (n / total * 100) + '%';
+      if (notesVisible) updateNotes();
+    }
+
+    function nextSlide() { showSlide(current + 1); }
+    function prevSlide() { showSlide(current - 1); }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        toggleNotes();
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      }
+      if (e.key === 'Home') { e.preventDefault(); showSlide(1); }
+      if (e.key === 'End') { e.preventDefault(); showSlide(total); }
+    });
+
+    document.getElementById('deck').addEventListener('click', (e) => {
+      if (e.target.closest('.nav-controls, a, button, .notes-panel')) return;
+      const x = e.clientX / window.innerWidth;
+      if (x < 0.25) prevSlide();
+      else nextSlide();
+    });
+
+    showSlide(1);
+  </script>
+</body>
+</html>

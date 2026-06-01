@@ -23,9 +23,9 @@ const guides: { Icon: LucideIcon; photo?: string; role: string; name: string; bo
   {
     Icon: BarChart2,
     photo: '/media/guide-bill-banta.webp',
-    role: 'Sales & Event Strategy',
+    role: 'Coaching & Strategy',
     name: 'Bill Banta',
-    body: 'Frames the commercial opportunity, positions solutions clearly, and connects the retreat experience to long-term business value.',
+    body: 'Coaches you on priorities, positioning, and the decisions that turn an AI breakthrough into a plan you can actually run. Helps align mindset and strategy so implementation sticks in your business—not just at the retreat.',
   },
 ];
 
@@ -37,9 +37,9 @@ export default function Testimonials() {
       <div className="flex flex-col items-center text-center mb-16">
         <motion.div
           {...inView(hydrated, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1 })}
-          className="liquid-glass rounded-full px-4 py-1.5 mb-6"
+          className="liquid-glass rounded-full px-5 py-2 mb-6"
         >
-          <span className="text-white text-xs font-medium font-body uppercase tracking-wider">
+          <span className="text-white text-sm font-medium font-body uppercase tracking-wider">
             Meet Your Guides
           </span>
         </motion.div>

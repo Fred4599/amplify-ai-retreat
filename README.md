@@ -71,5 +71,36 @@ src/
   components/         # React islands + Astro components
 public/
   logo.png            # Favicon & header logo
+  pitch-deck/         # Sales deck (HTML, keyboard-nav)
   robots.txt
 ```
+
+## Sales pitch deck
+
+Interactive HTML deck for live sales conversations (**17 slides**, value-stack narrative + market data):
+
+- **Local:** `http://localhost:4321/pitch-deck/` after `npm run dev` (served via `src/pages/pitch-deck/`)
+- **Production:** `https://retreat.amplifyai.dev/pitch-deck/`
+- **Source:** `src/deck/sales-deck.html`
+
+**Controls:** Arrow keys, Space, or click (left 25% = back). **Press N** to toggle speaker notes for reps.
+
+**Slide flow:** Title → Market gap (SMB stats) → Problem → Cost of waiting → Conference contrast → Solution → Who it's for → Experience → Guides → Proof → Outcomes → Value stack → Objections → Scarcity → CTA.
+
+**Deck backgrounds** (AI-generated, on-brand): `public/media/deck/` — market, shift, operators, Logan scenic, proof, value stack, objections, intimacy, and more.
+
+**Pricing on deck:** Retreat investment **$3,000** (value stack slide).
+
+### Download PDF (shareable deck)
+
+```bash
+npm install          # first time
+npx playwright install chromium   # first time only
+npm run export:deck
+```
+
+Creates **`public/downloads/Amplify-AI-Retreat-Sales-Deck.pdf`** (17 slides, 16:9). After deploy, share:
+
+`https://retreat.amplifyai.dev/downloads/Amplify-AI-Retreat-Sales-Deck.pdf`
+
+From the live deck, use **Download PDF** (after export) or **Print / Save as PDF** (browser print → Save as PDF).
