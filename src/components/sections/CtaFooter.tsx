@@ -3,7 +3,8 @@ import ApplyTrigger from '../ApplyTrigger';
 import BlurText from '../BlurText';
 import { useHydrated } from '../useHydrated';
 import { inView } from '../motionPresets';
-import { VENUE, venueAddressLine } from '../../config/site';
+import { MapPin } from 'lucide-react';
+import { VENUE, eventDatesLine, venueAddressLine } from '../../config/site';
 
 const steps = [
   {
@@ -100,13 +101,20 @@ export default function CtaFooter() {
             <p className="text-white/40 text-xs font-body font-light leading-relaxed">
               © 2026 Amplify AI Retreat. Unlock human potential through AI.
             </p>
+            <p className="text-white/40 text-xs font-body font-light">
+              {eventDatesLine()}
+            </p>
             <a
-              href={VENUE.url}
+              href={VENUE.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/40 hover:text-white/70 text-xs font-body font-light transition-colors text-center md:text-left"
+              className="inline-flex items-start gap-2 text-white/40 hover:text-white/70 text-xs font-body font-light transition-colors text-center md:text-left mt-1"
             >
-              {venueAddressLine()}
+              <MapPin className="w-3.5 h-3.5 shrink-0 mt-[0.15em]" aria-hidden="true" />
+              <span className="leading-snug">
+                <span className="block">{VENUE.name}</span>
+                <span className="block">{venueAddressLine()}</span>
+              </span>
             </a>
           </div>
 

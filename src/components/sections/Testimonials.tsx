@@ -69,9 +69,9 @@ export default function Testimonials() {
                   src={photo}
                   alt={name}
                   loading="lazy"
-                  width={64}
-                  height={64}
-                  className="liquid-glass-strong rounded-full w-16 h-16 object-cover mb-6"
+                  width={128}
+                  height={128}
+                  className="liquid-glass-strong rounded-full w-28 h-28 sm:w-32 sm:h-32 object-cover mb-6"
                 />
               ) : (
                 <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">

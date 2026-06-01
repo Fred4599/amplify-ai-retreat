@@ -1,5 +1,5 @@
 ---
-import { SITE, VENUE, absoluteUrl } from '../config/site';
+import { EVENT, SITE, VENUE, absoluteUrl, eventDatesLine, venueAddressLine } from '../config/site';
 
 interface Props {
   type?: 'home' | 'apply';
@@ -33,6 +33,8 @@ const event = {
   url: SITE.url,
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   eventStatus: 'https://schema.org/EventScheduled',
+  startDate: EVENT.startDate,
+  endDate: EVENT.endDate,
   location: {
     '@type': 'Place',
     name: VENUE.name,
@@ -63,6 +65,14 @@ const faqPage = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'When is the retreat?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${eventDatesLine()} at ${VENUE.name} in ${venueAddressLine()}. Three full days of implementation-focused sessions.`,
+      },
+    },
     {
       '@type': 'Question',
       name: 'Do I need AI experience?',

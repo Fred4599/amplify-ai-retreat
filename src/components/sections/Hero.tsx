@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
-import { ArrowUpRight, BarChart2, Cpu, Heart, MapPin, Play } from 'lucide-react';
+import { ArrowUpRight, BarChart2, Cpu, Heart, Play } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { VENUE, venueAddressLine } from '../../config/site';
+import { eventDatesLine } from '../../config/site';
 import { MEDIA } from '../../config/media';
 import ApplyTrigger from '../ApplyTrigger';
 import BlurText from '../BlurText';
@@ -50,7 +50,7 @@ export default function Hero() {
             50 Seats Only
           </span>
           <span className="text-white/85 font-body text-sm font-medium text-center sm:text-left leading-snug max-w-[18rem] sm:max-w-none">
-            3-Day Implementation Retreat
+            {eventDatesLine()} · 3-Day Implementation Retreat
           </span>
         </motion.div>
 
@@ -70,21 +70,8 @@ export default function Hero() {
           Bring your biggest business bottleneck. Leave with a real AI-powered path forward.
         </motion.p>
 
-        <motion.a
-          {...fade(0.95, true)}
-          href={VENUE.mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 sm:mt-5 inline-flex items-start sm:items-center gap-2 text-xs sm:text-sm text-white/90 hover:text-white font-body font-light transition-colors text-center max-w-md px-2"
-        >
-          <MapPin className="w-4 h-4 shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" />
-          <span>
-            {VENUE.name} · {venueAddressLine()}
-          </span>
-        </motion.a>
-
         <motion.div
-          {...fade(1.1, true)}
+          {...fade(0.95, true)}
           className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-8 sm:mt-10 w-full sm:w-auto max-w-sm sm:max-w-none px-2 sm:px-0"
         >
           <ApplyTrigger className="liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]">

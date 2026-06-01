@@ -3,7 +3,7 @@ export const SITE = {
   name: 'Amplify AI Retreat',
   title: 'Amplify AI Retreat — Three Days, One AI Breakthrough',
   description:
-    'A 3-day immersive AI implementation retreat for business owners. Bring your biggest bottleneck. Leave with a real AI-powered path forward. Only 50 seats.',
+    'A 3-day immersive AI implementation retreat for business owners, July 29–31, 2026 in Logan, Utah. Bring your biggest bottleneck. Leave with a real AI-powered path forward. Only 50 seats.',
   /** Set PUBLIC_SITE_URL in Vercel (e.g. https://retreat.amplifyai.dev) */
   url: import.meta.env.PUBLIC_SITE_URL ?? 'https://retreat.amplifyai.dev',
   locale: 'en_US',
@@ -21,6 +21,16 @@ export const SITE = {
     'Amplify AI',
   ],
 } as const;
+
+/** Retreat dates — July 29–31, 2026 (Logan, UT). */
+export const EVENT = {
+  startDate: '2026-07-29',
+  endDate: '2026-07-31',
+} as const;
+
+export function eventDatesLine() {
+  return 'July 29–31, 2026';
+}
 
 /** In-person venue — [The Hive](https://thehivelogan.com/) Event Center, downtown Logan. */
 export const VENUE = {

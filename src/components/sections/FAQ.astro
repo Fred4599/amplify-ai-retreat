@@ -1,5 +1,11 @@
 ---
+import { VENUE, eventDatesLine, venueAddressLine } from '../../config/site';
+
 const faqs = [
+  {
+    question: 'When is the retreat?',
+    answer: `${eventDatesLine()} at ${VENUE.name} in ${venueAddressLine()}. Three full days of implementation-focused sessions.`,
+  },
   {
     question: 'Do I need AI experience?',
     answer:
