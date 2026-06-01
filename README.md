@@ -89,7 +89,7 @@ Interactive HTML deck for live sales conversations (**17 slides**, value-stack n
 
 **Deck backgrounds** (AI-generated, on-brand): `public/media/deck/` — market, shift, operators, Logan scenic, proof, value stack, objections, intimacy, and more.
 
-**Pricing on deck:** Retreat investment **$3,000** (value stack slide).
+**Pricing on deck:** Retreat investment **$4,000** (value stack slide).
 
 ### Download PDF (shareable deck)
 

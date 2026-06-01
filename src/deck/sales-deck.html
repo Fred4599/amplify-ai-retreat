@@ -687,7 +687,35 @@
       text-transform: uppercase;
     }
 
-    /* Print / PDF export — all slides visible, one per page */
+    /* Playwright PDF export — one slide per screenshot (see npm run export:deck) */
+    body.pdf-export .export-bar,
+    body.pdf-export .notes-hint,
+    body.pdf-export .notes-panel,
+    body.pdf-export .nav-controls,
+    body.pdf-export .progress-bar,
+    body.pdf-export .brand-footer {
+      display: none !important;
+    }
+
+    body.pdf-export .slide-deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      inset: auto;
+    }
+
+    body.pdf-export .slide {
+      padding: 28px 48px;
+    }
+
+    body.pdf-export .slide-content {
+      overflow: visible !important;
+    }
+
+    /* Browser Print / Save as PDF — all slides, one per page */
     @page {
       size: 13.333in 7.5in;
       margin: 0;
@@ -773,10 +801,10 @@
         break-after: page;
         width: 100% !important;
         min-height: 7.5in;
-        height: 7.5in !important;
-        max-height: 7.5in !important;
-        overflow: hidden !important;
-        padding: 0.45in 0.55in !important;
+        height: auto !important;
+        min-height: 7.5in !important;
+        overflow: visible !important;
+        padding: 0.4in 0.5in !important;
         box-sizing: border-box !important;
       }
 
@@ -792,8 +820,18 @@
       }
 
       .slide-content {
-        overflow: hidden !important;
-        max-height: 100% !important;
+        overflow: visible !important;
+        max-height: none !important;
+        transform: none !important;
+      }
+
+      .slide-filled .slide-content {
+        gap: 0.12in;
+      }
+
+      .slide-proof .grid-4,
+      .slide-proof .case-study-grid {
+        margin-bottom: 0.08in !important;
       }
     }
 
@@ -1342,7 +1380,7 @@
             <tr><td style="padding-left:16px;">Meals &amp; activities (as outlined for attendees)</td><td>$500</td></tr>
             <tr><td style="padding-left:16px;">Curated room of 50 entrepreneurs (application-only)</td><td>$1,500</td></tr>
             <tr class="total"><td style="padding-left:16px;">Total value</td><td style="padding-right:16px;">$15,250+</td></tr>
-            <tr class="investment"><td style="padding-left:16px;">Retreat investment</td><td style="padding-right:16px;">$3,000</td></tr>
+            <tr class="investment"><td style="padding-left:16px;">Retreat investment</td><td style="padding-right:16px;">$4,000</td></tr>
           </tbody>
         </table>
         <p class="stack-note">
@@ -1463,7 +1501,7 @@
       '<strong>Goal:</strong> Trust the guides.<br><strong>Say:</strong> "Three guides — Braydon on AI build, Tony on mindset, Bill on strategy. You\'re not figuring this out alone."<br><strong>Tip:</strong> If they know Braydon/Amplify, lean into case study credibility here.',
       '<strong>Goal:</strong> Prove implementation works — point to the case study closest to them.<br><strong>Say:</strong> "30+ businesses across 8 industries. VC firm: 40% of dead contacts recovered. Repair shop: 25+ hours back per week. E-commerce: 10+ hours on inventory."<br><strong>Extra wins (if asked):</strong> HR screening, contractors quoting, recruiting BD — amplifyai.dev.',
       '<strong>Goal:</strong> Outcomes over features.<br><strong>Say:</strong> "You leave with clarity, direction, momentum, and connection. Not slides."<br><strong>Ask:</strong> "Which of these four would change your business most if you had it by August?"',
-      '<strong>Goal:</strong> Value stack — go line by line if they\'re price-sensitive.<br><strong>Say:</strong> "If you bought these separately — three days of consulting, three guides, build support — you\'re looking at $15K+. The retreat investment is $3,000."<br><strong>Bridge:</strong> "That\'s less than a week of a single consultant—and you get three guides plus the room."',
+      '<strong>Goal:</strong> Value stack — go line by line if they\'re price-sensitive.<br><strong>Say:</strong> "If you bought these separately — three days of consulting, three guides, build support — you\'re looking at $15K+. The retreat investment is $4,000."<br><strong>Bridge:</strong> "That\'s less than a week of a single consultant—and you get three guides plus the room."',
       '<strong>Goal:</strong> Pre-handle objections before they stall.<br><strong>Say:</strong> "These are the four we hear most. Which one is top of mind for you?"<br><strong>Listen</strong> — don\'t rush to the next slide until they nod.',
       '<strong>Goal:</strong> Scarcity + curation.<br><strong>Say:</strong> "50 seats, application-only. We review every one personally. This isn\'t a conference hall — it\'s a room of the right people with the right problems."',
       '<strong>Goal:</strong> Close to application.<br><strong>Say:</strong> "Next step is the application — tell us your business, your bottleneck, and what success looks like. Takes a few minutes. Want me to send the link or walk through it now?"',
