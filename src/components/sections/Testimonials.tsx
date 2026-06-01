@@ -5,21 +5,24 @@ import BlurText from '../BlurText';
 import { useHydrated } from '../useHydrated';
 import { inView } from '../motionPresets';
 
-const guides: { Icon: LucideIcon; role: string; name: string; body: string }[] = [
+const guides: { Icon: LucideIcon; photo?: string; role: string; name: string; body: string }[] = [
   {
     Icon: Cpu,
+    photo: '/media/guide-braydon-carter.webp',
     role: 'AI Strategist & Builder',
     name: 'Braydon Carter',
     body: 'Simplifies complex AI into clear business solutions. Helps you identify the right tool, system, or workflow for your specific problem—and leave with real next steps.',
   },
   {
     Icon: Heart,
+    photo: '/media/guide-tony-child.webp',
     role: 'Mindset & Transformation',
     name: 'Tony Child',
     body: 'Helps you understand resistance to change and connect purpose, vision, and identity to implementation. Moves you from fear and uncertainty to possibility and action.',
   },
   {
     Icon: BarChart2,
+    photo: '/media/guide-bill-banta.webp',
     role: 'Sales & Event Strategy',
     name: 'Bill Banta',
     body: 'Frames the commercial opportunity, positions solutions clearly, and connects the retreat experience to long-term business value.',
@@ -49,7 +52,7 @@ export default function Testimonials() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {guides.map(({ Icon, role, name, body }, idx) => (
+        {guides.map(({ Icon, photo, role, name, body }, idx) => (
           <motion.div
             key={name}
             {...inView(
@@ -61,9 +64,20 @@ export default function Testimonials() {
             className="liquid-glass rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full"
           >
             <div className="mb-8">
-              <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">
-                <Icon className="w-[22px] h-[22px] text-white/90" aria-hidden="true" />
-              </div>
+              {photo ? (
+                <img
+                  src={photo}
+                  alt={name}
+                  loading="lazy"
+                  width={64}
+                  height={64}
+                  className="liquid-glass-strong rounded-full w-16 h-16 object-cover mb-6"
+                />
+              ) : (
+                <div className="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center mb-6">
+                  <Icon className="w-[22px] h-[22px] text-white/90" aria-hidden="true" />
+                </div>
+              )}
               <div className="text-white/50 text-[10px] uppercase tracking-widest font-body mb-3">
                 {role}
               </div>
