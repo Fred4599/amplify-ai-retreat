@@ -8,6 +8,7 @@ import { inView } from '../motionPresets';
 const guides: { Icon: LucideIcon; photo?: string; role: string; name: string; body: string }[] = [
   {
     Icon: Cpu,
+    photo: '/media/guide-braydon-carter.webp',
     role: 'AI Strategist & Builder',
     name: 'Braydon Carter',
     body: 'Simplifies complex AI into clear business solutions. Helps you identify the right tool, system, or workflow for your specific problem—and leave with real next steps.',
