@@ -22,6 +22,12 @@ export const SITE = {
   ],
 } as const;
 
+/** Presenting partner — logo lives at `public/elevated-worldwide-logo.png`. */
+export const PRESENTER = {
+  name: 'Elevated Worldwide',
+  logoPath: '/elevated-worldwide-logo.png',
+} as const;
+
 /** Retreat dates — July 29–31, 2026 (Logan, UT). */
 export const EVENT = {
   startDate: '2026-07-29',

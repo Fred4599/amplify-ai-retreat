@@ -299,6 +299,45 @@
     }
 
     h1 { font-size: clamp(2.4rem, 7vw, 5.5rem); max-width: 14ch; }
+
+    h1.title-hero {
+      font-size: clamp(2.75rem, 8vw, 6.25rem);
+      max-width: none;
+      line-height: 1.02;
+      margin: 0;
+    }
+
+    h2.hero-tagline {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1.85rem, 4.8vw, 3.35rem);
+      color: rgba(255, 255, 255, 0.92);
+      margin: 0.65rem 0 0;
+      line-height: 1.15;
+      font-weight: 400;
+      max-width: none;
+    }
+
+    .presented-by {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem 0.55rem;
+      font-size: clamp(0.85rem, 1.6vw, 1rem);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.72);
+      margin: 0.35rem 0 0;
+    }
+
+    .presented-by-logo {
+      height: clamp(28px, 3.2vw, 38px);
+      width: clamp(28px, 3.2vw, 38px);
+      object-fit: contain;
+      flex-shrink: 0;
+      opacity: 0.95;
+    }
+
     h2 { font-size: clamp(1.85rem, 5vw, 3.75rem); max-width: 18ch; }
     h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
 
@@ -979,9 +1018,21 @@
     <section class="slide active" data-slide="1">
       <div class="slide-bg" style="background-image: url('/media/hero-poster.webp')"></div>
       <div class="slide-content">
-        <img src="/logo.png" alt="Amplify AI" class="logo" width="140" height="36" />
         <span class="eyebrow eyebrow-dark">50 Seats Only</span>
-        <h1>Three days.<br />One breakthrough.</h1>
+        <h1 class="title-hero">AI Amplify Retreat</h1>
+        <p class="presented-by">
+          <span>Presented by</span>
+          <img
+            src="/elevated-worldwide-logo.png"
+            alt=""
+            class="presented-by-logo"
+            width="38"
+            height="38"
+            decoding="async"
+          />
+          <span>Elevated Worldwide</span>
+        </p>
+        <h2 class="hero-tagline">Three Days,<br />One Breakthrough</h2>
         <p class="lead">
           A 3-day AI implementation retreat for business owners who are done researching and ready to solve.
         </p>

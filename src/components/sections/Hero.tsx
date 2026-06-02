@@ -1,9 +1,8 @@
 import { motion } from 'motion/react';
 import { ArrowUpRight, Play } from 'lucide-react';
-import { eventDatesLine } from '../../config/site';
+import { eventDatesLine, PRESENTER } from '../../config/site';
 import { MEDIA } from '../../config/media';
 import ApplyTrigger from '../ApplyTrigger';
-import BlurText from '../BlurText';
 import LazyVideo from '../LazyVideo';
 import { useHydrated } from '../useHydrated';
 import { onMount } from '../motionPresets';
@@ -47,18 +46,31 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <BlurText
-          as="h1"
-          text="Three days. One breakthrough."
-          className="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem] font-heading italic text-white max-w-4xl tracking-tight justify-center px-1"
-          delay={0.1}
-          stagger={0.12}
-          animateOnMount
-        />
+        <h1 className="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem] font-heading italic text-white max-w-5xl tracking-tight text-center px-1 leading-[1.05]">
+          AI Amplify Retreat
+        </h1>
+
+        <p className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-sm sm:text-base text-white/70 font-body font-medium tracking-wide">
+          <span>Presented by</span>
+          <img
+            src={PRESENTER.logoPath}
+            alt=""
+            width={40}
+            height={40}
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 object-contain opacity-95"
+            decoding="async"
+            aria-hidden
+          />
+          <span>{PRESENTER.name}</span>
+        </p>
+
+        <h2 className="mt-5 sm:mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.75rem] text-white/90 font-heading italic tracking-tight text-center max-w-4xl leading-[1.08]">
+          Three Days, One Breakthrough
+        </h2>
 
         <motion.p
           {...fade(0.8, true)}
-          className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-white/85 font-body font-light leading-relaxed max-w-2xl px-1"
+          className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-white/85 font-body font-light leading-relaxed max-w-2xl px-1 text-center"
         >
           Bring your biggest business bottleneck. Leave with a real AI-powered path forward.
         </motion.p>
