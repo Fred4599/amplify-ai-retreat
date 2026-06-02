@@ -68,6 +68,17 @@ video {
   padding-bottom: 0.08em;
 }
 
+/* Keep hero copy above video layers and readable on bright frames */
+.hero-copy {
+  isolation: isolate;
+}
+
+.hero-copy h1,
+.hero-copy h2,
+.hero-copy p {
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.55);
+}
+
 /* LIQUID GLASS UTILITIES */
 .liquid-glass {
   background: rgba(255, 255, 255, 0.01);
