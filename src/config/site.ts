@@ -8,6 +8,7 @@ export const SITE = {
   url: import.meta.env.PUBLIC_SITE_URL ?? 'https://retreat.amplifyai.dev',
   locale: 'en_US',
   twitterHandle: '@amplifyai',
+  /** Hero-style card for link previews — run `npm run generate:og` after hero copy changes. */
   ogImage: '/media/og-image.webp',
   logoPath: '/logo.png',
   keywords: [
