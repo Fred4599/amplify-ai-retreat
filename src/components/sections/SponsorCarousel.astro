@@ -3,6 +3,9 @@ import { SPONSORS } from '../../config/site';
 
 /** Repeat sponsors so each loop segment fills wide viewports. */
 const group = [...SPONSORS, ...SPONSORS, ...SPONSORS];
+
+const logoClass =
+  'sponsor-logo relative z-[1] h-11 sm:h-14 w-auto max-w-[10rem] sm:max-w-[12rem] object-contain object-center transition-all duration-300 group-hover:scale-105';
 ---
 
 <section
@@ -23,13 +26,12 @@ const group = [...SPONSORS, ...SPONSORS, ...SPONSORS];
         class="sponsor-card group"
         aria-label={`Visit ${sponsor.name}`}
       >
-        <span class="sponsor-glow" aria-hidden="true"></span>
         <img
           src={sponsor.logoPath}
           alt={sponsor.name}
           width="180"
           height="56"
-          class="relative z-[1] h-11 sm:h-14 w-auto max-w-[10rem] sm:max-w-[12rem] object-contain object-center transition-transform duration-300 group-hover:scale-105"
+          class={logoClass}
           loading="lazy"
           decoding="async"
         />
@@ -51,13 +53,12 @@ const group = [...SPONSORS, ...SPONSORS, ...SPONSORS];
             class="sponsor-card group"
             aria-label={`Visit ${sponsor.name}`}
           >
-            <span class="sponsor-glow" aria-hidden="true"></span>
             <img
               src={sponsor.logoPath}
               alt={sponsor.name}
               width="180"
               height="56"
-              class="relative z-[1] h-11 sm:h-14 w-auto max-w-[10rem] sm:max-w-[12rem] object-contain object-center transition-transform duration-300 group-hover:scale-105"
+              class={logoClass}
               loading="lazy"
               decoding="async"
             />
@@ -73,13 +74,12 @@ const group = [...SPONSORS, ...SPONSORS, ...SPONSORS];
             tabindex="-1"
             class="sponsor-card group"
           >
-            <span class="sponsor-glow" aria-hidden="true"></span>
             <img
               src={sponsor.logoPath}
               alt=""
               width="180"
               height="56"
-              class="relative z-[1] h-11 sm:h-14 w-auto max-w-[10rem] sm:max-w-[12rem] object-contain object-center"
+              class={logoClass}
               loading="lazy"
               decoding="async"
             />
@@ -92,47 +92,20 @@ const group = [...SPONSORS, ...SPONSORS, ...SPONSORS];
 
 <style>
   .sponsor-card {
-    position: relative;
     display: flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    padding: 1rem 1.35rem;
-    border-radius: 1rem;
-    transition: opacity 0.3s ease;
-    opacity: 0.92;
+    padding: 0.75rem 1.25rem;
   }
 
-  .sponsor-card:hover {
+  .sponsor-logo {
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+  }
+
+  .sponsor-card:hover .sponsor-logo {
     opacity: 1;
-  }
-
-  .sponsor-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      ellipse 85% 75% at 50% 50%,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.06) 42%,
-      transparent 72%
-    );
-    box-shadow:
-      0 0 28px rgba(255, 255, 255, 0.07),
-      0 0 56px rgba(255, 255, 255, 0.03);
-    transition: box-shadow 0.3s ease, background 0.3s ease;
-  }
-
-  .sponsor-card:hover .sponsor-glow {
-    background: radial-gradient(
-      ellipse 90% 80% at 50% 50%,
-      rgba(255, 255, 255, 0.22) 0%,
-      rgba(255, 255, 255, 0.08) 45%,
-      transparent 75%
-    );
-    box-shadow:
-      0 0 36px rgba(255, 255, 255, 0.1),
-      0 0 72px rgba(255, 255, 255, 0.05);
   }
 
   .sponsor-track {
