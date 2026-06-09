@@ -6,68 +6,66 @@ const track = [...SPONSORS, ...SPONSORS];
 
 <section
   id="partners"
-  class="w-full border-y border-white/10 py-10 sm:py-12"
+  class="sponsor-section relative w-full self-stretch bg-white py-12 sm:py-14"
   aria-label="Event partners"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <p class="text-center text-white/40 text-xs font-body uppercase tracking-[0.2em] mb-8">
-      Supported by
-    </p>
+  <p class="text-center text-neutral-500 text-xs font-body uppercase tracking-[0.2em] mb-8 px-4">
+    Supported by
+  </p>
 
-    <div class="sponsor-static hidden flex-wrap items-center justify-center gap-8 sm:gap-12">
-      {SPONSORS.map((sponsor) => (
+  <div class="sponsor-static hidden flex-wrap items-center justify-center gap-8 sm:gap-12 px-4">
+    {SPONSORS.map((sponsor) => (
+      <a
+        href={sponsor.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex shrink-0 items-center justify-center rounded-xl px-5 py-4 transition-opacity hover:opacity-100 opacity-90"
+        aria-label={`Visit ${sponsor.name}`}
+      >
+        <img
+          src={sponsor.logoPath}
+          alt={sponsor.name}
+          width="180"
+          height="56"
+          class="h-11 sm:h-14 w-auto max-w-[10rem] sm:max-w-[12rem] object-contain object-center transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    ))}
+  </div>
+
+  <div class="sponsor-marquee relative w-full overflow-hidden">
+    <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 sm:w-32 bg-gradient-to-r from-white to-transparent" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 sm:w-32 bg-gradient-to-l from-white to-transparent" aria-hidden="true"></div>
+
+    <div class="sponsor-track flex w-max items-center gap-14 sm:gap-20 px-8">
+      {track.map((sponsor) => (
         <a
           href={sponsor.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex shrink-0 items-center justify-center rounded-xl px-4 py-3 transition-opacity hover:opacity-100 opacity-80"
+          class="group flex shrink-0 items-center justify-center rounded-xl px-5 py-4 transition-opacity hover:opacity-100 opacity-90"
           aria-label={`Visit ${sponsor.name}`}
         >
           <img
             src={sponsor.logoPath}
             alt={sponsor.name}
-            width="160"
-            height="48"
-            class="h-10 sm:h-12 w-auto max-w-[9rem] sm:max-w-[11rem] object-contain object-center transition-transform duration-300 group-hover:scale-105"
+            width="180"
+            height="56"
+            class="h-11 sm:h-14 w-auto max-w-[10rem] sm:max-w-[12rem] object-contain object-center transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
             decoding="async"
           />
         </a>
       ))}
     </div>
-
-    <div class="sponsor-marquee relative overflow-hidden">
-      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 sm:w-24 bg-gradient-to-r from-black to-transparent" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 sm:w-24 bg-gradient-to-l from-black to-transparent" aria-hidden="true"></div>
-
-      <div class="sponsor-track flex w-max items-center gap-12 sm:gap-16">
-        {track.map((sponsor) => (
-          <a
-            href={sponsor.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group flex shrink-0 items-center justify-center rounded-xl px-4 py-3 transition-opacity hover:opacity-100 opacity-80"
-            aria-label={`Visit ${sponsor.name}`}
-          >
-            <img
-              src={sponsor.logoPath}
-              alt={sponsor.name}
-              width="160"
-              height="48"
-              class="h-10 sm:h-12 w-auto max-w-[9rem] sm:max-w-[11rem] object-contain object-center transition-transform duration-300 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        ))}
-      </div>
-    </div>
   </div>
 </section>
 
 <style>
   .sponsor-track {
-    animation: sponsor-marquee 32s linear infinite;
+    animation: sponsor-marquee 40s linear infinite;
   }
 
   .sponsor-marquee:hover .sponsor-track {

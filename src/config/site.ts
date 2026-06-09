@@ -61,6 +61,11 @@ export const VENUE = {
 /** Supporting sponsors — shown in the partner carousel. */
 export const SPONSORS: readonly Sponsor[] = [
   {
+    name: 'Elevated Worldwide',
+    logoPath: '/elevated-worldwide-logo.png',
+    url: 'https://keepelevated.com/',
+  },
+  {
     name: 'Crest Capital Partners',
     logoPath: '/crest-capital-logo.png',
     url: 'https://crestcapitalutah.com/',
