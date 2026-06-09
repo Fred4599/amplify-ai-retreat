@@ -8,7 +8,7 @@ export const SITE = {
   url: import.meta.env.PUBLIC_SITE_URL ?? 'https://retreat.amplifyai.dev',
   locale: 'en_US',
   twitterHandle: '@amplifyai',
-  /** Hero-style card for link previews — run `npm run generate:og` after hero copy changes. */
+  /** Hero screenshot for link previews — run `npm run generate:og` after hero changes. */
   ogImage: '/media/og-image.webp',
   logoPath: '/logo.png',
   keywords: [
@@ -23,11 +23,18 @@ export const SITE = {
   ],
 } as const;
 
-/** Presenting partner — logo lives at `public/elevated-worldwide-logo.png`. */
-export const PRESENTER = {
-  name: 'Elevated Worldwide',
-  logoPath: '/elevated-worldwide-logo.png',
-} as const;
+export type Sponsor = {
+  name: string;
+  logoPath: string;
+  url: string;
+};
+
+/** Main sponsor — featured in the hero as "Presented by". */
+export const PRESENTER: Sponsor = {
+  name: 'Taba Collective',
+  logoPath: '/taba-collective-logo.png',
+  url: 'https://www.tabacollective.com',
+};
 
 /** Retreat dates — July 29–31, 2026 (Logan, UT). */
 export const EVENT = {
@@ -50,6 +57,25 @@ export const VENUE = {
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=255+S+Main+Street+Suite+100+Logan+UT+84321',
 } as const;
+
+/** Supporting sponsors — shown in the partner carousel. */
+export const SPONSORS: readonly Sponsor[] = [
+  {
+    name: 'Crest Capital Partners',
+    logoPath: '/crest-capital-logo.png',
+    url: 'https://crestcapitalutah.com/',
+  },
+  {
+    name: 'Aylara Pelvic Health',
+    logoPath: '/aylara-logo.png',
+    url: 'https://aylarapelvichealth.com/',
+  },
+  {
+    name: 'The Hive Event Center',
+    logoPath: '/the-hive-logo.png',
+    url: VENUE.url,
+  },
+] as const;
 
 export function venueAddressLine() {
   return `${VENUE.streetAddress}, ${VENUE.addressLocality}, ${VENUE.addressRegion} ${VENUE.postalCode}`;

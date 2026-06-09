@@ -3,7 +3,7 @@ import { eventDatesLine, PRESENTER, SITE } from '../../config/site';
 import { MEDIA } from '../../config/media';
 ---
 
-<section class="relative w-full min-h-[100svh] overflow-x-hidden">
+<section id="hero" class="relative w-full min-h-[100svh] overflow-x-hidden">
   <div class="absolute inset-0 z-0" aria-hidden="true">
     <img
       src={MEDIA.posters.hero}
@@ -40,19 +40,25 @@ import { MEDIA } from '../../config/media';
       {SITE.name}
     </h1>
 
-    <p class="shrink-0 mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-sm sm:text-base text-white/70 font-body font-medium tracking-wide">
+    <a
+      href={PRESENTER.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="shrink-0 mt-4 sm:mt-5 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-sm sm:text-base text-white/70 hover:text-white font-body font-medium tracking-wide transition-colors group"
+      aria-label={`Presented by ${PRESENTER.name} — visit website`}
+    >
       <span>Presented by</span>
       <img
         src={PRESENTER.logoPath}
         alt=""
-        width="40"
+        width="120"
         height="40"
-        class="h-9 w-9 sm:h-10 sm:w-10 shrink-0 object-contain opacity-95"
+        class="h-8 sm:h-9 w-auto max-w-[7rem] sm:max-w-[8.5rem] shrink-0 object-contain opacity-95 transition-transform duration-300 group-hover:scale-105"
         decoding="async"
         aria-hidden="true"
       />
       <span>{PRESENTER.name}</span>
-    </p>
+    </a>
 
     <h2 class="shrink-0 mt-5 sm:mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.75rem] text-white/90 font-heading italic tracking-tight text-center max-w-4xl leading-[1.08]">
       Three Days, One Breakthrough
