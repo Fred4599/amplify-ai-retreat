@@ -11,7 +11,7 @@ interface Props {
   path?: string;
   noindex?: boolean;
   ogType?: 'website' | 'article';
-  structuredData?: 'home' | 'apply';
+  structuredData?: 'home' | 'apply' | 'workshop';
 }
 
 const {
@@ -72,7 +72,7 @@ const heroPoster = MEDIA.posters.hero;
     <link rel="preconnect" href="https://stream.mux.com" crossorigin />
     <link rel="dns-prefetch" href="https://d8j0ntlcm91z4.cloudfront.net" />
 
-    {structuredData === 'home' && (
+    {(structuredData === 'home' || structuredData === 'workshop') && (
       <link rel="preload" as="image" href={heroPoster} type="image/webp" fetchpriority="high" />
     )}
 

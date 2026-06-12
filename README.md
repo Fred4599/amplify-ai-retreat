@@ -26,6 +26,7 @@ Open [http://localhost:4321](http://localhost:4321).
 |----------|----------|-------------|
 | `PUBLIC_SITE_URL` | Production | Canonical domain (e.g. `https://retreat.amplifyai.dev`). Used for SEO, sitemap, and Open Graph. |
 | `PUBLIC_APPLICATION_WEBHOOK` | Production | n8n (or other) webhook URL for the `/apply` form. |
+| `PUBLIC_WEBINAR_WEBHOOK` | Production | n8n webhook URL for the `/workshop` webinar registration form. |
 
 Copy `.env.example` to `.env` for local development. **Do not commit `.env`.**
 
@@ -61,13 +62,48 @@ git push -u origin main
 
 `vercel.json` is included with the correct build settings. After connecting a custom domain, set `PUBLIC_SITE_URL` to match and update `public/robots.txt` sitemap URL if needed.
 
+## Application form → GoHighLevel
+
+The `/apply` form posts to n8n (`PUBLIC_APPLICATION_WEBHOOK`). The n8n workflow in `n8n/amplify-retreat-application.workflow.ts` then:
+
+1. Normalizes the submission
+2. **POSTs JSON to your GHL Inbound Webhook** (creates/updates the contact)
+3. Sends the team notification email
+4. Returns `{ success: true }` to the browser
+
+### GoHighLevel setup
+
+1. In GHL, create a workflow with trigger **Inbound Webhook** and copy the webhook URL.
+2. Send a test POST (or submit the live form once n8n is updated) and map incoming fields in **Create/Update Contact** — at minimum **email** and **phone**.
+3. Suggested field mapping from the n8n payload:
+
+| GHL field | Webhook key |
+|-----------|-------------|
+| First name | `firstName` |
+| Last name | `lastName` |
+| Email | `email` |
+| Phone | `phone` |
+| Source | `source` |
+| Notes (optional) | `applicationNotes` |
+
+Additional keys (`companyWebsite`, `businessDescription`, `bottleneck`, `aiUsage`, `successOutcome`, `submittedAt`) can map to custom fields if you create them in GHL.
+
+### n8n setup
+
+1. Deploy or update the workflow from `n8n/amplify-retreat-application.workflow.ts` in your n8n instance (path: `amplify-retreat-application`).
+2. In n8n **Settings → Variables** (or instance env), set:
+   - `GHL_INBOUND_WEBHOOK_URL` → your GHL inbound webhook URL
+3. Keep **Gmail** credentials on the email node and **activate** the workflow.
+
+If GHL is misconfigured, the form still succeeds for applicants; email notification continues because the GHL step uses `onError: continueRegularOutput`.
+
 ## Project layout
 
 ```
 src/
   config/site.ts      # SEO & site metadata
   layouts/            # HTML shell
-  pages/              # Routes (/, /apply)
+  pages/              # Routes (/, /apply, /workshop)
   components/         # React islands + Astro components
 public/
   logo.png            # Favicon & header logo

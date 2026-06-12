@@ -1,8 +1,9 @@
 ---
 import { EVENT, SITE, VENUE, absoluteUrl, eventDatesLine, venueAddressLine } from '../config/site';
+import { WORKSHOP } from '../config/workshop';
 
 interface Props {
-  type?: 'home' | 'apply';
+  type?: 'home' | 'apply' | 'workshop';
 }
 
 const { type = 'home' } = Astro.props;
@@ -108,10 +109,41 @@ const faqPage = {
   ],
 };
 
+const workshopEvent = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: `${WORKSHOP.title} — ${WORKSHOP.subtitle}`,
+  description: WORKSHOP.description,
+  url: absoluteUrl(WORKSHOP.path),
+  eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  startDate: WORKSHOP.startDateIso,
+  duration: `PT${WORKSHOP.durationMinutes}M`,
+  location: {
+    '@type': 'VirtualLocation',
+    url: absoluteUrl(WORKSHOP.path),
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+  },
+  offers: {
+    '@type': 'Offer',
+    url: absoluteUrl(WORKSHOP.path),
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    description: 'Free webinar registration.',
+  },
+};
+
 const graphs =
   type === 'home'
     ? [organization, website, event, faqPage]
-    : [organization, website];
+    : type === 'workshop'
+      ? [organization, website, workshopEvent]
+      : [organization, website];
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(graphs)} />

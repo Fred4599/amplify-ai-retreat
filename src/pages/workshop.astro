@@ -1,0 +1,274 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkshopNavbar from '../components/WorkshopNavbar.astro';
+import { PRESENTER } from '../config/site';
+import { WORKSHOP, WORKSHOP_THEMES } from '../config/workshop';
+import { MEDIA } from '../config/media';
+
+const webhook = import.meta.env.PUBLIC_WEBINAR_WEBHOOK ?? '';
+
+const inputClass =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30 transition-colors';
+
+const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
+
+const pageTitle = `${WORKSHOP.title} — Free Webinar | Amplify AI`;
+const pageDescription = WORKSHOP.description;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  path={WORKSHOP.path}
+  structuredData="workshop"
+>
+  <WorkshopNavbar />
+
+  <main id="main-content" class="bg-black relative w-full max-w-full overflow-x-hidden">
+    <!-- Hero -->
+    <section class="relative w-full min-h-[min(100svh,900px)] overflow-x-hidden">
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <img
+          src={MEDIA.posters.hero}
+          alt=""
+          class="absolute inset-0 h-full w-full object-cover pointer-events-none"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <video
+          class="absolute inset-0 h-full w-full object-cover pointer-events-none"
+          src={MEDIA.videos.hero}
+          poster={MEDIA.posters.hero}
+          muted
+          loop
+          playsinline
+          autoplay
+          preload="metadata"
+        ></video>
+        <div class="absolute inset-0 bg-black/50 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-full h-[200px] sm:h-[300px] bg-gradient-to-b from-transparent to-black pointer-events-none"></div>
+      </div>
+
+      <div class="hero-copy relative z-30 flex flex-col items-center text-center px-4 sm:px-6 w-full max-w-full min-h-[min(100svh,900px)] pt-24 sm:pt-28 md:pt-32 lg:pt-[150px] pb-16 sm:pb-20">
+        <a
+          href={PRESENTER.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="shrink-0 mb-5 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-sm sm:text-base text-white/75 hover:text-white font-body font-medium tracking-wide transition-colors group"
+          aria-label={`Presented by ${PRESENTER.name} — visit website`}
+        >
+          <span>Presented by</span>
+          <img
+            src={PRESENTER.logoPath}
+            alt=""
+            width="140"
+            height="48"
+            class="h-8 sm:h-10 w-auto max-w-[8rem] sm:max-w-[9.5rem] shrink-0 object-contain brightness-0 invert opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"
+            decoding="async"
+            aria-hidden="true"
+          />
+          <span>{PRESENTER.name}</span>
+        </a>
+
+        <div class="shrink-0 mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full">
+          <span class="bg-white text-black rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
+            {WORKSHOP.subtitle}
+          </span>
+          <span class="text-white/85 font-body text-sm font-medium text-center sm:text-left leading-snug max-w-[20rem] sm:max-w-none">
+            {WORKSHOP.dateLine} · {WORKSHOP.timeLine}
+          </span>
+        </div>
+
+        <h1 class="shrink-0 text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] font-heading italic text-white max-w-4xl tracking-tight text-center px-1 leading-[1.05]">
+          {WORKSHOP.title}
+        </h1>
+
+        <p class="shrink-0 mt-5 sm:mt-6 text-2xl sm:text-3xl md:text-4xl text-white/90 font-heading italic tracking-tight text-center max-w-3xl leading-[1.12]">
+          {WORKSHOP.tagline}
+        </p>
+
+        <p class="shrink-0 mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-white/80 font-body font-light leading-relaxed max-w-2xl px-1 text-center">
+          {WORKSHOP.description}
+        </p>
+
+        <a
+          href="#register"
+          class="shrink-0 mt-8 sm:mt-10 liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-8 py-3.5 flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]"
+        >
+          Reserve Your Spot
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Themes -->
+    <section class="relative z-10 bg-black w-full py-20 sm:py-28 px-4 sm:px-6">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-14 sm:mb-16">
+          <p class="liquid-glass inline-block rounded-full px-4 py-1.5 mb-6">
+            <span class="text-white text-xs font-medium font-body uppercase tracking-wider">
+              What We'll Cover
+            </span>
+          </p>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading italic text-white tracking-tight">
+            Three questions every owner should answer
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          {WORKSHOP_THEMES.map((theme, index) => (
+            <article class="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 sm:p-8 flex flex-col">
+              <span class="text-white/40 font-body text-xs uppercase tracking-widest mb-3">
+                {String(index + 1).padStart(2, '0')} · {theme.eyebrow}
+              </span>
+              <h3 class="text-xl sm:text-2xl font-heading italic text-white tracking-tight mb-4 leading-[1.15]">
+                {theme.title}
+              </h3>
+              <p class="text-white/60 font-body font-light text-sm sm:text-base leading-relaxed flex-1">
+                {theme.body}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Who it's for -->
+    <section class="relative z-10 bg-black w-full py-16 sm:py-20 px-4 sm:px-6 border-t border-white/5">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight mb-6">
+          Built for business owners, not engineers
+        </h2>
+        <p class="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed">
+          No jargon. No theory for theory's sake. This is a practical conversation for founders,
+          operators, and entrepreneurs who know AI matters — and want a clear-eyed view of where
+          they stand and what to do next. Whether you're just starting or already experimenting,
+          you'll leave with perspective you can act on immediately.
+        </p>
+      </div>
+    </section>
+
+    <!-- Registration -->
+    <section id="register" class="relative z-10 bg-black w-full py-20 sm:py-28 px-4 sm:px-6">
+      <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] via-transparent to-transparent pointer-events-none"></div>
+
+      <div class="relative max-w-xl mx-auto w-full">
+        <div id="webinar-form-panel" class="rounded-3xl overflow-hidden w-full border border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl">
+          <div class="px-6 pt-8 pb-4 border-b border-white/10">
+            <p class="text-white/50 text-xs font-body uppercase tracking-widest mb-1">
+              {WORKSHOP.subtitle}
+            </p>
+            <h2 class="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
+              Register for the webinar
+            </h2>
+            <p class="text-white/80 font-body text-sm mt-2">
+              {WORKSHOP.dateLine} · {WORKSHOP.timeLine}
+            </p>
+            <p class="text-white/60 font-body font-light text-sm md:text-base mt-3 max-w-lg">
+              Free to attend. We'll send you the join link before we go live.
+            </p>
+          </div>
+
+          <div class="px-6 py-6">
+            <div id="webinar-success" class="hidden py-12 text-center">
+              <p class="text-2xl font-heading italic text-white mb-3">You're registered</p>
+              <p class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
+                Thanks for signing up. Watch your inbox for the webinar link and a reminder before
+                we go live on {WORKSHOP.dateLine}.
+              </p>
+              <a
+                href="/"
+                class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
+              >
+                Learn about the retreat
+              </a>
+            </div>
+
+            <form id="webinar-form" class="flex flex-col gap-5">
+              <div>
+                <label for="fullName" class={labelClass}>Full Name</label>
+                <input id="fullName" name="fullName" type="text" required autocomplete="name" class={inputClass} />
+              </div>
+
+              <div>
+                <label for="email" class={labelClass}>Email Address</label>
+                <input id="email" name="email" type="email" required autocomplete="email" class={inputClass} />
+              </div>
+
+              <div>
+                <label for="phone" class={labelClass}>Phone Number</label>
+                <input id="phone" name="phone" type="tel" required autocomplete="tel" class={inputClass} />
+              </div>
+
+              <div>
+                <label for="company" class={labelClass}>Company <span class="text-white/40 font-normal">(optional)</span></label>
+                <input id="company" name="company" type="text" autocomplete="organization" class={inputClass} />
+              </div>
+
+              <p id="webinar-error" class="hidden text-red-400/90 text-sm font-body" role="alert"></p>
+
+              <button
+                type="submit"
+                id="webinar-submit"
+                class="bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full px-8 py-3.5 font-medium text-sm w-full sm:w-auto sm:self-center"
+              >
+                Register Free
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <p class="text-center text-white/40 font-body text-xs mt-8 max-w-md mx-auto leading-relaxed">
+          Interested in going deeper? The Amplify AI Retreat is a 3-day hands-on implementation
+          experience — <a href="/" class="text-white/60 hover:text-white underline underline-offset-2 transition-colors">learn more</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script define:vars={{ webhook }}>
+    const form = document.getElementById('webinar-form');
+    const success = document.getElementById('webinar-success');
+    const errorEl = document.getElementById('webinar-error');
+    const submitBtn = document.getElementById('webinar-submit');
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!webhook) {
+        errorEl.textContent = 'Registration is not configured yet. Please try again later.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Registering…';
+      errorEl.classList.add('hidden');
+
+      const data = new FormData(form);
+      const payload = {
+        fullName: data.get('fullName'),
+        email: data.get('email'),
+        phone: data.get('phone'),
+        company: data.get('company') || '',
+        submittedAt: new Date().toISOString(),
+      };
+
+      try {
+        const res = await fetch(webhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Submission failed');
+
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      } catch {
+        errorEl.textContent = 'Something went wrong. Please try again or email us directly.';
+        errorEl.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Register Free';
+      }
+    });
+  </script>
+</BaseLayout>
