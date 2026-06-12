@@ -6,6 +6,9 @@ import {
   newCredential,
 } from '@n8n/workflow-sdk';
 
+const GHL_WEBINAR_WEBHOOK_URL =
+  'https://services.leadconnectorhq.com/hooks/v5lGksarcLOTF0GAk4gk/webhook-trigger/c7523212-73ee-41b7-864a-c29060049c54';
+
 const webinarWebhook = trigger({
   type: 'n8n-nodes-base.webhook',
   version: 2.1,
@@ -139,7 +142,7 @@ const sendToGhl = node({
     name: 'Send to GHL Webhook',
     parameters: {
       method: 'POST',
-      url: expr('{{ $env.GHL_INBOUND_WEBHOOK_URL }}'),
+      url: GHL_WEBINAR_WEBHOOK_URL,
       sendHeaders: true,
       specifyHeaders: 'keypair',
       headerParameters: {
