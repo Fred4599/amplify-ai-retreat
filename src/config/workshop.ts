@@ -1,3 +1,30 @@
+import type { Sponsor } from './site';
+
+/** Presented by Elevated Worldwide — separate from the retreat's Taba Collective presenter. */
+export const WORKSHOP_PRESENTER: Sponsor = {
+  name: 'Elevated Worldwide',
+  logoPath: '/elevated-worldwide-logo.png',
+  url: 'https://keepelevated.com/',
+};
+
+export const WORKSHOP_HOSTS = [
+  {
+    name: 'Braydon Carter',
+    role: 'AI Strategist & Builder',
+    photo: '/media/guide-braydon-carter.webp',
+  },
+  {
+    name: 'Tony Child',
+    role: 'Mindset & Transformation',
+    photo: '/media/guide-tony-child.webp',
+  },
+  {
+    name: 'Bill Banta',
+    role: 'Coaching & Strategy',
+    photo: '/media/guide-bill-banta.webp',
+  },
+] as const;
+
 /** Free webinar — June 19, 2026. */
 export const WORKSHOP = {
   title: 'AI: The Differentiator',
