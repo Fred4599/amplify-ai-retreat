@@ -1,15 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkshopNavbar from '../components/WorkshopNavbar.astro';
-import { WORKSHOP, WORKSHOP_HOSTS, WORKSHOP_PRESENTER, WORKSHOP_THEMES } from '../config/workshop';
+import WorkshopCountdown from '../components/workshop/WorkshopCountdown.astro';
+import WorkshopRegistrationForm from '../components/workshop/WorkshopRegistrationForm.astro';
+import WorkshopRegistrationModal from '../components/workshop/WorkshopRegistrationModal.astro';
+import {
+  WORKSHOP,
+  WORKSHOP_HOSTS,
+  WORKSHOP_PRESENTER,
+  WORKSHOP_PROOF_STATS,
+  WORKSHOP_TESTIMONIALS,
+  WORKSHOP_THEMES,
+} from '../config/workshop';
 import { MEDIA } from '../config/media';
 
 const webhook = import.meta.env.PUBLIC_WEBINAR_WEBHOOK ?? '';
-
-const inputClass =
-  'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30 transition-colors';
-
-const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
 
 const pageTitle = `${WORKSHOP.title} — Free Webinar | Amplify AI`;
 const pageDescription = WORKSHOP.description;
@@ -25,7 +30,7 @@ const pageDescription = WORKSHOP.description;
 
   <main id="main-content" class="bg-black relative w-full max-w-full overflow-x-hidden">
     <!-- Hero -->
-    <section class="relative w-full min-h-[min(100svh,900px)] overflow-x-hidden">
+    <section id="hero-register" class="relative w-full min-h-[min(100svh,900px)] overflow-x-hidden">
       <div class="absolute inset-0 z-0" aria-hidden="true">
         <img
           src={MEDIA.posters.hero}
@@ -69,13 +74,16 @@ const pageDescription = WORKSHOP.description;
           <span>{WORKSHOP_PRESENTER.name}</span>
         </a>
 
-        <div class="shrink-0 mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full">
-          <span class="bg-white text-black rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
-            {WORKSHOP.subtitle}
-          </span>
-          <span class="text-white/85 font-body text-sm font-medium text-center sm:text-left leading-snug max-w-[20rem] sm:max-w-none">
-            {WORKSHOP.dateLine} · {WORKSHOP.timeLine}
-          </span>
+        <div class="shrink-0 mb-4 sm:mb-5 flex flex-col items-center justify-center gap-3 w-full px-2">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full">
+            <span class="bg-white text-black rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
+              {WORKSHOP.subtitle}
+            </span>
+            <span class="text-white/85 font-body text-sm font-medium text-center sm:text-left leading-snug max-w-[20rem] sm:max-w-none">
+              {WORKSHOP.dateLine} · {WORKSHOP.timeLine}
+            </span>
+          </div>
+          <WorkshopCountdown />
         </div>
 
         <h1 class="shrink-0 text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] font-heading italic text-white max-w-4xl tracking-tight text-center px-1 leading-[1.05]">
@@ -90,13 +98,24 @@ const pageDescription = WORKSHOP.description;
           {WORKSHOP.description}
         </p>
 
-        <a
-          href="#register"
-          class="shrink-0 mt-8 sm:mt-10 liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-8 py-3.5 flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]"
-        >
-          Reserve Your Spot
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-        </a>
+        <p class="shrink-0 mt-6 text-white/75 font-body text-sm sm:text-base">
+          <span class="text-white font-medium">{WORKSHOP.registrationCount}+</span> business owners already registered
+        </p>
+
+        <div class="shrink-0 mt-6 sm:mt-8 w-full max-w-xl px-1">
+          <WorkshopRegistrationForm idPrefix="hero" variant="hero" showHeader={false} />
+        </div>
+
+        <div class="shrink-0 mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-2xl">
+          {WORKSHOP_PROOF_STATS.map((stat) => (
+            <div class="liquid-glass rounded-full px-4 py-2 text-center">
+              <span class="block text-white font-heading italic text-lg leading-none">{stat.value}</span>
+              <span class="block text-white/55 font-body text-[10px] uppercase tracking-wider mt-1">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
@@ -106,11 +125,11 @@ const pageDescription = WORKSHOP.description;
         <div class="text-center mb-14 sm:mb-16">
           <p class="liquid-glass inline-block rounded-full px-4 py-1.5 mb-6">
             <span class="text-white text-xs font-medium font-body uppercase tracking-wider">
-              What We'll Cover
+              What You'll Walk Away With
             </span>
           </p>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading italic text-white tracking-tight">
-            Three questions every owner should answer
+            Three plays every growth-minded owner needs
           </h2>
         </div>
 
@@ -132,6 +151,41 @@ const pageDescription = WORKSHOP.description;
       </div>
     </section>
 
+    <!-- Social proof -->
+    <section class="relative z-10 bg-black w-full py-16 sm:py-20 px-4 sm:px-6 border-t border-white/5">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-10 sm:mb-12">
+          <p class="liquid-glass inline-block rounded-full px-4 py-1.5 mb-6">
+            <span class="text-white text-xs font-medium font-body uppercase tracking-wider">
+              Real Results
+            </span>
+          </p>
+          <h2 class="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
+            The same implementation mindset — applied to your business
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          {WORKSHOP_TESTIMONIALS.map((item) => (
+            <article class="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 sm:p-8 flex flex-col">
+              <div class="mb-5">
+                <span class="text-3xl font-heading italic text-white">{item.metric}</span>
+                <span class="block text-white/45 font-body text-[10px] uppercase tracking-widest mt-1">
+                  {item.metricLabel}
+                </span>
+              </div>
+              <blockquote class="text-white/70 font-body font-light text-sm sm:text-base leading-relaxed flex-1">
+                “{item.quote}”
+              </blockquote>
+              <p class="text-white/40 font-body text-xs uppercase tracking-widest mt-5">
+                {item.attribution}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- Hosts -->
     <section class="relative z-10 bg-black w-full py-20 sm:py-28 px-4 sm:px-6 border-t border-white/5">
       <div class="max-w-5xl mx-auto">
@@ -145,8 +199,8 @@ const pageDescription = WORKSHOP.description;
             Live with Tony, Bill &amp; Braydon
           </h2>
           <p class="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mt-5">
-            Three guides — AI implementation, mindset, and business strategy — leading an honest
-            conversation about where you stand and what to do next.
+            Three guides — AI implementation, mindset, and business strategy — sharing the plays
+            they use to help owners turn AI into measurable growth.
           </p>
         </div>
 
@@ -178,14 +232,21 @@ const pageDescription = WORKSHOP.description;
     <section class="relative z-10 bg-black w-full py-16 sm:py-20 px-4 sm:px-6 border-t border-white/5">
       <div class="max-w-3xl mx-auto text-center">
         <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight mb-6">
-          Built for business owners, not engineers
+          Built for business owners who want results, not hype
         </h2>
         <p class="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed">
-          No jargon. No theory for theory's sake. This is a practical conversation for founders,
-          operators, and entrepreneurs who know AI matters — and want a clear-eyed view of where
-          they stand and what to do next. Whether you're just starting or already experimenting,
-          you'll leave with perspective you can act on immediately.
+          No jargon. No theory for theory's sake. This is a practical session for founders,
+          operators, and entrepreneurs who want AI to create capacity, revenue, and leverage —
+          starting with the workflows that matter most in your business today.
         </p>
+        <button
+          type="button"
+          data-open-registration
+          class="mt-8 liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-8 py-3.5 inline-flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]"
+        >
+          Reserve Your Spot
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+        </button>
       </div>
     </section>
 
@@ -194,69 +255,8 @@ const pageDescription = WORKSHOP.description;
       <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] via-transparent to-transparent pointer-events-none"></div>
 
       <div class="relative max-w-xl mx-auto w-full">
-        <div id="webinar-form-panel" class="rounded-3xl overflow-hidden w-full border border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl">
-          <div class="px-6 pt-8 pb-4 border-b border-white/10">
-            <p class="text-white/50 text-xs font-body uppercase tracking-widest mb-1">
-              {WORKSHOP.subtitle}
-            </p>
-            <h2 class="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
-              Register for the webinar
-            </h2>
-            <p class="text-white/80 font-body text-sm mt-2">
-              {WORKSHOP.dateLine} · {WORKSHOP.timeLine}
-            </p>
-            <p class="text-white/60 font-body font-light text-sm md:text-base mt-3 max-w-lg">
-              Free to attend. We'll send you the join link before we go live.
-            </p>
-          </div>
-
-          <div class="px-6 py-6">
-            <div id="webinar-success" class="hidden py-12 text-center">
-              <p class="text-2xl font-heading italic text-white mb-3">You're registered</p>
-              <p class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
-                Thanks for signing up. Watch your inbox for the webinar link and a reminder before
-                we go live on {WORKSHOP.dateLine}.
-              </p>
-              <a
-                href="/"
-                class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
-              >
-                Learn about the retreat
-              </a>
-            </div>
-
-            <form id="webinar-form" class="flex flex-col gap-5">
-              <div>
-                <label for="fullName" class={labelClass}>Full Name</label>
-                <input id="fullName" name="fullName" type="text" required autocomplete="name" class={inputClass} />
-              </div>
-
-              <div>
-                <label for="email" class={labelClass}>Email Address</label>
-                <input id="email" name="email" type="email" required autocomplete="email" class={inputClass} />
-              </div>
-
-              <div>
-                <label for="phone" class={labelClass}>Phone Number</label>
-                <input id="phone" name="phone" type="tel" required autocomplete="tel" class={inputClass} />
-              </div>
-
-              <div>
-                <label for="company" class={labelClass}>Company <span class="text-white/40 font-normal">(optional)</span></label>
-                <input id="company" name="company" type="text" autocomplete="organization" class={inputClass} />
-              </div>
-
-              <p id="webinar-error" class="hidden text-red-400/90 text-sm font-body" role="alert"></p>
-
-              <button
-                type="submit"
-                id="webinar-submit"
-                class="bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full px-8 py-3.5 font-medium text-sm w-full sm:w-auto sm:self-center"
-              >
-                Register Free
-              </button>
-            </form>
-          </div>
+        <div class="rounded-3xl overflow-hidden w-full border border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl">
+          <WorkshopRegistrationForm idPrefix="bottom" variant="panel" />
         </div>
 
         <p class="text-center text-white/40 font-body text-xs mt-8 max-w-md mx-auto leading-relaxed">
@@ -267,49 +267,116 @@ const pageDescription = WORKSHOP.description;
     </section>
   </main>
 
+  <WorkshopRegistrationModal />
+
   <script define:vars={{ webhook }}>
-    const form = document.getElementById('webinar-form');
-    const success = document.getElementById('webinar-success');
-    const errorEl = document.getElementById('webinar-error');
-    const submitBtn = document.getElementById('webinar-submit');
+    const modal = document.getElementById('registration-modal');
 
-    form?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!webhook) {
-        errorEl.textContent = 'Registration is not configured yet. Please try again later.';
-        errorEl.classList.remove('hidden');
-        return;
-      }
+    function openRegistration() {
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      const firstInput = modal.querySelector('input');
+      window.setTimeout(() => firstInput?.focus(), 50);
+    }
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Registering…';
-      errorEl.classList.add('hidden');
+    function closeRegistration() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
 
-      const data = new FormData(form);
-      const payload = {
-        fullName: data.get('fullName'),
-        email: data.get('email'),
-        phone: data.get('phone'),
-        company: data.get('company') || '',
-        submittedAt: new Date().toISOString(),
-      };
+    document.querySelectorAll('[data-open-registration]').forEach((trigger) => {
+      trigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        openRegistration();
+      });
+    });
 
-      try {
-        const res = await fetch(webhook, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error('Submission failed');
+    document.querySelectorAll('[data-close-registration]').forEach((trigger) => {
+      trigger.addEventListener('click', closeRegistration);
+    });
 
-        form.classList.add('hidden');
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal && !modal.hidden) closeRegistration();
+    });
+
+    function showSuccess(form) {
+      const prefix = form.id.replace('-form', '');
+      form.hidden = true;
+      const success = document.getElementById(`${prefix}-success`);
+      if (success) {
         success.classList.remove('hidden');
-      } catch {
-        errorEl.textContent = 'Something went wrong. Please try again or email us directly.';
+        success.hidden = false;
+      }
+      closeRegistration();
+    }
+
+    function showError(form, message) {
+      const prefix = form.id.replace('-form', '');
+      const errorEl = document.getElementById(`${prefix}-error`);
+      const submitBtn = document.getElementById(`${prefix}-submit`);
+      if (errorEl) {
+        errorEl.textContent = message;
         errorEl.classList.remove('hidden');
+        errorEl.hidden = false;
+      }
+      if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Register Free';
       }
+    }
+
+    document.querySelectorAll('[data-webinar-form]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const prefix = form.id.replace('-form', '');
+        const submitBtn = document.getElementById(`${prefix}-submit`);
+        const errorEl = document.getElementById(`${prefix}-error`);
+
+        if (!webhook) {
+          showError(form, 'Registration is not configured yet. Please try again later.');
+          return;
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Registering…';
+        }
+        if (errorEl) {
+          errorEl.classList.add('hidden');
+          errorEl.hidden = true;
+        }
+
+        const data = new FormData(form);
+        const payload = {
+          fullName: data.get('fullName'),
+          email: data.get('email'),
+          phone: '',
+          company: '',
+          submittedAt: new Date().toISOString(),
+        };
+
+        try {
+          const res = await fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) throw new Error('Submission failed');
+
+          document.querySelectorAll('[data-webinar-form]').forEach((otherForm) => {
+            showSuccess(otherForm);
+          });
+        } catch {
+          showError(form, 'Something went wrong. Please try again or email us directly.');
+        }
+      });
     });
   </script>
 </BaseLayout>

@@ -1,0 +1,125 @@
+---
+import { WORKSHOP } from '../../config/workshop';
+
+interface Props {
+  idPrefix: string;
+  variant?: 'hero' | 'panel';
+  showHeader?: boolean;
+}
+
+const { idPrefix, variant = 'panel', showHeader = true } = Astro.props;
+
+const inputClass =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30 transition-colors';
+
+const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
+
+const isHero = variant === 'hero';
+---
+
+<div
+  class:list={[
+    isHero
+      ? 'w-full max-w-xl rounded-2xl border border-white/15 bg-black/40 backdrop-blur-xl p-4 sm:p-5 shadow-2xl'
+      : '',
+  ]}
+  data-registration-panel={idPrefix}
+>
+  {showHeader && !isHero && (
+    <div class="px-6 pt-8 pb-4 border-b border-white/10">
+      <p class="text-white/50 text-xs font-body uppercase tracking-widest mb-1">
+        {WORKSHOP.subtitle}
+      </p>
+      <h2 class="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
+        Register for the webinar
+      </h2>
+      <p class="text-white/80 font-body text-sm mt-2">
+        {WORKSHOP.dateLine} · {WORKSHOP.timeLine}
+      </p>
+      <p class="text-white/60 font-body font-light text-sm md:text-base mt-3 max-w-lg">
+        Free to attend. We'll email you the join link before we go live.
+      </p>
+    </div>
+  )}
+
+  <div class:list={[isHero ? '' : 'px-6 py-6']}>
+    <div id={`${idPrefix}-success`} class="hidden py-8 sm:py-12 text-center" hidden>
+      <p class="text-2xl font-heading italic text-white mb-3">You're registered</p>
+      <p class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
+        Thanks for signing up. Watch your inbox for the webinar link and a reminder before we go
+        live on {WORKSHOP.dateLine}.
+      </p>
+      <a
+        href="/"
+        class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
+      >
+        Learn about the retreat
+      </a>
+    </div>
+
+    <form
+      id={`${idPrefix}-form`}
+      data-webinar-form
+      class:list={[
+        'flex flex-col gap-4',
+        isHero ? 'sm:flex-row sm:items-end sm:gap-3' : 'gap-5',
+      ]}
+    >
+      <div class:list={[isHero ? 'flex-1 min-w-0' : '']}>
+        {!isHero && (
+          <label for={`${idPrefix}-fullName`} class={labelClass}>Full Name</label>
+        )}
+        <input
+          id={`${idPrefix}-fullName`}
+          name="fullName"
+          type="text"
+          required
+          autocomplete="name"
+          placeholder={isHero ? 'Full name' : undefined}
+          class={inputClass}
+        />
+      </div>
+
+      <div class:list={[isHero ? 'flex-1 min-w-0' : '']}>
+        {!isHero && (
+          <label for={`${idPrefix}-email`} class={labelClass}>Email Address</label>
+        )}
+        <input
+          id={`${idPrefix}-email`}
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder={isHero ? 'Email address' : undefined}
+          class={inputClass}
+        />
+      </div>
+
+      <p
+        id={`${idPrefix}-error`}
+        class:list={['hidden text-red-400/90 text-sm font-body', isHero ? 'sm:basis-full' : '']}
+        role="alert"
+        hidden
+      ></p>
+
+      <button
+        type="submit"
+        id={`${idPrefix}-submit`}
+        class:list={[
+          'bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full font-medium text-sm',
+          isHero
+            ? 'px-6 py-3.5 min-h-[46px] w-full sm:w-auto shrink-0'
+            : 'px-8 py-3.5 w-full sm:w-auto sm:self-center',
+        ]}
+      >
+        Register Free
+      </button>
+    </form>
+
+    {isHero && (
+      <p class="text-white/50 font-body text-xs text-center mt-3 leading-relaxed">
+        Free to attend · Join link sent by email before we go live
+      </p>
+    )}
+  </div>
+</div>

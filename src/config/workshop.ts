@@ -28,7 +28,7 @@ export const WORKSHOP_HOSTS = [
 /** Free webinar — June 19, 2026. */
 export const WORKSHOP = {
   title: 'AI: The Differentiator',
-  tagline: 'Which side of the gap are you on?',
+  tagline: 'Turn AI into revenue, speed, and leverage — starting this Friday.',
   subtitle: 'Free Live Webinar',
   /** ISO date for schema.org and sorting */
   date: '2026-06-19',
@@ -40,23 +40,53 @@ export const WORKSHOP = {
   durationMinutes: 60,
   path: '/workshop',
   description:
-    'A free live webinar for business owners navigating an AI-dominated world. Discover whether you are falling behind, how AI can be your differentiator, and how to let AI help you — without fear of replacement.',
+    'A free live session for business owners ready to use AI to win more deals, save hours every week, and stay ahead of competitors still guessing. Walk away with a clear picture of where AI fits in your business — and your next move.',
+  /** Update manually as registrations come in — shown in social proof UI */
+  registrationCount: 50,
 } as const;
+
+export const WORKSHOP_PROOF_STATS = [
+  { value: '30+', label: 'businesses implemented' },
+  { value: '25+', label: 'hrs saved per week' },
+  { value: '40%', label: 'dead contacts recovered' },
+] as const;
+
+export const WORKSHOP_TESTIMONIALS = [
+  {
+    quote:
+      'We recovered 40% of contacts we thought were dead — and turned them into real pipeline.',
+    attribution: 'Venture capital firm',
+    metric: '40%',
+    metricLabel: 'contacts recovered',
+  },
+  {
+    quote: 'Our ops team got back more than 10 hours a week once inventory stopped living in spreadsheets.',
+    attribution: 'E-commerce operator',
+    metric: '10+',
+    metricLabel: 'hrs/week saved',
+  },
+  {
+    quote: 'HR went from drowning in applications to focusing on the candidates who actually fit.',
+    attribution: 'Enterprise HR team',
+    metric: '20+',
+    metricLabel: 'hrs/week saved',
+  },
+] as const;
 
 export const WORKSHOP_THEMES = [
   {
-    eyebrow: 'The reality check',
-    title: 'Falling behind in an AI-dominated world',
-    body: 'AI is not coming — it is already reshaping how businesses market, sell, operate, and compete. The gap between owners who adapt and those who wait is widening every quarter. This session starts with an honest look at where you stand.',
+    eyebrow: 'The opportunity',
+    title: 'Where AI is creating margin right now',
+    body: 'Owners who move first are winning faster sales cycles, leaner operations, and better client experiences. We will show you where AI is already paying off in real businesses — and where the biggest openings are in yours.',
   },
   {
-    eyebrow: 'The fork in the road',
-    title: 'Which one are you? AI as the differentiator',
-    body: 'Some businesses treat AI as a novelty. Others use it to move faster, serve better, and win deals their competitors cannot. We will map the two paths — and help you see clearly which one you are on today.',
+    eyebrow: 'The playbook',
+    title: 'How winning owners use AI as a differentiator',
+    body: 'The gap is not about having the fanciest tools. It is about knowing which workflows to automate, which decisions to keep human, and how to stack small wins into compounding advantage. You will leave with a practical lens for evaluating every AI opportunity.',
   },
   {
-    eyebrow: 'The mindset shift',
-    title: 'Let AI help you — not replace you',
-    body: 'The biggest blocker is not the technology. It is openness. We will talk about how to invite AI into your workflow as a partner that amplifies what you already do well — without losing the human judgment that makes your business yours.',
+    eyebrow: 'The unlock',
+    title: 'Plug AI into your business without losing what makes you you',
+    body: 'The owners who win treat AI as leverage — not a replacement. We will walk through how to adopt AI in a way that amplifies your judgment, protects your brand, and creates capacity you can reinvest in growth.',
   },
 ] as const;
