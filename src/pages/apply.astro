@@ -5,6 +5,21 @@ import { eventDatesLine } from '../config/site';
 
 const webhook = import.meta.env.PUBLIC_APPLICATION_WEBHOOK ?? '';
 
+const annualSalesOptions = [
+  '0-100k',
+  '100k-500k',
+  '500k-1M',
+  '1M-10M',
+  '10M+',
+];
+
+const employeeCountOptions = [
+  '1 Employee',
+  '2-5 Employees',
+  '6-20 Employees',
+  '21+ Employees',
+];
+
 const aiUsageOptions = [
   'Not using it yet',
   'Experimenting a little',
@@ -92,6 +107,30 @@ const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
               </div>
             </div>
 
+            <fieldset>
+              <legend class={labelClass}>How much in sales are you doing?</legend>
+              <div class="flex flex-col gap-2 mt-1">
+                {annualSalesOptions.map((option) => (
+                  <label class="flex items-center gap-3 rounded-xl px-4 py-3 cursor-pointer border border-white/10 bg-white/5 hover:border-white/20 transition-colors has-[:checked]:bg-white/10 has-[:checked]:border-white/30">
+                    <input type="radio" name="annualSales" value={option} required class="accent-white" />
+                    <span class="text-sm text-white/90 font-body">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class={labelClass}>How many employees do you have?</legend>
+              <div class="flex flex-col gap-2 mt-1">
+                {employeeCountOptions.map((option) => (
+                  <label class="flex items-center gap-3 rounded-xl px-4 py-3 cursor-pointer border border-white/10 bg-white/5 hover:border-white/20 transition-colors has-[:checked]:bg-white/10 has-[:checked]:border-white/30">
+                    <input type="radio" name="employeeCount" value={option} required class="accent-white" />
+                    <span class="text-sm text-white/90 font-body">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
             <div>
               <label for="businessDescription" class={labelClass}>
                 What do you do, and what kind of business are you building?
@@ -164,6 +203,8 @@ const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
         email: data.get('email'),
         phone: data.get('phone'),
         companyWebsite: data.get('companyWebsite'),
+        annualSales: data.get('annualSales'),
+        employeeCount: data.get('employeeCount'),
         businessDescription: data.get('businessDescription'),
         bottleneck: data.get('bottleneck'),
         aiUsage: data.get('aiUsage'),

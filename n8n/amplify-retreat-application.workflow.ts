@@ -28,6 +28,8 @@ const applicationWebhook = trigger({
         email: 'jane@example.com',
         phone: '555-123-4567',
         companyWebsite: 'Acme Co — acme.com',
+        annualSales: '100k-500k',
+        employeeCount: '2-5 Employees',
         businessDescription: 'We build SaaS for contractors.',
         bottleneck: 'Lead follow-up takes too long.',
         aiUsage: 'Experimenting a little',
@@ -73,6 +75,18 @@ const formatApplication = node({
             type: 'string',
           },
           {
+            id: 'annualSales',
+            name: 'annualSales',
+            value: expr('{{ $json.body?.annualSales ?? $json.annualSales ?? "" }}'),
+            type: 'string',
+          },
+          {
+            id: 'employeeCount',
+            name: 'employeeCount',
+            value: expr('{{ $json.body?.employeeCount ?? $json.employeeCount ?? "" }}'),
+            type: 'string',
+          },
+          {
             id: 'businessDescription',
             name: 'businessDescription',
             value: expr(
@@ -105,6 +119,36 @@ const formatApplication = node({
             type: 'string',
           },
           {
+            id: 'firstName',
+            name: 'firstName',
+            value: expr(
+              '{{ ($json.body?.fullName ?? $json.fullName ?? "").trim().split(/\\s+/)[0] ?? "" }}',
+            ),
+            type: 'string',
+          },
+          {
+            id: 'lastName',
+            name: 'lastName',
+            value: expr(
+              '{{ ($json.body?.fullName ?? $json.fullName ?? "").trim().split(/\\s+/).slice(1).join(" ") ?? "" }}',
+            ),
+            type: 'string',
+          },
+          {
+            id: 'source',
+            name: 'source',
+            value: 'Amplify AI Retreat — Application',
+            type: 'string',
+          },
+          {
+            id: 'applicationNotes',
+            name: 'applicationNotes',
+            value: expr(
+              '{{ "Company + Website: " + ($json.body?.companyWebsite ?? $json.companyWebsite ?? "—") + "\\n\\nAnnual Sales: " + ($json.body?.annualSales ?? $json.annualSales ?? "—") + "\\n\\nEmployees: " + ($json.body?.employeeCount ?? $json.employeeCount ?? "—") + "\\n\\nBusiness: " + ($json.body?.businessDescription ?? $json.businessDescription ?? "—") + "\\n\\nBottleneck: " + ($json.body?.bottleneck ?? $json.bottleneck ?? "—") + "\\n\\nAI Usage: " + ($json.body?.aiUsage ?? $json.aiUsage ?? "—") + "\\n\\nSuccess Outcome: " + ($json.body?.successOutcome ?? $json.successOutcome ?? "—") + "\\n\\nSubmitted: " + ($json.body?.submittedAt ?? $json.submittedAt ?? "—") }}',
+            ),
+            type: 'string',
+          },
+          {
             id: 'emailSubject',
             name: 'emailSubject',
             value: expr(
@@ -122,14 +166,52 @@ const formatApplication = node({
       email: 'jane@example.com',
       phone: '555-123-4567',
       companyWebsite: 'Acme Co — acme.com',
+      annualSales: '100k-500k',
+      employeeCount: '2-5 Employees',
       businessDescription: 'We build SaaS for contractors.',
       bottleneck: 'Lead follow-up takes too long.',
       aiUsage: 'Experimenting a little',
       successOutcome: 'A working AI follow-up workflow.',
       submittedAt: '2026-05-28T00:00:00.000Z',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      source: 'Amplify AI Retreat — Application',
+      applicationNotes: 'Company + Website: Acme Co — acme.com\n\nBusiness: We build SaaS for contractors.',
       emailSubject: 'New Amplify AI Retreat Application — Jane Doe',
     },
   ],
+});
+
+const sendToGhl = node({
+  type: 'n8n-nodes-base.httpRequest',
+  version: 4.4,
+  config: {
+    name: 'Send to GHL Webhook',
+    parameters: {
+      method: 'POST',
+      url: expr('{{ $env.GHL_INBOUND_WEBHOOK_URL }}'),
+      sendHeaders: true,
+      specifyHeaders: 'keypair',
+      headerParameters: {
+        parameters: [{ name: 'Content-Type', value: 'application/json' }],
+      },
+      sendBody: true,
+      contentType: 'json',
+      specifyBody: 'json',
+      jsonBody: expr(
+        '{{ { firstName: $json.firstName, lastName: $json.lastName, email: $json.email, phone: $json.phone, source: $json.source, companyWebsite: $json.companyWebsite, annualSales: $json.annualSales, employeeCount: $json.employeeCount, businessDescription: $json.businessDescription, bottleneck: $json.bottleneck, aiUsage: $json.aiUsage, successOutcome: $json.successOutcome, submittedAt: $json.submittedAt, applicationNotes: $json.applicationNotes } }}',
+      ),
+      options: {
+        response: {
+          response: {
+            neverError: true,
+          },
+        },
+      },
+    },
+    onError: 'continueRegularOutput',
+  },
+  output: [{ statusCode: 200 }],
 });
 
 const sendApplicationEmail = node({
@@ -140,11 +222,12 @@ const sendApplicationEmail = node({
     parameters: {
       resource: 'message',
       operation: 'send',
-      sendTo: 'braydon@selfconstructconsulting.com',
+      sendTo:
+        'braydon@selfconstructconsulting.com, tony@keepelevated.com, billb@keepelevated.com',
       subject: expr('{{ $json.emailSubject }}'),
       emailType: 'html',
       message: expr(
-        '{{ "<div style=\\"font-family: Barlow, Arial, sans-serif; color:#111; line-height:1.6; max-width:640px;\\">" + "<h2 style=\\"margin:0 0 20px; font-style:italic;\\">Amplify AI Retreat Application</h2>" + "<p style=\\"margin:0 0 16px; color:#444;\\"><strong>Submitted:</strong> " + ($json.submittedAt || "—") + "</p>" + "<p><strong>Full Name:</strong><br>" + ($json.fullName || "—") + "</p>" + "<p><strong>Email:</strong><br><a href=\\"mailto:" + ($json.email || "") + "\\">" + ($json.email || "—") + "</a></p>" + "<p><strong>Phone:</strong><br>" + ($json.phone || "—") + "</p>" + "<p><strong>Company + Website:</strong><br>" + ($json.companyWebsite || "—") + "</p>" + "<p><strong>Business:</strong><br>" + ($json.businessDescription || "—").replace(/\\n/g, "<br>") + "</p>" + "<p><strong>Biggest Bottleneck:</strong><br>" + ($json.bottleneck || "—").replace(/\\n/g, "<br>") + "</p>" + "<p><strong>Current AI Usage:</strong><br>" + ($json.aiUsage || "—") + "</p>" + "<p><strong>Success Outcome:</strong><br>" + ($json.successOutcome || "—").replace(/\\n/g, "<br>") + "</p>" + "</div>" }}',
+        '{{ "<div style=\\"font-family: Barlow, Arial, sans-serif; color:#111; line-height:1.6; max-width:640px;\\">" + "<h2 style=\\"margin:0 0 20px; font-style:italic;\\">Amplify AI Retreat Application</h2>" + "<p style=\\"margin:0 0 16px; color:#444;\\"><strong>Submitted:</strong> " + ($json.submittedAt || "—") + "</p>" + "<p><strong>Full Name:</strong><br>" + ($json.fullName || "—") + "</p>" + "<p><strong>Email:</strong><br><a href=\\"mailto:" + ($json.email || "") + "\\">" + ($json.email || "—") + "</a></p>" + "<p><strong>Phone:</strong><br>" + ($json.phone || "—") + "</p>" + "<p><strong>Company + Website:</strong><br>" + ($json.companyWebsite || "—") + "</p>" + "<p><strong>Annual Sales:</strong><br>" + ($json.annualSales || "—") + "</p>" + "<p><strong>Employees:</strong><br>" + ($json.employeeCount || "—") + "</p>" + "<p><strong>Business:</strong><br>" + ($json.businessDescription || "—").replace(/\\n/g, "<br>") + "</p>" + "<p><strong>Biggest Bottleneck:</strong><br>" + ($json.bottleneck || "—").replace(/\\n/g, "<br>") + "</p>" + "<p><strong>Current AI Usage:</strong><br>" + ($json.aiUsage || "—") + "</p>" + "<p><strong>Success Outcome:</strong><br>" + ($json.successOutcome || "—").replace(/\\n/g, "<br>") + "</p>" + "</div>" }}',
       ),
       options: {
         replyTo: expr('{{ $json.email }}'),
@@ -183,9 +266,8 @@ const respondSuccess = node({
 
 export default workflow(
   'amplify-retreat-application',
-  'Amplify AI Retreat — Application Email',
+  'Amplify AI Retreat — Application (GHL + Email)',
 )
   .add(applicationWebhook)
-  .to(formatApplication)
-  .to(sendApplicationEmail)
-  .to(respondSuccess);
+  .to(formatApplication.to(sendApplicationEmail).to(respondSuccess))
+  .add(formatApplication.to(sendToGhl));
