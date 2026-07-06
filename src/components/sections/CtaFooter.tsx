@@ -5,6 +5,7 @@ import { useHydrated } from '../useHydrated';
 import { inView } from '../motionPresets';
 import { MapPin } from 'lucide-react';
 import { VENUE, eventDatesLine, venueAddressLine } from '../../config/site';
+import { WELCOME_RECEPTION } from '../../content/retreat';
 
 const steps = [
   {
@@ -25,6 +26,7 @@ const steps = [
 ];
 
 const footerLinks = [
+  { label: 'Schedule', href: '#schedule' },
   { label: 'Experience', href: '#experience' },
   { label: 'Guides', href: '#guides' },
   { label: 'FAQ', href: '#faq' },
@@ -102,7 +104,7 @@ export default function CtaFooter() {
               © 2026 Amplify AI Retreat. Unlock human potential through AI.
             </p>
             <p className="text-white/40 text-xs font-body font-light">
-              {eventDatesLine()}
+              {eventDatesLine()} · Welcome reception {WELCOME_RECEPTION.date}
             </p>
             <a
               href={VENUE.mapsUrl}

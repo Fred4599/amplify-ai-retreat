@@ -4,6 +4,7 @@ import ApplyTrigger from './ApplyTrigger';
 
 const navItems = [
   { label: 'Experience', href: '#experience' },
+  { label: 'Schedule', href: '#schedule' },
   { label: 'Wins', href: '#wins' },
   { label: 'Outcomes', href: '#outcomes' },
   { label: 'Guides', href: '#guides' },

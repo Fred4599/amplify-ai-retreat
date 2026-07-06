@@ -33,11 +33,11 @@ export default function StartSection() {
       </motion.p>
 
       <motion.a
-        href="#outcomes"
+        href="#schedule"
         {...inView(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 0.6, duration: 0.8 })}
         className="liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-8 py-4 text-white font-medium text-sm"
       >
-        See What You'll Leave With
+        See Your Three Days
       </motion.a>
     </div>
   );

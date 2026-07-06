@@ -1,10 +1,13 @@
 ---
 import { VENUE, eventDatesLine, venueAddressLine } from '../../config/site';
+import { WHATS_INCLUDED, WELCOME_RECEPTION } from '../../content/retreat';
+
+const includedSummary = WHATS_INCLUDED.slice(0, 6).join(', ') + ', and more.';
 
 const faqs = [
   {
     question: 'When is the retreat?',
-    answer: `${eventDatesLine()} at ${VENUE.name} in ${venueAddressLine()}. Three full days of implementation-focused sessions.`,
+    answer: `${eventDatesLine()} at ${VENUE.name} in ${venueAddressLine()}. Three full days of implementation-focused sessions. ${WELCOME_RECEPTION.summary}`,
   },
   {
     question: 'Do I need AI experience?',
@@ -28,8 +31,7 @@ const faqs = [
   },
   {
     question: "What's included?",
-    answer:
-      '3 days of working sessions, masterminds, implementation support, connection experiences, meals and activities as outlined, and access to three expert guides.',
+    answer: `Your seat includes ${includedSummary} See the full breakdown on the schedule section or download the What to Expect PDF.`,
   },
   {
     question: 'Why only 50 seats?',

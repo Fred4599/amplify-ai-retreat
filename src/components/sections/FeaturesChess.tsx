@@ -46,9 +46,9 @@ export default function FeaturesChess() {
             Build with AI during the day.
           </h3>
           <p className="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed max-w-md">
-            Working sessions, masterminds, and real-time problem solving. Identify what's broken,
-            workshop solutions in the room, and leave with a prototype, workflow, or implementation
-            direction—not slides and theory.
+            Working sessions, masterminds, and real-time problem solving. Day 2 shifts from AI as
+            partner to AI as employee — identify what&apos;s broken, build in the room, and leave with
+            a prototype, workflow, or implementation direction.
           </p>
           <div className="flex flex-wrap gap-2 pt-1 sm:pt-2">
             {tags.map((tag) => (
@@ -95,13 +95,16 @@ export default function FeaturesChess() {
             Connect as humans in the evening.
           </h3>
           <p className="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed max-w-md">
-            When the sun goes down, we shift from building to connecting. Evenings are for shared
-            experiences, real conversation, and relationship-building—high-touch, energizing, and
-            human, not more time in chairs.
+            When the sun goes down, we shift from building to connecting. Catered dinners, curiosity
+            games, a group dinner, and a river float — shared experiences and real conversation,
+            not more time in chairs.
           </p>
-          <ApplyTrigger className="liquid-glass-strong hover:bg-white/5 transition-colors rounded-full px-6 py-3 text-white font-medium text-sm mt-2 sm:mt-4 inline-flex items-center justify-center min-h-[44px]">
-            Apply to Attend
-          </ApplyTrigger>
+          <a
+            href="#schedule"
+            className="liquid-glass-strong hover:bg-white/5 transition-colors rounded-full px-6 py-3 text-white font-medium text-sm mt-2 sm:mt-4 inline-flex items-center justify-center min-h-[44px]"
+          >
+            See the Full Schedule
+          </a>
         </motion.div>
 
         <motion.div

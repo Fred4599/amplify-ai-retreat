@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amplify AI Retreat — Your Experience</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.62);
+      --muted-soft: rgba(255, 255, 255, 0.42);
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --font-heading: 'Instrument Serif', serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @page { size: Letter; margin: 0; }
+
+    html {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      position: relative;
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.55in 0.6in 0.65in;
+      page-break-after: always;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    .page-bg {
+      position: absolute;
+      inset: 0;
+      background: url('/media/deck/deck-bg-logan.webp') center / cover no-repeat;
+      z-index: 0;
+    }
+
+    .page-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.97) 100%);
+    }
+
+    .page-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #000;
+      background: #fff;
+      border-radius: 999px;
+      padding: 5px 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+
+    h1 { font-size: 44pt; margin-bottom: 10px; }
+    h2 { font-size: 26pt; margin-bottom: 8px; }
+    h3 { font-size: 15pt; margin-bottom: 4px; }
+
+    .lead {
+      font-size: 12pt;
+      color: var(--muted);
+      max-width: 36rem;
+      line-height: 1.5;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11pt;
+      font-weight: 500;
+    }
+
+    .cover-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.15in 0;
+    }
+
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .outcome-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+
+    .outcome-card h4 {
+      font-family: var(--font-body);
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      font-style: normal;
+      margin-bottom: 6px;
+    }
+
+    .outcome-card p {
+      font-size: 9.5pt;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .arc-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .arc-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .arc-card .day {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      margin-bottom: 6px;
+    }
+
+    .arc-card h4 {
+      font-size: 13pt;
+      margin-bottom: 6px;
+    }
+
+    .arc-card p {
+      font-size: 8.5pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .day-block {
+      margin-top: 16px;
+    }
+
+    .day-header {
+      margin-bottom: 14px;
+    }
+
+    .day-header .theme {
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 4px;
+    }
+
+    .period {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+
+    .period-label {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      margin-bottom: 8px;
+    }
+
+    .period ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .period li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 7px;
+      font-size: 9.5pt;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .period li:last-child { margin-bottom: 0; }
+
+    .period li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .period li strong {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .highlight-box {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-top: 14px;
+    }
+
+    .highlight-box h4 {
+      font-family: var(--font-body);
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-style: normal;
+      margin-bottom: 8px;
+    }
+
+    .highlight-box p {
+      font-size: 9.5pt;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .footer-note {
+      margin-top: auto;
+      padding-top: 14px;
+      font-size: 8pt;
+      color: var(--muted-soft);
+    }
+
+    .included-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .included-item {
+      font-size: 9.5pt;
+      color: var(--muted);
+      padding: 10px 12px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="cover-center">
+        <span class="pill">Your 3-Day Experience</span>
+        <p class="eyebrow">Amplify AI Retreat</p>
+        <h1>Three Days.<br />One Breakthrough.</h1>
+        <p class="lead" style="margin-top: 14px;">
+          This isn't a conference. It's a hands-on implementation retreat where you bring a real business problem
+          and leave with a real AI-powered path forward — plus the relationships and momentum to run with it.
+        </p>
+        <p class="lead" style="margin-top: 10px; font-size: 11pt;">
+          <strong style="color:#fff;font-weight:500;">July 29–31, 2026</strong> · The Hive Event Center · Downtown Logan, Utah
+        </p>
+        <div class="arc-row">
+          <div class="arc-card">
+            <div class="day">Day 1</div>
+            <h4>Diagnose</h4>
+            <p>Clarify your bottleneck. Open curiosity. Build your first tool.</p>
+          </div>
+          <div class="arc-card">
+            <div class="day">Day 2</div>
+            <h4>Build</h4>
+            <p>Connect AI to your business. Train it to work for you.</p>
+          </div>
+          <div class="arc-card">
+            <div class="day">Day 3</div>
+            <h4>Deploy</h4>
+            <p>Celebrate wins. Float the river. Take it home.</p>
+          </div>
+        </div>
+      </div>
+      <p class="footer-note">amplifyai.dev · 50 seats · Application required</p>
+    </div>
+  </section>
+
+  <!-- What you'll get -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">Amplify AI Retreat</div>
+      </div>
+      <span class="eyebrow">The Promise</span>
+      <h2>What you'll actually walk away with</h2>
+      <p class="lead">Not inspiration. Implementation. Here's what three days in the room looks like for you.</p>
+
+      <div class="outcome-grid">
+        <div class="outcome-card">
+          <h4>A solution to your problem</h4>
+          <p>Bring your biggest bottleneck. Work on it all three days with three expert guides in the room — not from the sidelines.</p>
+        </div>
+        <div class="outcome-card">
+          <h4>Something you built</h4>
+          <p>A prototype, workflow, or AI system direction you created yourself — ready to refine and deploy when you're back in the office.</p>
+        </div>
+        <div class="outcome-card">
+          <h4>Skills that stick</h4>
+          <p>Learn to brainstorm with AI, connect it to the tools you already use, and set up systems that keep working after the retreat ends.</p>
+        </div>
+        <div class="outcome-card">
+          <h4>People worth knowing</h4>
+          <p>50 entrepreneurs max. Real conversations, shared meals, outdoor adventures — relationships that outlast the weekend.</p>
+        </div>
+        <div class="outcome-card">
+          <h4>A take-home playbook</h4>
+          <p>Leave with a workbook full of tools, ideas, and next steps — so Monday morning isn't a reset, it's a launch.</p>
+        </div>
+        <div class="outcome-card">
+          <h4>Experiences you'll remember</h4>
+          <p>Shared meals, outdoor evenings, and surprise experiences that remind you this retreat is as human as it is high-tech.</p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <h4>Your guides all three days</h4>
+        <p>
+          <strong style="color:#fff;">Braydon Carter</strong> — AI strategy &amp; hands-on building &nbsp;·&nbsp;
+          <strong style="color:#fff;">Tony Child</strong> — mindset &amp; transformation &nbsp;·&nbsp;
+          <strong style="color:#fff;">Bill Banta</strong> — business strategy &amp; growth
+        </p>
+      </div>
+
+      <p class="footer-note">Breakfast and lunch provided daily · Select evening experiences included</p>
+    </div>
+  </section>
+
+  <!-- Day 1 -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">Amplify AI Retreat</div>
+      </div>
+      <div class="day-header">
+        <div class="theme">Day 1 · Wednesday, July 29</div>
+        <h2>Diagnose &amp; Design</h2>
+        <p class="lead">Get clear on your problem. Open your mind. Build something real before the sun goes down.</p>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Morning</div>
+        <ul>
+          <li><strong>Welcome &amp; connect</strong> — meet the cohort, share your story, and name the business problem you came to solve.</li>
+          <li><strong>Unlock curiosity</strong> — shift from fear and uncertainty into the mindset where real AI breakthroughs happen.</li>
+          <li><strong>Brainstorm with AI</strong> — turn raw ideas into clear plans using the same tools top operators use every day.</li>
+        </ul>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Afternoon</div>
+        <ul>
+          <li><strong>Build your first AI tool</strong> — guided, hands-on session where you create something around your actual business problem.</li>
+          <li><strong>Share wins &amp; get unstuck</strong> — celebrate early breakthroughs and get direct support from the guides in the room.</li>
+        </ul>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Evening · Off-site</div>
+        <ul>
+          <li><strong>Catered dinner</strong> — great food, open air, real conversation with your cohort.</li>
+          <li><strong>Curiosity games</strong> — let loose, have fun, and connect — all in the spirit of curiosity.</li>
+        </ul>
+      </div>
+
+      <div class="highlight-box">
+        <h4>Optional · Open build time</h4>
+        <p>Each evening, drop in for extra hands-on support if you want to keep building after the day wraps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 2 -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">Amplify AI Retreat</div>
+      </div>
+      <div class="day-header">
+        <div class="theme">Day 2 · Thursday, July 30</div>
+        <h2>Build &amp; Breakthrough</h2>
+        <p class="lead">Day one is your partner. Day two levels up to your employee. Here's how that arc plays out.</p>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Morning · AI as Your Partner</div>
+        <ul>
+          <li><strong>Check in on your progress</strong> — what worked last night? What breakthrough are you chasing today?</li>
+          <li><strong>Collaborate with AI</strong> — connect AI to the tools you already use and work side-by-side on real problems.</li>
+          <li><strong>Practice in the room</strong> — treat AI like a true work partner: brainstorming, building, and problem-solving together — not just typing into a chat box.</li>
+        </ul>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Afternoon · AI as Your Employee</div>
+        <ul>
+          <li><strong>Train AI to run workflows</strong> — go beyond collaboration and build systems that handle full tasks and processes on your behalf.</li>
+          <li><strong>Business strategy</strong> — SOPs, delegation, and growth planning so your AI employee actually sticks in your business.</li>
+          <li><strong>Celebrate wins</strong> — see how far the room has come toward solving real business problems.</li>
+        </ul>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Evening · Off-site</div>
+        <ul>
+          <li><strong>Group dinner</strong> — relaxed evening with the cohort. Great food, real connection, no slides.</li>
+        </ul>
+      </div>
+
+      <div class="highlight-box">
+        <h4>Optional · Open build time</h4>
+        <p>Keep the momentum going — evening drop-in support for anyone who wants to go deeper.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Day 3 + included -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">Amplify AI Retreat</div>
+      </div>
+      <div class="day-header">
+        <div class="theme">Day 3 · Friday, July 31</div>
+        <h2>Deploy &amp; Connect</h2>
+        <p class="lead">See what everyone built. Close the loop. Cap it with an adventure.</p>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Morning</div>
+        <ul>
+          <li><strong>Show &amp; Share</strong> — walk the room and see what 50 entrepreneurs built in 72 hours. Steal ideas. Get inspired. Implement faster.</li>
+          <li><strong>AI agents — the next level</strong> — a brief look at when AI starts working autonomously on your behalf.</li>
+          <li><strong>Send-off ceremony</strong> — celebrate every win, prove every problem got attention, and receive your take-home playbook.</li>
+        </ul>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Afternoon · Off-site</div>
+        <ul>
+          <li><strong>River float</strong> — one of the best ways to experience Logan. Unplug, connect, and close the retreat the right way.</li>
+        </ul>
+      </div>
+
+      <div class="period">
+        <div class="period-label">Evening</div>
+        <ul>
+          <li><strong>On your own</strong> — head home, explore Logan, or grab dinner with your new favorite people from the room.</li>
+        </ul>
+      </div>
+
+      <p class="section-label" style="font-size:7.5pt;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted-soft);margin-top:18px;margin-bottom:8px;">What's included</p>
+      <div class="included-grid">
+        <div class="included-item">Daily breakfast &amp; lunch</div>
+        <div class="included-item">3 days of working sessions</div>
+        <div class="included-item">Evening dinner &amp; curiosity games (Day 1)</div>
+        <div class="included-item">Group dinner (Day 2)</div>
+        <div class="included-item">River float (Day 3)</div>
+        <div class="included-item">Take-home playbook</div>
+        <div class="included-item">3 expert guides in the room</div>
+        <div class="included-item">50-seat intimate cohort</div>
+      </div>
+
+      <div class="highlight-box" style="margin-top: 16px;">
+        <h4>Arriving early?</h4>
+        <p>Join us the evening of July 28 for a welcome reception at The Hive — a relaxed first chance to meet the room.</p>
+      </div>
+
+      <p class="footer-note" style="margin-top: 16px;">Ready to claim your seat? Apply at retreat.amplifyai.dev</p>
+    </div>
+  </section>
+
+</body>
+</html>

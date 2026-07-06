@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amplify AI Retreat — Internal Run of Show</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.62);
+      --muted-soft: rgba(255, 255, 255, 0.42);
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --font-heading: 'Instrument Serif', serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @page {
+      size: Letter;
+      margin: 0;
+    }
+
+    html {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      position: relative;
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.55in 0.6in 0.65in;
+      page-break-after: always;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    .page-bg {
+      position: absolute;
+      inset: 0;
+      background: url('/media/deck/deck-bg-logan.webp') center / cover no-repeat;
+      z-index: 0;
+    }
+
+    .page-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.92) 45%, rgba(0,0,0,0.97) 100%);
+    }
+
+    .page-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      margin-bottom: 10px;
+    }
+
+    .badge-internal {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #000;
+      background: #fff;
+      border-radius: 999px;
+      padding: 5px 12px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+
+    h1 {
+      font-size: 42pt;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 24pt;
+      margin-bottom: 6px;
+    }
+
+    h3 {
+      font-size: 14pt;
+      margin-bottom: 12px;
+    }
+
+    .lead {
+      font-size: 12pt;
+      color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 6px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-top: 18px;
+      font-size: 9pt;
+      color: var(--muted);
+    }
+
+    .meta-row strong {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand img {
+      height: 28px;
+      width: auto;
+    }
+
+    .brand span {
+      font-family: var(--font-body);
+      font-size: 11pt;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .page-num {
+      font-size: 8.5pt;
+      color: var(--muted-soft);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .day-theme {
+      display: inline-block;
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      padding: 5px 12px;
+      margin-bottom: 14px;
+    }
+
+    .schedule {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+    }
+
+    .schedule th {
+      text-align: left;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      padding: 0 0 8px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .schedule th.time-col { width: 22%; }
+    .schedule th.block-col { width: 78%; }
+
+    .schedule td {
+      vertical-align: top;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .schedule tr:last-child td {
+      border-bottom: none;
+    }
+
+    .time {
+      font-size: 9.5pt;
+      font-weight: 500;
+      color: #fff;
+      white-space: nowrap;
+      padding-right: 14px;
+    }
+
+    .block-title {
+      font-size: 10.5pt;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .block-lead {
+      font-size: 8.5pt;
+      font-weight: 500;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 3px;
+    }
+
+    .block-notes {
+      font-size: 9pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .section-label {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      padding-top: 14px;
+      padding-bottom: 6px;
+    }
+
+    .ops-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .ops-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .ops-card h4 {
+      font-family: var(--font-body);
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      margin-bottom: 6px;
+    }
+
+    .ops-card p {
+      font-size: 9pt;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .footer-note {
+      margin-top: auto;
+      padding-top: 16px;
+      font-size: 8pt;
+      color: var(--muted-soft);
+      letter-spacing: 0.04em;
+    }
+
+    .cover-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.2in 0;
+    }
+
+    .arc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .arc-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .arc-card .day-label {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      margin-bottom: 6px;
+    }
+
+    .arc-card h4 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 13pt;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+
+    .arc-card p {
+      font-size: 8.5pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="cover-center">
+        <span class="badge-internal">Internal · Team Only</span>
+        <p class="eyebrow">Amplify AI Retreat</p>
+        <h1>Run of Show</h1>
+        <p class="lead">July 28–31, 2026 · Mountain Time · The Hive Event Center &amp; off-site venues · Logan, Utah</p>
+        <div class="meta-row">
+          <span><strong>Study days start</strong> 9:00 AM daily</span>
+          <span><strong>Breakfast</strong> 8:00–9:00 AM daily</span>
+          <span><strong>Lunch</strong> 12:00–1:00 PM (Fri until 1:30) @ The Hive</span>
+          <span><strong>Capacity</strong> 50 seats</span>
+        </div>
+        <div class="arc-grid">
+          <div class="arc-card">
+            <div class="day-label">Day 1 · Jul 29</div>
+            <h4>Diagnose &amp; Design</h4>
+            <p>Curiosity · Lovable build · Park dinner &amp; games</p>
+          </div>
+          <div class="arc-card">
+            <div class="day-label">Day 2 · Jul 30</div>
+            <h4>Build &amp; Breakthrough</h4>
+            <p>Connection &amp; communication · Claude integrations · Skills</p>
+          </div>
+          <div class="arc-card">
+            <div class="day-label">Day 3 · Jul 31</div>
+            <h4>Deploy &amp; Connect</h4>
+            <p>Show &amp; Share · Send-off · River float</p>
+          </div>
+        </div>
+      </div>
+      <p class="footer-note">Confidential — not for publication on retreat.amplifyai.dev</p>
+    </div>
+  </section>
+
+  <!-- Day 0 -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">
+          <img src="/logo.png" alt="Amplify" onerror="this.style.display='none'" />
+          <span>Amplify AI Retreat</span>
+        </div>
+        <span class="page-num">Arrival · Jul 28</span>
+      </div>
+      <span class="day-theme">Pre-Retreat Welcome</span>
+      <h2>Tuesday, July 28</h2>
+      <p class="lead">Most attendees arrive the night before or early morning on Day 1.</p>
+
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th class="block-col">Block</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">7:00 PM</td>
+            <td>
+              <div class="block-title">Welcome Reception</div>
+              <div class="block-lead">Location: The Hive Event Center</div>
+              <div class="block-notes">Hors d'oeuvres, treats, and informal welcome for early arrivals. Social check-in — no formal programming.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-label">Venue</p>
+      <table class="schedule">
+        <tbody>
+          <tr>
+            <td class="time">The Hive</td>
+            <td>
+              <div class="block-notes">255 S Main Street, Suite 100, Logan, UT 84321</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="footer-note">All times Mountain Time (MDT)</p>
+    </div>
+  </section>
+
+  <!-- Day 1 -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">
+          <img src="/logo.png" alt="Amplify" onerror="this.style.display='none'" />
+          <span>Amplify AI Retreat</span>
+        </div>
+        <span class="page-num">Day 1 · Jul 29</span>
+      </div>
+      <span class="day-theme">Diagnose &amp; Design · Curiosity</span>
+      <h2>Wednesday, July 29</h2>
+      <p class="lead">TEP4 word of the day: <strong style="color:#fff;font-weight:500">Curiosity</strong></p>
+
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th class="block-col">Block</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">8:00–9:00</td>
+            <td>
+              <div class="block-title">Breakfast</div>
+              <div class="block-notes">@ The Hive</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:00–9:15</td>
+            <td>
+              <div class="block-title">Kickoff</div>
+              <div class="block-lead">Nicole</div>
+              <div class="block-notes">Welcome and frame the day.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:15–9:20</td>
+            <td>
+              <div class="block-title">Quiet Reflection</div>
+              <div class="block-notes">Journaling: <em>What problem brought you here?</em></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:20–9:55</td>
+            <td>
+              <div class="block-title">Introductions</div>
+              <div class="block-notes">Name · business · where you're from · something people wouldn't guess · biggest AI problem or opportunity</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:55–10:00</td>
+            <td>
+              <div class="block-title">Break</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">10:00–10:15</td>
+            <td>
+              <div class="block-title">Nicole Introduces Bill</div>
+              <div class="block-lead">Nicole</div>
+              <div class="block-notes">Bill Banta introduced to the room.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">10:15–11:15</td>
+            <td>
+              <div class="block-title">Left Brain / Right Brain → Curiosity</div>
+              <div class="block-lead">Tony Child</div>
+              <div class="block-notes">Bill introduces Tony, then Tony teaches. Fear, scarcity, and the unknown block curiosity. Abundant mindset opens curiosity — the foundation for everything that follows.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">11:15–12:00</td>
+            <td>
+              <div class="block-title">Brainstorming with AI</div>
+              <div class="block-lead">Braydon Carter</div>
+              <div class="block-notes">Curiosity → curious with AI. Use ChatGPT &amp; Claude to brainstorm ideas and basic game plans. <strong>Lovable unveil:</strong> $25 gift card for everyone — afternoon build session preview.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">12:00–1:00</td>
+            <td>
+              <div class="block-title">Lunch</div>
+              <div class="block-notes">Provided @ The Hive</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">1:00–1:15</td>
+            <td>
+              <div class="block-title">Lovable Setup</div>
+              <div class="block-notes">Everyone creates their Lovable account.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">1:15–1:45</td>
+            <td>
+              <div class="block-title">Lovable Training</div>
+              <div class="block-lead">Braydon Carter</div>
+              <div class="block-notes">What Lovable is, how it works, and its components — context for what to think about when building.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">1:45–2:00</td>
+            <td>
+              <div class="block-title">Break / Buffer</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">2:00–3:30</td>
+            <td>
+              <div class="block-title">Build Session</div>
+              <div class="block-lead">Guides in room</div>
+              <div class="block-notes">Attendees build a tool around their issue using Lovable.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">3:30–4:00</td>
+            <td>
+              <div class="block-title">Q&amp;A &amp; Shares</div>
+              <div class="block-notes">Open questions and small-group sharing.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">4:00–4:30</td>
+            <td>
+              <div class="block-title">Check-Ins</div>
+              <div class="block-notes">Tie back to problems they came with — breakthroughs? wins?</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">4:30–5:30</td>
+            <td>
+              <div class="block-title">Get-Ready Time</div>
+              <div class="block-notes">Transition before evening at the park.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="footer-note">Evening continues on next page</p>
+    </div>
+  </section>
+
+  <!-- Day 1 Evening -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">
+          <img src="/logo.png" alt="Amplify" onerror="this.style.display='none'" />
+          <span>Amplify AI Retreat</span>
+        </div>
+        <span class="page-num">Day 1 Evening</span>
+      </div>
+      <span class="day-theme">Connection · Off-Site</span>
+      <h2>Wednesday Evening · Park</h2>
+      <p class="lead">Meet at the park at 6:00 PM. Theme: curiosity in action.</p>
+
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th class="block-col">Block</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">6:00–6:45</td>
+            <td>
+              <div class="block-title">Dinner</div>
+              <div class="block-notes"><strong>Catered: Mo Bettas</strong> — teriyaki chicken, rice, mac salad</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">7:00–8:30</td>
+            <td>
+              <div class="block-title">Curiosity Games</div>
+              <div class="block-notes">Slip &amp; slide, dodgeball, and outdoor connection activities in the park.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">8:00–10:00</td>
+            <td>
+              <div class="block-title">Break Out &amp; Build with Braydon</div>
+              <div class="block-lead">Braydon Carter · @ The Hive</div>
+              <div class="block-notes">Optional open session — anyone who needs additional help can drop in. Runs nightly during the retreat.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-label">Internal Ops</p>
+      <div class="ops-grid">
+        <div class="ops-card">
+          <h4>Catering</h4>
+          <p>Mo Bettas — confirm headcount, delivery to park, setup by 5:45 PM.</p>
+        </div>
+        <div class="ops-card">
+          <h4>Supplies</h4>
+          <p>Lovable gift cards ($25/person) distributed during 11:15 AM session. Park games equipment &amp; liability check.</p>
+        </div>
+      </div>
+
+      <p class="footer-note">All times Mountain Time (MDT)</p>
+    </div>
+  </section>
+
+  <!-- Day 2 -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">
+          <img src="/logo.png" alt="Amplify" onerror="this.style.display='none'" />
+          <span>Amplify AI Retreat</span>
+        </div>
+        <span class="page-num">Day 2 · Jul 30</span>
+      </div>
+      <span class="day-theme">Build &amp; Breakthrough · Connection &amp; Communication</span>
+      <h2>Thursday, July 30</h2>
+      <p class="lead">Full day theme: connection and communication — AI as work partner, skills, and strategy.</p>
+
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th class="block-col">Block</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">8:00–9:00</td>
+            <td>
+              <div class="block-title">Breakfast</div>
+              <div class="block-notes">@ The Hive</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:00–9:30</td>
+            <td>
+              <div class="block-title">Curiosity Check-In</div>
+              <div class="block-notes">How many stayed curious last night? Kept building? Any breakthroughs or realizations from pondering or having fun?</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:30–10:30</td>
+            <td>
+              <div class="block-title">Claude Integrations Training</div>
+              <div class="block-lead">Braydon Carter</div>
+              <div class="block-notes">Connect Claude to integrators — email, documents, spreadsheets, and more.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">10:30–10:45</td>
+            <td>
+              <div class="block-title">Curiosity Spark</div>
+              <div class="block-notes"><em>Now that you see this is possible — how curious are you? What could you do? What questions do you have?</em></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">10:45–11:00</td>
+            <td>
+              <div class="block-title">Break</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">11:00–12:00</td>
+            <td>
+              <div class="block-title">Integration Practice</div>
+              <div class="block-notes">Hands-on: use AI as work partner / assistant. Test integrations in the room.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">12:00–1:00</td>
+            <td>
+              <div class="block-title">Lunch</div>
+              <div class="block-notes">Provided @ The Hive</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">1:00–1:30</td>
+            <td>
+              <div class="block-title">Wins &amp; Breakthroughs</div>
+              <div class="block-notes">Check progress toward solving each attendee's business problem — core retreat promise check-in.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">1:30–2:15</td>
+            <td>
+              <div class="block-title">Business Strategy</div>
+              <div class="block-lead">Bill Banta / Tony Child</div>
+              <div class="block-notes">SOPs, task assignment, business growth brainstorming — how to take their work to the next level.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">2:15–2:30</td>
+            <td>
+              <div class="block-title">Break</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">2:30–3:30</td>
+            <td>
+              <div class="block-title">Skills Training</div>
+              <div class="block-lead">Braydon Carter</div>
+              <div class="block-notes">Teach an AI employee — communication, connection, and building skills to run tasks.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">3:30–4:30</td>
+            <td>
+              <div class="block-title">Skills Practice</div>
+              <div class="block-notes">Set up skills, build, and experiment hands-on.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">4:30–5:00</td>
+            <td>
+              <div class="block-title">Recap</div>
+              <div class="block-notes">Quick wrap of the day.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">5:00–6:00</td>
+            <td>
+              <div class="block-title">Get-Ready Time</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">6:00–6:30</td>
+            <td>
+              <div class="block-title">Travel</div>
+              <div class="block-notes">To Travis's house.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">6:30–8:00</td>
+            <td>
+              <div class="block-title">Barbecue</div>
+              <div class="block-notes">@ Travis's house. Evening theme: <strong>Connection &amp; Communication</strong>.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">8:00–10:00</td>
+            <td>
+              <div class="block-title">Break Out &amp; Build with Braydon</div>
+              <div class="block-lead">Braydon Carter · @ The Hive</div>
+              <div class="block-notes">Optional open session — anyone who needs additional help can drop in.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="footer-note">All times Mountain Time (MDT)</p>
+    </div>
+  </section>
+
+  <!-- Day 3 -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">
+          <img src="/logo.png" alt="Amplify" onerror="this.style.display='none'" />
+          <span>Amplify AI Retreat</span>
+        </div>
+        <span class="page-num">Day 3 · Jul 31</span>
+      </div>
+      <span class="day-theme">Deploy &amp; Connect</span>
+      <h2>Friday, July 31</h2>
+      <p class="lead">Morning send-off and workbook handout. On the river by 2:00 PM — done by ~4:00–5:00 PM. Evening on your own.</p>
+
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th class="block-col">Block</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">8:00–9:00</td>
+            <td>
+              <div class="block-title">Breakfast</div>
+              <div class="block-notes">@ The Hive</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:00–9:15</td>
+            <td>
+              <div class="block-title">Quick Follow-Up</div>
+              <div class="block-notes">Morning check-in — wins, takeaways, and where everyone stands heading into the final day.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:15–10:30</td>
+            <td>
+              <div class="block-title">Show &amp; Share</div>
+              <div class="block-notes">See what others created. Gallery walk, lightning shares, and cross-pollinate breakthroughs — learn from each other's builds.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">10:30–11:00</td>
+            <td>
+              <div class="block-title">AI Agents (Brief)</div>
+              <div class="block-lead">Braydon Carter</div>
+              <div class="block-notes">Short overview of agentic tasks and workflows — when AI becomes autonomous. Keep it approachable.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">11:00–11:30</td>
+            <td>
+              <div class="block-title">Pitch — Want More?</div>
+              <div class="block-lead">Braydon Carter</div>
+              <div class="block-notes">For attendees who want to go deeper — next steps, continued support, and how to keep building after the retreat.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">11:30–12:00</td>
+            <td>
+              <div class="block-title">Send-Off Ceremony</div>
+              <div class="block-notes"><strong>Big reveal</strong> of all wins — show every problem was addressed (at least in part). Hand out <strong>take-home workbook</strong> with cool tools and ideas to keep playing with.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">12:00–1:30</td>
+            <td>
+              <div class="block-title">Extended Lunch &amp; Get Ready</div>
+              <div class="block-notes">Eat lunch @ The Hive and get ready for the river. Travel gear, change, etc.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">~2:00–~4:00/5:00</td>
+            <td>
+              <div class="block-title">River Float</div>
+              <div class="block-notes">On the river by 2:00 PM. Expect to be done between 4:00 and 5:00 PM. Confirm meet-up location and outfitter with ops.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">After ~5:00</td>
+            <td>
+              <div class="block-title">On Your Own</div>
+              <div class="block-notes">Attendees free to travel home, dine, or explore on their own — no group programming.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="section-label">Show &amp; Share — Facilitation Notes (Internal)</p>
+      <div class="ops-grid">
+        <div class="ops-card">
+          <h4>Format</h4>
+          <p>Gallery walk with table demos (rotate every 5–6 min), then 2-min lightning shares from volunteers.</p>
+        </div>
+        <div class="ops-card">
+          <h4>Send-Off Prep</h4>
+          <p>Track each attendee's Day 1 problem → solution status for the 11:30 AM reveal. Print/prepare take-home workbooks before Friday.</p>
+        </div>
+      </div>
+
+      <p class="footer-note">All times Mountain Time (MDT)</p>
+    </div>
+  </section>
+
+  <!-- Ops summary -->
+  <section class="page">
+    <div class="page-bg"></div>
+    <div class="page-inner">
+      <div class="header-bar">
+        <div class="brand">
+          <img src="/logo.png" alt="Amplify" onerror="this.style.display='none'" />
+          <span>Amplify AI Retreat</span>
+        </div>
+        <span class="page-num">Team Reference</span>
+      </div>
+      <span class="day-theme">Internal Ops Summary</span>
+      <h2>Logistics &amp; Team Notes</h2>
+
+      <div class="ops-grid" style="margin-top: 16px;">
+        <div class="ops-card">
+          <h4>Daily Rhythm</h4>
+          <p>Breakfast 8–9 · Study day starts 9 · Lunch 12–1 @ The Hive (Fri 12–1:30) · <strong>Break Out &amp; Build with Braydon</strong> 8–10 PM nightly (Wed &amp; Thu @ The Hive).</p>
+        </div>
+        <div class="ops-card">
+          <h4>Guides</h4>
+          <p><strong>Braydon Carter</strong> — AI strategy, builds, integrations, skills, automation<br />
+          <strong>Tony Child</strong> — Mindset, curiosity, strategy<br />
+          <strong>Bill Banta</strong> — Business strategy, SOPs, growth<br />
+          <strong>Nicole</strong> — Kickoff &amp; room logistics</p>
+        </div>
+        <div class="ops-card">
+          <h4>Meals Provided</h4>
+          <p>Jul 28: Welcome reception (Hive)<br />
+          Jul 29: Lunch + Mo Bettas dinner (park)<br />
+          Jul 30: Lunch + barbecue (Travis's)<br />
+          Jul 31: Extended lunch (12–1:30) · no group dinner — on your own after river</p>
+        </div>
+        <div class="ops-card">
+          <h4>Break Out &amp; Build</h4>
+          <p><strong>8:00–10:00 PM</strong> Wed &amp; Thu @ The Hive. Optional open help session with Braydon for anyone who needs additional support building.</p>
+        </div>
+        <div class="ops-card">
+          <h4>Core Promise</h4>
+          <p>Every attendee leaves with at least a partial solution to their business problem. Daily check-ins track progress toward that outcome.</p>
+        </div>
+        <div class="ops-card">
+          <h4>Off-Site Evenings</h4>
+          <p>Jul 29: Park (6:00 PM meet-up)<br />
+          Jul 30: Travis's house (6:30 PM barbecue)<br />
+          Jul 31: River float (~2:00 PM start, done ~4:00–5:00 PM)</p>
+        </div>
+        <div class="ops-card">
+          <h4>Not Public</h4>
+          <p>This document is for internal team planning only. Do not publish on the retreat website or share with attendees ahead of time.</p>
+        </div>
+      </div>
+
+      <p class="footer-note">Generated for Amplify AI Retreat · July 29–31, 2026 · Logan, Utah</p>
+    </div>
+  </section>
+
+</body>
+</html>

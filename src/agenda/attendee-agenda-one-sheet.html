@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Amplify AI Retreat — What to Expect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --line: rgba(255,255,255,0.16);
+      --muted: rgba(255,255,255,0.64);
+      --heading: 'Instrument Serif', Georgia, serif;
+      --body: 'Barlow', system-ui, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: Letter portrait; margin: 0; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-family: var(--body); color: #fff; background: #060608; }
+    svg { stroke: currentColor; fill: none; }
+
+    .sheet {
+      position: relative;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+    }
+
+    .bg-image {
+      position: absolute;
+      inset: 0;
+      background: url('/media/deck/deck-bg-logan.webp') center 30% / cover no-repeat;
+      z-index: 0;
+    }
+
+    .bg-gradient {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg,
+          rgba(6,6,8,0.93) 0%,
+          rgba(6,6,8,0.84) 22%,
+          rgba(6,6,8,0.76) 45%,
+          rgba(6,6,8,0.8) 70%,
+          rgba(6,6,8,0.9) 100%
+        );
+    }
+
+    .inner {
+      position: relative;
+      z-index: 2;
+      height: 11in;
+      min-height: 11in;
+      max-height: 11in;
+      padding: 0.22in 0.34in 0;
+      display: grid;
+      grid-template-rows: auto auto auto minmax(5.7in, 1fr) auto;
+      row-gap: 0;
+      align-content: stretch;
+    }
+
+    /* ── Header ── */
+    .top-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+    .top-label::before, .top-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    .top-label span {
+      font-size: 6.5pt;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
+    }
+
+    .header { text-align: center; margin-bottom: 5px; }
+    .title-main {
+      font-family: var(--heading);
+      font-size: 32pt;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      color: #efefef;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .subtitle {
+      margin-top: 5px;
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+    }
+    .intro {
+      margin: 6px auto 0;
+      max-width: 6.2in;
+      font-size: 8.2pt;
+      font-weight: 300;
+      line-height: 1.42;
+      color: var(--muted);
+    }
+
+    .logistics {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      margin-top: 6px;
+    }
+    .log-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 6.8pt;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+    }
+    .log-item svg { width: 11px; height: 11px; opacity: 0.55; }
+
+    /* ── Section title ── */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 7px 0 7px;
+    }
+    .section-title::before, .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    .section-title span {
+      font-size: 6.5pt;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      white-space: nowrap;
+    }
+
+    /* ── Day rows — grow to fill page ── */
+    .days {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      min-height: 0;
+      height: 100%;
+      margin-bottom: 5px;
+    }
+
+    .day-row {
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: rgba(0,0,0,0.42);
+      backdrop-filter: blur(6px);
+      padding: 18px 14px;
+      display: grid;
+      grid-template-columns: 1.25in 1fr 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+      flex: 1 1 0;
+      min-height: 0;
+    }
+
+    .day-info {
+      padding-right: 8px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .day-meta {
+      font-size: 6.8pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      margin-bottom: 2px;
+    }
+    .day-title {
+      font-family: var(--heading);
+      font-size: 14pt;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .day-tag {
+      font-size: 8pt;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .block-head {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .block-head svg { width: 13px; height: 13px; color: rgba(255,255,255,0.55); }
+    .block-label {
+      font-size: 6.8pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .block-label .sub { color: rgba(255,255,255,0.35); font-weight: 500; }
+
+    .block ul { list-style: none; }
+    .block li {
+      position: relative;
+      padding-left: 9px;
+      font-size: 8.2pt;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.48;
+      margin-bottom: 5px;
+    }
+    .block li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+    }
+    .block li strong { color: rgba(255,255,255,0.92); font-weight: 500; }
+
+    .block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .page-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      align-self: end;
+      margin-top: 2px;
+      padding: 6px 0 0.11in;
+      background: linear-gradient(180deg, rgba(6,6,8,0) 0%, rgba(6,6,8,0.55) 12%, rgba(6,6,8,0.88) 40%);
+    }
+
+    .bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* ── Outcomes ── */
+    .outcomes {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 7px;
+    }
+    .outcome {
+      text-align: center;
+      padding: 9px 4px;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 5px;
+      background: rgba(0,0,0,0.38);
+      min-height: 0.68in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .outcome-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 4px;
+      color: rgba(255,255,255,0.68);
+    }
+    .outcome-icon svg { width: 17px; height: 17px; }
+    .outcome h4 {
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 2px;
+      line-height: 1.25;
+    }
+    .outcome p {
+      font-size: 6.8pt;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    /* ── Included ── */
+    .included-wrap {
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.38);
+    }
+    .included-label {
+      font-size: 6pt;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 5px;
+      text-align: center;
+    }
+    .included {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px 12px;
+    }
+    .inc-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 7.2pt;
+      color: rgba(255,255,255,0.75);
+      white-space: nowrap;
+    }
+    .inc-item svg { width: 10px; height: 10px; opacity: 0.55; }
+
+    /* ── Footer ── */
+    .early {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 9px 11px;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 5px;
+      background: rgba(0,0,0,0.38);
+    }
+    .early svg { width: 12px; height: 12px; margin-top: 1px; color: rgba(255,255,255,0.45); flex-shrink: 0; }
+    .early p { font-size: 7.6pt; color: var(--muted); line-height: 1.42; }
+    .early strong { color: rgba(255,255,255,0.88); font-weight: 500; }
+
+    .footer {
+      text-align: center;
+      padding-top: 6px;
+      margin-top: 2px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-url {
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .footer-sub {
+      margin-top: 3px;
+      font-size: 7pt;
+      color: rgba(255,255,255,0.36);
+    }
+
+    .guides-note {
+      font-size: 7.2pt;
+      color: rgba(255,255,255,0.42);
+      text-align: center;
+      margin: 0 0 5px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="bg-image"></div>
+    <div class="bg-gradient"></div>
+
+    <div class="inner">
+      <div class="top-label"><span>Your 3-Day Experience</span></div>
+
+      <header class="header">
+        <h1 class="title-main">Amplify AI Retreat</h1>
+        <p class="subtitle">Three Days. One Breakthrough.</p>
+        <p class="intro">This isn't a conference. It's a hands-on implementation retreat — bring a real business problem and leave with a real AI-powered path forward, plus the relationships and momentum to run with it.</p>
+        <div class="logistics">
+          <div class="log-item">
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            July 29–31, 2026
+          </div>
+          <div class="log-item">
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            The Hive Event Center
+          </div>
+          <div class="log-item">
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Logan, Utah · 50 Seats
+          </div>
+        </div>
+      </header>
+
+      <div class="section-title"><span>Your Three Days</span></div>
+
+      <section class="days">
+        <article class="day-row">
+          <div class="day-info">
+            <div class="day-meta">Day 1 · Wed, July 29</div>
+            <h2 class="day-title">Diagnose &amp; Design</h2>
+            <p class="day-tag">Get clear on your problem. Open curiosity. Build something real.</p>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+              <span class="block-label">Morning</span>
+            </div>
+            <ul>
+              <li><strong>Welcome &amp; connect</strong> — meet the cohort, name your problem</li>
+              <li><strong>Unlock curiosity</strong> — mindset for breakthroughs</li>
+              <li><strong>Brainstorm with AI</strong> — ideas into plans</li>
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M17 18a5 5 0 1 0-10 0"/><path d="M12 9V2"/></svg>
+              <span class="block-label">Afternoon</span>
+            </div>
+            <ul>
+              <li><strong>Build your first AI tool</strong> — guided, hands-on</li>
+              <li><strong>Share wins &amp; get unstuck</strong> — celebrate progress</li>
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.5-.5-2.5-1-3.5C8.5 6 12 4 12 4s3.5 2 2 4.5c-.5 1-1 2-1 3.5a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              <span class="block-label">Evening <span class="sub">· Off-site</span></span>
+            </div>
+            <ul>
+              <li><strong>Catered dinner</strong> — great food, real conversation</li>
+              <li><strong>Curiosity games</strong> — let loose in the spirit of curiosity</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="day-row">
+          <div class="day-info">
+            <div class="day-meta">Day 2 · Thu, July 30</div>
+            <h2 class="day-title">Build &amp; Breakthrough</h2>
+            <p class="day-tag">AI as your partner in the morning. AI as your employee in the afternoon.</p>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+              <span class="block-label">Morning <span class="sub">· Partner</span></span>
+            </div>
+            <ul>
+              <li><strong>Progress check-in</strong> — wins from last night</li>
+              <li><strong>Collaborate with AI</strong> — work side-by-side</li>
+              <li><strong>Practice in the room</strong> — AI as work partner</li>
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M17 18a5 5 0 1 0-10 0"/><path d="M12 9V2"/></svg>
+              <span class="block-label">Afternoon <span class="sub">· Employee</span></span>
+            </div>
+            <ul>
+              <li><strong>Train AI workflows</strong> — tasks on your behalf</li>
+              <li><strong>Business strategy</strong> — SOPs, make it stick</li>
+              <li><strong>Celebrate wins</strong> — toward your solution</li>
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M4 15h16"/><path d="M6 15V9M10 15V7M14 15V9M18 15V7"/></svg>
+              <span class="block-label">Evening <span class="sub">· Off-site</span></span>
+            </div>
+            <ul>
+              <li><strong>Group dinner</strong> — relaxed, real connection</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="day-row">
+          <div class="day-info">
+            <div class="day-meta">Day 3 · Fri, July 31</div>
+            <h2 class="day-title">Deploy &amp; Connect</h2>
+            <p class="day-tag">See what everyone built. Close the loop. Cap it with an adventure.</p>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+              <span class="block-label">Morning</span>
+            </div>
+            <ul>
+              <li><strong>Show &amp; Share</strong> — see what the room built</li>
+              <li><strong>AI agents</strong> — when systems work for you</li>
+              <li><strong>Send-off</strong> — wins + take-home playbook</li>
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M2 16c2-2 6-2 8 0s6 2 8 0"/><path d="M12 4v8"/></svg>
+              <span class="block-label">Afternoon <span class="sub">· Off-site</span></span>
+            </div>
+            <ul>
+              <li><strong>River float</strong> — unplug and close it right</li>
+            </ul>
+          </div>
+          <div class="block">
+            <div class="block-head">
+              <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              <span class="block-label">Evening</span>
+            </div>
+            <ul>
+              <li><strong>On your own</strong> — head home or explore</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <div class="page-bottom">
+      <p class="guides-note">Optional open build time each evening · Guides: Braydon Carter · Tony Child · Bill Banta</p>
+
+      <div class="bottom">
+      <div class="section-title"><span>What You'll Walk Away With</span></div>
+
+      <section class="outcomes">
+        <article class="outcome">
+          <div class="outcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></div>
+          <h4>A Solution</h4>
+          <p>Progress on your real problem</p>
+        </article>
+        <article class="outcome">
+          <div class="outcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></div>
+          <h4>Something Built</h4>
+          <p>A tool or workflow you created</p>
+        </article>
+        <article class="outcome">
+          <div class="outcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6l-1.5 2.5a2 2 0 0 1-3.4 0L9 15c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7Z"/></svg></div>
+          <h4>Skills That Stick</h4>
+          <p>Partner today, employee tomorrow</p>
+        </article>
+        <article class="outcome">
+          <div class="outcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h4>People</h4>
+          <p>50 entrepreneurs worth knowing</p>
+        </article>
+        <article class="outcome">
+          <div class="outcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
+          <h4>Playbook</h4>
+          <p>Tools and next steps</p>
+        </article>
+        <article class="outcome">
+          <div class="outcome-icon"><svg viewBox="0 0 24 24" stroke-width="1.4"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg></div>
+          <h4>Experiences</h4>
+          <p>Evenings you'll remember</p>
+        </article>
+      </section>
+
+      <div class="included-wrap">
+        <div class="included-label">What's Included</div>
+        <div class="included">
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>Daily breakfast &amp; lunch</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>3 days working sessions</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.5-.5-2.5-1-3.5C8.5 6 12 4 12 4s3.5 2 2 4.5c-.5 1-1 2-1 3.5a2.5 2.5 0 0 0 2.5 2.5z"/></svg>Evening dinner &amp; games</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 15h16"/><path d="M6 15V9M10 15V7M14 15V9M18 15V7"/></svg>Group dinner</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M2 16c2-2 6-2 8 0s6 2 8 0"/><path d="M12 4v8"/></svg>River float</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>Take-home playbook</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>3 expert guides</span>
+          <span class="inc-item"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>Open build time nightly</span>
+        </div>
+      </div>
+
+      <div class="early">
+        <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>
+        <p><strong>Arriving early?</strong> Join us the evening of July 28 for a welcome reception at The Hive — your first chance to meet the room.</p>
+      </div>
+
+      <footer class="footer">
+        <p class="footer-url">retreat.amplifyai.dev</p>
+        <p class="footer-sub">Application required · 50 seats only</p>
+      </footer>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

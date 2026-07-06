@@ -6,6 +6,8 @@ import HlsSection from '../components/HlsSection.astro';
 import StartSection from '../components/sections/StartSection';
 import FeaturesChess from '../components/sections/FeaturesChess';
 import FeaturesGrid from '../components/sections/FeaturesGrid';
+import RetreatSchedule from '../components/sections/RetreatSchedule';
+import WhatsIncluded from '../components/sections/WhatsIncluded';
 import CaseStudies from '../components/sections/CaseStudies';
 import Stats from '../components/sections/Stats';
 import Testimonials from '../components/sections/Testimonials';
@@ -35,7 +37,9 @@ import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
       </HlsSection>
 
       <FeaturesChess client:load />
+      <RetreatSchedule client:load />
       <FeaturesGrid client:load />
+      <WhatsIncluded client:load />
       <CaseStudies client:load />
 
       <HlsSection

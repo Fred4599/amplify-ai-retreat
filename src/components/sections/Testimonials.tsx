@@ -23,7 +23,7 @@ const guides: { Icon: LucideIcon; photo?: string; role: string; name: string; bo
   {
     Icon: BarChart2,
     photo: '/media/guide-bill-banta.webp',
-    role: 'Coaching & Strategy',
+    role: 'Business Strategy & Growth',
     name: 'Bill Banta',
     body: 'Coaches you on priorities, positioning, and the decisions that turn an AI breakthrough into a plan you can actually run. Helps align mindset and strategy so implementation sticks in your business—not just at the retreat.',
   },
