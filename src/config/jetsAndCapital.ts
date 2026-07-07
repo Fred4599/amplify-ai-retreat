@@ -27,7 +27,7 @@ export const JETS_AND_CAPITAL_LANDING = {
       label: 'Reserve Your Seat',
       url:
         import.meta.env.PUBLIC_JETS_CAPITAL_CHECKOUT_URL ??
-        'https://keepelevated.com/amplify-payment-link?am_id=alecatkinson4403',
+        'https://keepelevated.com/jets-capital?am_id=alecatkinson4403',
     },
     booking: {
       label: 'Book a 15-Min Call',
