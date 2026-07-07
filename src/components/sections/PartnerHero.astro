@@ -10,6 +10,7 @@ interface Props {
   subheadline: string;
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
+  pricing: { retail: string; partner: string; note: string };
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   subheadline,
   primaryCta,
   secondaryCta,
+  pricing,
 } = Astro.props;
 ---
 
@@ -85,7 +87,24 @@ const {
       {subheadline}
     </p>
 
-    <p class="shrink-0 mt-3 text-sm text-white/50 font-body font-light tracking-wide">
+    <div class="shrink-0 mt-6 sm:mt-7 flex flex-col items-center gap-2 px-2">
+      <p class="text-white/55 font-body text-xs sm:text-sm uppercase tracking-widest">
+        {pricing.note}
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <span class="text-white/45 font-body text-xl sm:text-2xl line-through decoration-white/35">
+          {pricing.retail}
+        </span>
+        <span class="text-white font-heading italic text-3xl sm:text-4xl tracking-tight">
+          {pricing.partner}
+        </span>
+      </div>
+      <p class="text-white/50 font-body text-sm font-light max-w-md">
+        Save $1,000 — reserved exclusively for the Jets & Capital community.
+      </p>
+    </div>
+
+    <p class="shrink-0 mt-4 text-sm text-white/50 font-body font-light tracking-wide">
       {VENUE.name} · Logan, Utah
     </p>
 

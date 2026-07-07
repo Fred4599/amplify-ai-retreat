@@ -6,10 +6,14 @@ import { MapPin } from 'lucide-react';
 import { VENUE, eventDatesLine, venueAddressLine } from '../../config/site';
 import { WELCOME_RECEPTION } from '../../content/retreat';
 
-const options = (checkoutUrl: string, bookingUrl: string, investment: string) => [
+const options = (
+  checkoutUrl: string,
+  bookingUrl: string,
+  pricing: { retail: string; partner: string },
+) => [
   {
     title: 'Reserve your seat',
-    desc: `Secure your spot at the retreat. ${investment} investment — payment confirms your seat.`,
+    desc: `Secure your spot at the retreat. ${pricing.partner} for Jets & Capital members (${pricing.retail} value) — payment confirms your seat.`,
     href: checkoutUrl,
     label: 'Reserve Your Seat',
     primary: true,
@@ -37,7 +41,7 @@ type PartnerCtaFooterProps = {
   bookingUrl: string;
   checkoutLabel: string;
   bookingLabel: string;
-  investment: string;
+  pricing: { retail: string; partner: string; note: string };
 };
 
 export default function PartnerCtaFooter({
@@ -45,10 +49,10 @@ export default function PartnerCtaFooter({
   bookingUrl,
   checkoutLabel,
   bookingLabel,
-  investment,
+  pricing,
 }: PartnerCtaFooterProps) {
   const hydrated = useHydrated();
-  const choices = options(checkoutUrl, bookingUrl, investment).map((option, index) =>
+  const choices = options(checkoutUrl, bookingUrl, pricing).map((option, index) =>
     index === 0 ? { ...option, label: checkoutLabel } : { ...option, label: bookingLabel },
   );
 
@@ -72,11 +76,26 @@ export default function PartnerCtaFooter({
 
         <motion.p
           {...inView(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 0.4, duration: 0.8 })}
-          className="text-white/60 font-body font-light text-base sm:text-lg mb-12 max-w-xl mx-auto px-1"
+          className="text-white/60 font-body font-light text-base sm:text-lg mb-6 max-w-xl mx-auto px-1"
         >
           Exclusive access for Jets & Capital members. Reserve your seat directly, or book a quick
           15-minute call if you&apos;d like to learn more first.
         </motion.p>
+
+        <motion.div
+          {...inView(hydrated, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, { delay: 0.5, duration: 0.7 })}
+          className="liquid-glass rounded-2xl px-6 py-4 mb-12 flex flex-col items-center gap-2"
+        >
+          <span className="text-white/55 font-body text-xs uppercase tracking-widest">{pricing.note}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-white/45 font-body text-lg sm:text-xl line-through decoration-white/35">
+              {pricing.retail}
+            </span>
+            <span className="text-white font-heading italic text-2xl sm:text-3xl tracking-tight">
+              {pricing.partner}
+            </span>
+          </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-12">
           {choices.map((choice, idx) => (

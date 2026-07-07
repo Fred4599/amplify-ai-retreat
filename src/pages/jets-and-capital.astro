@@ -40,6 +40,7 @@ const { checkout, booking } = JETS_AND_CAPITAL_LANDING.ctas;
       subheadline={JETS_AND_CAPITAL_LANDING.subheadline}
       primaryCta={{ href: checkout.url, label: checkout.label }}
       secondaryCta={{ href: booking.url, label: booking.label }}
+      pricing={JETS_AND_CAPITAL_LANDING.pricing}
     />
     <div class="relative z-10 bg-black w-full max-w-full overflow-x-hidden flex flex-col items-center">
       <HlsSection
@@ -55,7 +56,7 @@ const { checkout, booking } = JETS_AND_CAPITAL_LANDING.ctas;
         </div>
         <div class="flex flex-col items-center">
           <p class="mb-8 text-white/70 font-body text-sm sm:text-base font-medium tracking-wide text-center px-4 max-w-2xl">
-            An exclusive invitation for the {JETS_AND_CAPITAL.name} community — family offices, allocators, and operators ready to implement AI in their businesses and portfolios.
+            An exclusive invitation for the {JETS_AND_CAPITAL.name} community — family offices, allocators, and operators ready to implement AI in their businesses and portfolios. Special community pricing: <span class="text-white/45 line-through">{JETS_AND_CAPITAL_LANDING.pricing.retail}</span> <span class="text-white">{JETS_AND_CAPITAL_LANDING.pricing.partner}</span>.
           </p>
           <StartSection client:load />
         </div>
@@ -105,7 +106,7 @@ const { checkout, booking } = JETS_AND_CAPITAL_LANDING.ctas;
           bookingUrl={booking.url}
           checkoutLabel={checkout.label}
           bookingLabel={booking.label}
-          investment={JETS_AND_CAPITAL_LANDING.investment}
+          pricing={JETS_AND_CAPITAL_LANDING.pricing}
         />
       </HlsSection>
     </div>
