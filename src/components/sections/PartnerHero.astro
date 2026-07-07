@@ -1,0 +1,119 @@
+---
+import { eventDatesLine, PRESENTER, VENUE } from '../../config/site';
+import { MEDIA } from '../../config/media';
+import type { Sponsor } from '../../config/site';
+
+interface Props {
+  partner: Sponsor;
+  badge: string;
+  headline: string;
+  subheadline: string;
+  applyHref: string;
+  applyLabel?: string;
+}
+
+const {
+  partner,
+  badge,
+  headline,
+  subheadline,
+  applyHref,
+  applyLabel = 'Apply to Attend',
+} = Astro.props;
+---
+
+<section id="hero" class="relative w-full min-h-[100svh] overflow-x-hidden">
+  <div class="absolute inset-0 z-0" aria-hidden="true">
+    <img
+      src={MEDIA.posters.hero}
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover pointer-events-none"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <video
+      class="absolute inset-0 h-full w-full object-cover pointer-events-none"
+      src={MEDIA.videos.hero}
+      poster={MEDIA.posters.hero}
+      muted
+      loop
+      playsinline
+      autoplay
+      preload="metadata"
+    ></video>
+    <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-full h-[200px] sm:h-[300px] bg-gradient-to-b from-transparent to-black pointer-events-none"></div>
+  </div>
+
+  <div class="hero-copy relative z-30 flex flex-col items-center text-center px-4 sm:px-6 w-full max-w-full min-h-[100svh] pt-24 sm:pt-28 md:pt-32 lg:pt-[150px] pb-10 sm:pb-14">
+    <a
+      href={PRESENTER.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="shrink-0 mb-3 sm:mb-4 inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-sm sm:text-base text-white/75 hover:text-white font-body font-medium tracking-wide transition-colors group"
+      aria-label={`Presented by ${PRESENTER.name} — visit website`}
+    >
+      <span>Presented by</span>
+      <img
+        src={PRESENTER.logoPath}
+        alt=""
+        width="140"
+        height="48"
+        class="h-8 sm:h-10 w-auto max-w-[8rem] sm:max-w-[9.5rem] shrink-0 object-contain brightness-0 invert opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"
+        decoding="async"
+        aria-hidden="true"
+      />
+      <span>{PRESENTER.name}</span>
+    </a>
+
+    <a
+      href={partner.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="shrink-0 mb-5 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-white/60 hover:text-white/90 font-body font-medium tracking-wide transition-colors"
+      aria-label={`In partnership with ${partner.name} — visit website`}
+    >
+      <span>In partnership with</span>
+      <span class="text-white/90">{partner.name}</span>
+    </a>
+
+    <div class="shrink-0 mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full">
+      <span class="bg-white text-black rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider whitespace-nowrap shrink-0">
+        {badge}
+      </span>
+      <span class="text-white/85 font-body text-sm font-medium text-center sm:text-left leading-snug max-w-[18rem] sm:max-w-none">
+        {eventDatesLine()} · Logan, Utah · 3-Day Implementation Retreat
+      </span>
+    </div>
+
+    <h1 class="shrink-0 text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[7.5rem] font-heading italic text-white max-w-5xl tracking-tight text-center px-1 leading-[1.05]">
+      Amplify AI Retreat
+    </h1>
+
+    <h2 class="shrink-0 mt-5 sm:mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.75rem] text-white/90 font-heading italic tracking-tight text-center max-w-4xl leading-[1.08]">
+      {headline}
+    </h2>
+
+    <p class="shrink-0 mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-white/85 font-body font-light leading-relaxed max-w-2xl px-1 text-center">
+      {subheadline}
+    </p>
+
+    <p class="shrink-0 mt-3 text-sm text-white/50 font-body font-light tracking-wide">
+      {VENUE.name} · Logan, Utah
+    </p>
+
+    <div class="shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-8 sm:mt-10 w-full sm:w-auto max-w-sm sm:max-w-none px-2 sm:px-0">
+      <a href={applyHref} class="liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]">
+        {applyLabel}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+      </a>
+      <a
+        href="#schedule"
+        class="rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-white/80 hover:text-white transition-colors font-medium text-sm min-h-[44px]"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fill-current" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+        See Your Three Days
+      </a>
+    </div>
+  </div>
+</section>

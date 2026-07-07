@@ -11,7 +11,11 @@ const navItems = [
   { label: 'FAQ', href: '#faq' },
 ];
 
-export default function Navbar() {
+type NavbarProps = {
+  applyHref?: string;
+};
+
+export default function Navbar({ applyHref = '/apply' }: NavbarProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -60,7 +64,7 @@ export default function Navbar() {
               {item.label}
             </a>
           ))}
-          <ApplyTrigger className="bg-white text-black hover:bg-white/90 transition-colors rounded-full px-3.5 py-1.5 text-sm font-medium flex items-center gap-1.5 ml-2 min-h-[36px]">
+          <ApplyTrigger href={applyHref} className="bg-white text-black hover:bg-white/90 transition-colors rounded-full px-3.5 py-1.5 text-sm font-medium flex items-center gap-1.5 ml-2 min-h-[36px]">
             Apply
             <ArrowUpRight className="w-4 h-4" />
           </ApplyTrigger>
@@ -108,6 +112,7 @@ export default function Navbar() {
               </a>
             ))}
             <ApplyTrigger
+              href={applyHref}
               onClick={close}
               className="mt-2 bg-white text-black hover:bg-white/90 transition-colors rounded-full px-6 py-3.5 text-sm font-medium flex items-center justify-center gap-2 min-h-[44px]"
             >

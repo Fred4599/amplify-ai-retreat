@@ -25,15 +25,19 @@ const steps = [
   },
 ];
 
-const footerLinks = [
+const footerLinks = (applyHref: string) => [
   { label: 'Schedule', href: '#schedule' },
   { label: 'Experience', href: '#experience' },
   { label: 'Guides', href: '#guides' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Apply', href: '/apply' },
+  { label: 'Apply', href: applyHref },
 ];
 
-export default function CtaFooter() {
+type CtaFooterProps = {
+  applyHref?: string;
+};
+
+export default function CtaFooter({ applyHref = '/apply' }: CtaFooterProps) {
   const hydrated = useHydrated();
 
   return (
@@ -85,7 +89,7 @@ export default function CtaFooter() {
           {...inView(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 0.9, duration: 0.8 })}
           className="flex flex-col sm:flex-row items-center gap-4"
         >
-          <ApplyTrigger className="bg-white text-black hover:bg-white/90 transition-colors duration-300 rounded-full px-8 py-3.5 font-medium text-sm w-full sm:w-auto inline-block text-center">
+          <ApplyTrigger href={applyHref} className="bg-white text-black hover:bg-white/90 transition-colors duration-300 rounded-full px-8 py-3.5 font-medium text-sm w-full sm:w-auto inline-block text-center">
             Start Application
           </ApplyTrigger>
           <button
@@ -121,7 +125,7 @@ export default function CtaFooter() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            {footerLinks.map((item) => (
+            {footerLinks(applyHref).map((item) => (
               <a
                 key={item.label}
                 href={item.href}

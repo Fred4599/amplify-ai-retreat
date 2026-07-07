@@ -4,6 +4,7 @@ import ApplyNavbar from '../components/ApplyNavbar.astro';
 import { eventDatesLine } from '../config/site';
 
 const webhook = import.meta.env.PUBLIC_APPLICATION_WEBHOOK ?? '';
+const sourceParam = Astro.url.searchParams.get('source') ?? '';
 
 const annualSalesOptions = [
   '0-100k',
@@ -179,7 +180,7 @@ const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
     </div>
   </main>
 
-  <script define:vars={{ webhook }}>
+  <script define:vars={{ webhook, sourceParam }}>
     const form = document.getElementById('application-form');
     const success = document.getElementById('application-success');
     const errorEl = document.getElementById('application-error');
@@ -209,6 +210,7 @@ const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
         bottleneck: data.get('bottleneck'),
         aiUsage: data.get('aiUsage'),
         successOutcome: data.get('successOutcome'),
+        source: sourceParam || 'Amplify AI Retreat — Application',
         submittedAt: new Date().toISOString(),
       };
 

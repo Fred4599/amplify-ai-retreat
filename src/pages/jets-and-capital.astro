@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar';
+import PartnerHero from '../components/sections/PartnerHero.astro';
+import HlsSection from '../components/HlsSection.astro';
+import StartSection from '../components/sections/StartSection';
+import FeaturesChess from '../components/sections/FeaturesChess';
+import FeaturesGrid from '../components/sections/FeaturesGrid';
+import RetreatSchedule from '../components/sections/RetreatSchedule';
+import WhatsIncluded from '../components/sections/WhatsIncluded';
+import CaseStudies from '../components/sections/CaseStudies';
+import Stats from '../components/sections/Stats';
+import Testimonials from '../components/sections/Testimonials';
+import FAQ from '../components/sections/FAQ.astro';
+import SponsorCarousel from '../components/sections/SponsorCarousel.astro';
+import CtaFooter from '../components/sections/CtaFooter';
+import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
+import {
+  JETS_AND_CAPITAL,
+  JETS_AND_CAPITAL_LANDING,
+  jetsAndCapitalApplyHref,
+} from '../config/jetsAndCapital';
+
+const applyHref = jetsAndCapitalApplyHref();
+---
+
+<BaseLayout
+  title={JETS_AND_CAPITAL_LANDING.title}
+  description={JETS_AND_CAPITAL_LANDING.description}
+  path={JETS_AND_CAPITAL_LANDING.path}
+  structuredData="home"
+>
+  <Navbar client:load applyHref={applyHref} />
+  <main id="main-content" class="bg-black relative w-full max-w-full overflow-x-hidden">
+    <PartnerHero
+      partner={JETS_AND_CAPITAL}
+      badge={JETS_AND_CAPITAL_LANDING.badge}
+      headline={JETS_AND_CAPITAL_LANDING.headline}
+      subheadline={JETS_AND_CAPITAL_LANDING.subheadline}
+      applyHref={applyHref}
+      applyLabel={JETS_AND_CAPITAL_LANDING.applyLabel}
+    />
+    <div class="relative z-10 bg-black w-full max-w-full overflow-x-hidden flex flex-col items-center">
+      <HlsSection
+        src={HLS_BACKGROUNDS.start.src}
+        poster={HLS_BACKGROUNDS.start.poster}
+        sectionClass="w-full min-h-[min(85svh,700px)] flex items-center justify-center py-20 sm:py-32"
+        videoOpacity={0.8}
+      >
+        <div slot="overlays">
+          <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute inset-0 bg-black/40 z-[1] pointer-events-none"></div>
+        </div>
+        <div class="flex flex-col items-center">
+          <p class="mb-8 text-white/70 font-body text-sm sm:text-base font-medium tracking-wide text-center px-4 max-w-2xl">
+            An exclusive invitation for the {JETS_AND_CAPITAL.name} community — family offices, allocators, and operators ready to implement AI in their businesses and portfolios.
+          </p>
+          <StartSection client:load />
+        </div>
+      </HlsSection>
+
+      <FeaturesChess client:load />
+      <RetreatSchedule client:load />
+      <FeaturesGrid client:load />
+      <WhatsIncluded client:load />
+      <CaseStudies client:load />
+
+      <HlsSection
+        id="outcomes"
+        src={HLS_BACKGROUNDS.stats.src}
+        poster={HLS_BACKGROUNDS.stats.poster}
+        sectionClass="w-full py-20 sm:py-32 md:py-48 flex items-center justify-center"
+        videoOpacity={0.4}
+        videoClass="grayscale saturate-0"
+      >
+        <div slot="overlays">
+          <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-black to-transparent z-[1] pointer-events-none"></div>
+        </div>
+        <Stats client:load />
+      </HlsSection>
+
+      <Testimonials client:load />
+      <FAQ />
+      <SponsorCarousel />
+
+      <HlsSection
+        id="apply"
+        src={HLS_BACKGROUNDS.cta.src}
+        poster={HLS_BACKGROUNDS.cta.poster}
+        sectionClass="w-full min-h-[min(100svh,900px)] flex flex-col"
+        contentClass="flex flex-col flex-1 justify-end"
+        videoOpacity={0.6}
+      >
+        <div slot="overlays">
+          <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black to-transparent z-[1] pointer-events-none"></div>
+          <div class="absolute inset-0 bg-black/40 z-[1] pointer-events-none"></div>
+        </div>
+        <CtaFooter client:load applyHref={applyHref} />
+      </HlsSection>
+    </div>
+  </main>
+</BaseLayout>
