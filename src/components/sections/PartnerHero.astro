@@ -11,6 +11,7 @@ interface Props {
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
   pricing: { retail: string; partner: string; note: string };
+  logoSize?: 'wide' | 'square';
 }
 
 const {
@@ -21,7 +22,13 @@ const {
   primaryCta,
   secondaryCta,
   pricing,
+  logoSize = 'wide',
 } = Astro.props;
+
+const logoClass =
+  logoSize === 'square'
+    ? 'w-[min(55vw,14rem)] sm:w-[min(45vw,16rem)] md:w-[min(38vw,18rem)] h-auto object-contain opacity-95 transition-opacity duration-300 group-hover:opacity-100'
+    : 'w-[min(82vw,18rem)] sm:w-[min(72vw,22rem)] md:w-[min(62vw,26rem)] h-auto object-contain opacity-95 transition-opacity duration-300 group-hover:opacity-100';
 ---
 
 <section id="hero" class="relative w-full min-h-[100svh] overflow-x-hidden">
@@ -60,7 +67,7 @@ const {
         alt={partner.name}
         width="320"
         height="160"
-        class="w-[min(82vw,18rem)] sm:w-[min(72vw,22rem)] md:w-[min(62vw,26rem)] h-auto object-contain opacity-95 transition-opacity duration-300 group-hover:opacity-100"
+        class={logoClass}
         fetchpriority="high"
         decoding="async"
       />
@@ -100,7 +107,7 @@ const {
         </span>
       </div>
       <p class="text-white/50 font-body text-sm font-light max-w-md">
-        Save $1,000 — reserved exclusively for the Jets & Capital community.
+        Save $1,000 — reserved exclusively for the {partner.name} community.
       </p>
     </div>
 

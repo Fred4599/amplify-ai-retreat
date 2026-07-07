@@ -10,10 +10,11 @@ const options = (
   checkoutUrl: string,
   bookingUrl: string,
   pricing: { retail: string; partner: string },
+  partnerName: string,
 ) => [
   {
     title: 'Reserve your seat',
-    desc: `Secure your spot at the retreat. ${pricing.partner} for Jets & Capital members (${pricing.retail} value) — payment confirms your seat.`,
+    desc: `Secure your spot at the retreat. ${pricing.partner} for ${partnerName} members (${pricing.retail} value) — payment confirms your seat.`,
     href: checkoutUrl,
     label: 'Reserve Your Seat',
     primary: true,
@@ -37,6 +38,7 @@ const footerLinks = (checkoutUrl: string, bookingUrl: string) => [
 ];
 
 type PartnerCtaFooterProps = {
+  partnerName: string;
   checkoutUrl: string;
   bookingUrl: string;
   checkoutLabel: string;
@@ -45,6 +47,7 @@ type PartnerCtaFooterProps = {
 };
 
 export default function PartnerCtaFooter({
+  partnerName,
   checkoutUrl,
   bookingUrl,
   checkoutLabel,
@@ -52,7 +55,7 @@ export default function PartnerCtaFooter({
   pricing,
 }: PartnerCtaFooterProps) {
   const hydrated = useHydrated();
-  const choices = options(checkoutUrl, bookingUrl, pricing).map((option, index) =>
+  const choices = options(checkoutUrl, bookingUrl, pricing, partnerName).map((option, index) =>
     index === 0 ? { ...option, label: checkoutLabel } : { ...option, label: bookingLabel },
   );
 
@@ -64,7 +67,7 @@ export default function PartnerCtaFooter({
           className="liquid-glass rounded-full px-4 py-1.5 mb-6"
         >
           <span className="text-white text-xs font-medium font-body uppercase tracking-wider">
-            Jets & Capital Access
+            {partnerName} Access
           </span>
         </motion.div>
 
@@ -78,7 +81,7 @@ export default function PartnerCtaFooter({
           {...inView(hydrated, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, { delay: 0.4, duration: 0.8 })}
           className="text-white/60 font-body font-light text-base sm:text-lg mb-6 max-w-xl mx-auto px-1"
         >
-          Exclusive access for Jets & Capital members. Reserve your seat directly, or book a quick
+          Exclusive access for {partnerName} members. Reserve your seat directly, or book a quick
           15-minute call if you&apos;d like to learn more first.
         </motion.p>
 

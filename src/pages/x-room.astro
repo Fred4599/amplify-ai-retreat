@@ -15,20 +15,16 @@ import FAQ from '../components/sections/FAQ.astro';
 import SponsorCarousel from '../components/sections/SponsorCarousel.astro';
 import PartnerCtaFooter from '../components/sections/PartnerCtaFooter';
 import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
-import { JETS_AND_CAPITAL, JETS_AND_CAPITAL_LANDING } from '../config/jetsAndCapital';
+import { X_ROOM, X_ROOM_LANDING } from '../config/xRoom';
 import { AGENDA_DOWNLOADS } from '../content/retreat';
 
-const { checkout, booking } = JETS_AND_CAPITAL_LANDING.ctas;
-const jetsAgendaDownloads = {
-  oneSheet: AGENDA_DOWNLOADS.oneSheetJetsAndCapital,
-  full: AGENDA_DOWNLOADS.full,
-};
+const { checkout, booking } = X_ROOM_LANDING.ctas;
 ---
 
 <BaseLayout
-  title={JETS_AND_CAPITAL_LANDING.title}
-  description={JETS_AND_CAPITAL_LANDING.description}
-  path={JETS_AND_CAPITAL_LANDING.path}
+  title={X_ROOM_LANDING.title}
+  description={X_ROOM_LANDING.description}
+  path={X_ROOM_LANDING.path}
   structuredData="home"
 >
   <Navbar
@@ -39,13 +35,14 @@ const jetsAgendaDownloads = {
   />
   <main id="main-content" class="bg-black relative w-full max-w-full overflow-x-hidden">
     <PartnerHero
-      partner={JETS_AND_CAPITAL}
-      badge={JETS_AND_CAPITAL_LANDING.badge}
-      headline={JETS_AND_CAPITAL_LANDING.headline}
-      subheadline={JETS_AND_CAPITAL_LANDING.subheadline}
+      partner={X_ROOM}
+      badge={X_ROOM_LANDING.badge}
+      headline={X_ROOM_LANDING.headline}
+      subheadline={X_ROOM_LANDING.subheadline}
       primaryCta={{ href: checkout.url, label: checkout.label }}
       secondaryCta={{ href: booking.url, label: booking.label }}
-      pricing={JETS_AND_CAPITAL_LANDING.pricing}
+      pricing={X_ROOM_LANDING.pricing}
+      logoSize="square"
     />
     <div class="relative z-10 bg-black w-full max-w-full overflow-x-hidden flex flex-col items-center">
       <HlsSection
@@ -61,14 +58,14 @@ const jetsAgendaDownloads = {
         </div>
         <div class="flex flex-col items-center">
           <p class="mb-8 text-white/70 font-body text-sm sm:text-base font-medium tracking-wide text-center px-4 max-w-2xl">
-            An exclusive invitation for the {JETS_AND_CAPITAL.name} community — family offices, allocators, and operators ready to implement AI in their businesses and portfolios. Special community pricing: <span class="text-white/45 line-through">{JETS_AND_CAPITAL_LANDING.pricing.retail}</span> <span class="text-white">{JETS_AND_CAPITAL_LANDING.pricing.partner}</span>.
+            {X_ROOM_LANDING.intro} Special community pricing: <span class="text-white/45 line-through">{X_ROOM_LANDING.pricing.retail}</span> <span class="text-white">{X_ROOM_LANDING.pricing.partner}</span>.
           </p>
           <StartSection client:load />
         </div>
       </HlsSection>
 
       <FeaturesChess client:load />
-      <RetreatSchedule client:load agendaDownloads={jetsAgendaDownloads} />
+      <RetreatSchedule client:load agendaDownloads={AGENDA_DOWNLOADS} />
       <FeaturesGrid client:load />
       <WhatsIncluded client:load />
       <CaseStudies client:load />
@@ -107,12 +104,12 @@ const jetsAgendaDownloads = {
         </div>
         <PartnerCtaFooter
           client:load
-          partnerName={JETS_AND_CAPITAL.name}
+          partnerName={X_ROOM.name}
           checkoutUrl={checkout.url}
           bookingUrl={booking.url}
           checkoutLabel={checkout.label}
           bookingLabel={booking.label}
-          pricing={JETS_AND_CAPITAL_LANDING.pricing}
+          pricing={X_ROOM_LANDING.pricing}
         />
       </HlsSection>
     </div>
