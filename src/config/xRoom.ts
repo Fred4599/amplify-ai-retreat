@@ -1,6 +1,6 @@
 import type { Sponsor } from './site';
 
-/** The X Room — community & podcast by Shawn Finnegan & Maeli Nelson. Curate · Connect · Create. */
+/** The X Room — community founded by Shawn Finnegan. Curate · Connect · Create. */
 export const X_ROOM: Sponsor = {
   name: 'The X Room',
   logoPath: '/x-room-logo.png',
@@ -23,7 +23,7 @@ export const X_ROOM_LANDING = {
   subheadline:
     'Built for entrepreneurs, creators, and connectors who build community — and want AI working as hard as they do.',
   intro:
-    'An exclusive invitation for The X Room community — founded by Shawn Finnegan and Maeli Nelson for leaders who gather to curate, connect, and create.',
+    'An exclusive invitation for The X Room community — founded by Shawn Finnegan for leaders who gather to curate, connect, and create.',
   pricing: {
     retail: '$5,000',
     partner: '$4,000',
@@ -34,13 +34,13 @@ export const X_ROOM_LANDING = {
       label: 'Reserve Your Seat',
       url:
         import.meta.env.PUBLIC_X_ROOM_CHECKOUT_URL ??
-        'https://keepelevated.com/x-room?am_id=alecatkinson4403',
+        'https://keepelevated.com/x-room?am_id=shawn6640',
     },
     booking: {
       label: 'Book a 15-Min Call',
       url:
         import.meta.env.PUBLIC_X_ROOM_BOOKING_URL ??
-        'https://api.leadconnectorhq.com/widget/bookings/amplify-ai-retreat-x-room',
+        'https://api.leadconnectorhq.com/widget/booking/jBWaQWkpcjcwLNnisVAP?am_id=shawn7192',
     },
   },
 } as const;
