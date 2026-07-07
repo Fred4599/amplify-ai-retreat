@@ -1,5 +1,5 @@
 ---
-import { eventDatesLine, PRESENTER, VENUE } from '../../config/site';
+import { eventDatesLine, VENUE } from '../../config/site';
 import { MEDIA } from '../../config/media';
 import type { Sponsor } from '../../config/site';
 
@@ -8,8 +8,8 @@ interface Props {
   badge: string;
   headline: string;
   subheadline: string;
-  applyHref: string;
-  applyLabel?: string;
+  primaryCta: { href: string; label: string };
+  secondaryCta: { href: string; label: string };
 }
 
 const {
@@ -17,8 +17,8 @@ const {
   badge,
   headline,
   subheadline,
-  applyHref,
-  applyLabel = 'Apply to Attend',
+  primaryCta,
+  secondaryCta,
 } = Astro.props;
 ---
 
@@ -47,34 +47,21 @@ const {
 
   <div class="hero-copy relative z-30 flex flex-col items-center text-center px-4 sm:px-6 w-full max-w-full min-h-[100svh] pt-24 sm:pt-28 md:pt-32 lg:pt-[150px] pb-10 sm:pb-14">
     <a
-      href={PRESENTER.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="shrink-0 mb-3 sm:mb-4 inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-sm sm:text-base text-white/75 hover:text-white font-body font-medium tracking-wide transition-colors group"
-      aria-label={`Presented by ${PRESENTER.name} — visit website`}
-    >
-      <span>Presented by</span>
-      <img
-        src={PRESENTER.logoPath}
-        alt=""
-        width="140"
-        height="48"
-        class="h-8 sm:h-10 w-auto max-w-[8rem] sm:max-w-[9.5rem] shrink-0 object-contain brightness-0 invert opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"
-        decoding="async"
-        aria-hidden="true"
-      />
-      <span>{PRESENTER.name}</span>
-    </a>
-
-    <a
       href={partner.url}
       target="_blank"
       rel="noopener noreferrer"
-      class="shrink-0 mb-5 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-white/60 hover:text-white/90 font-body font-medium tracking-wide transition-colors"
-      aria-label={`In partnership with ${partner.name} — visit website`}
+      class="shrink-0 mb-6 sm:mb-8 inline-flex flex-col items-center justify-center transition-transform duration-300 hover:scale-[1.02] group"
+      aria-label={`${partner.name} — visit website`}
     >
-      <span>In partnership with</span>
-      <span class="text-white/90">{partner.name}</span>
+      <img
+        src={partner.logoPath}
+        alt={partner.name}
+        width="320"
+        height="160"
+        class="w-[min(82vw,18rem)] sm:w-[min(72vw,22rem)] md:w-[min(62vw,26rem)] h-auto object-contain opacity-95 transition-opacity duration-300 group-hover:opacity-100"
+        fetchpriority="high"
+        decoding="async"
+      />
     </a>
 
     <div class="shrink-0 mb-6 sm:mb-8 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full px-2 sm:px-1 sm:py-1 sm:pr-4 sm:liquid-glass sm:rounded-full">
@@ -103,16 +90,22 @@ const {
     </p>
 
     <div class="shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-8 sm:mt-10 w-full sm:w-auto max-w-sm sm:max-w-none px-2 sm:px-0">
-      <a href={applyHref} class="liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]">
-        {applyLabel}
+      <a
+        href={primaryCta.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-white text-black hover:bg-white/90 transition-colors duration-300 rounded-full px-6 py-3.5 flex items-center justify-center gap-2 font-medium text-sm min-h-[44px]"
+      >
+        {primaryCta.label}
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
       </a>
       <a
-        href="#schedule"
-        class="rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-white/80 hover:text-white transition-colors font-medium text-sm min-h-[44px]"
+        href={secondaryCta.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="liquid-glass-strong hover:scale-105 transition-transform duration-300 rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-white font-medium text-sm min-h-[44px]"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fill-current" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
-        See Your Three Days
+        {secondaryCta.label}
       </a>
     </div>
   </div>

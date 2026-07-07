@@ -13,9 +13,15 @@ const navItems = [
 
 type NavbarProps = {
   applyHref?: string;
+  ctaLabel?: string;
+  ctaExternal?: boolean;
 };
 
-export default function Navbar({ applyHref = '/apply' }: NavbarProps) {
+export default function Navbar({
+  applyHref = '/apply',
+  ctaLabel = 'Apply',
+  ctaExternal = false,
+}: NavbarProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -64,8 +70,13 @@ export default function Navbar({ applyHref = '/apply' }: NavbarProps) {
               {item.label}
             </a>
           ))}
-          <ApplyTrigger href={applyHref} className="bg-white text-black hover:bg-white/90 transition-colors rounded-full px-3.5 py-1.5 text-sm font-medium flex items-center gap-1.5 ml-2 min-h-[36px]">
-            Apply
+          <ApplyTrigger
+            href={applyHref}
+            target={ctaExternal ? '_blank' : undefined}
+            rel={ctaExternal ? 'noopener noreferrer' : undefined}
+            className="bg-white text-black hover:bg-white/90 transition-colors rounded-full px-3.5 py-1.5 text-sm font-medium flex items-center gap-1.5 ml-2 min-h-[36px]"
+          >
+            {ctaLabel}
             <ArrowUpRight className="w-4 h-4" />
           </ApplyTrigger>
         </div>
@@ -113,10 +124,12 @@ export default function Navbar({ applyHref = '/apply' }: NavbarProps) {
             ))}
             <ApplyTrigger
               href={applyHref}
+              target={ctaExternal ? '_blank' : undefined}
+              rel={ctaExternal ? 'noopener noreferrer' : undefined}
               onClick={close}
               className="mt-2 bg-white text-black hover:bg-white/90 transition-colors rounded-full px-6 py-3.5 text-sm font-medium flex items-center justify-center gap-2 min-h-[44px]"
             >
-              Apply to Attend
+              {ctaLabel}
               <ArrowUpRight className="w-4 h-4" />
             </ApplyTrigger>
           </div>
