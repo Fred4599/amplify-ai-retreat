@@ -25,11 +25,15 @@ export const JETS_AND_CAPITAL_LANDING = {
   ctas: {
     checkout: {
       label: 'Reserve Your Seat',
-      url: import.meta.env.PUBLIC_JETS_CAPITAL_CHECKOUT_URL ?? '',
+      url:
+        import.meta.env.PUBLIC_JETS_CAPITAL_CHECKOUT_URL ??
+        'https://keepelevated.com/amplify-payment-link?am_id=alecatkinson4403',
     },
     booking: {
       label: 'Book a 15-Min Call',
-      url: import.meta.env.PUBLIC_JETS_CAPITAL_BOOKING_URL ?? '',
+      url:
+        import.meta.env.PUBLIC_JETS_CAPITAL_BOOKING_URL ??
+        'https://api.leadconnectorhq.com/widget/bookings/amplify-ai-retreat-jets',
     },
   },
 } as const;
