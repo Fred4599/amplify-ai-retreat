@@ -15,7 +15,13 @@ const periodIcons: Record<string, typeof Sun> = {
   Evening: Moon,
 };
 
-export default function RetreatSchedule() {
+type AgendaDownloads = typeof AGENDA_DOWNLOADS;
+
+interface RetreatScheduleProps {
+  agendaDownloads?: Pick<AgendaDownloads, 'oneSheet' | 'full'>;
+}
+
+export default function RetreatSchedule({ agendaDownloads = AGENDA_DOWNLOADS }: RetreatScheduleProps) {
   const hydrated = useHydrated();
 
   return (
@@ -135,7 +141,7 @@ export default function RetreatSchedule() {
         className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
       >
         <a
-          href={AGENDA_DOWNLOADS.oneSheet}
+          href={agendaDownloads.oneSheet}
           download
           className="liquid-glass-strong hover:bg-white/5 transition-colors rounded-full px-6 py-3 text-white font-medium text-sm inline-flex items-center gap-2 min-h-[44px]"
         >
@@ -143,7 +149,7 @@ export default function RetreatSchedule() {
           Download What to Expect (PDF)
         </a>
         <a
-          href={AGENDA_DOWNLOADS.full}
+          href={agendaDownloads.full}
           download
           className="rounded-full px-6 py-3 text-white/70 hover:text-white transition-colors font-medium text-sm inline-flex items-center gap-2 min-h-[44px]"
         >

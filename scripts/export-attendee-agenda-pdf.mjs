@@ -2,8 +2,9 @@
 /**
  * Export attendee-facing agenda PDFs.
  * Usage:
- *   npm run export:agenda          — full 5-page experience guide
- *   npm run export:agenda -- --one-sheet   — single-page what to expect
+ *   npm run export:agenda                    — full 5-page experience guide
+ *   npm run export:agenda:one-sheet          — single-page what to expect
+ *   npm run export:agenda:jets-and-capital   — Jets & Capital cover + what to expect
  */
 import { createServer } from 'node:http';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
@@ -11,20 +12,35 @@ import { createReadStream, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+import { PDFDocument } from 'pdf-lib';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const oneSheet = process.argv.includes('--one-sheet');
+const jetsAndCapital = process.argv.includes('--jets-and-capital');
 
 const docPath = path.join(
   root,
-  oneSheet ? 'src/agenda/attendee-agenda-one-sheet.html' : 'src/agenda/attendee-agenda.html',
+  oneSheet || jetsAndCapital
+    ? 'src/agenda/attendee-agenda-one-sheet.html'
+    : 'src/agenda/attendee-agenda.html',
 );
-const route = oneSheet ? '/agenda-one-sheet' : '/agenda';
+const coverPath = path.join(root, 'src/agenda/attendee-agenda-jets-and-capital-cover.html');
+
+const route = jetsAndCapital
+  ? '/agenda-jets-and-capital-cover'
+  : oneSheet
+    ? '/agenda-one-sheet'
+    : '/agenda';
+
 const outDir = path.join(root, 'public/downloads');
 const outFile = path.join(
   outDir,
-  oneSheet ? 'Amplify-AI-Retreat-What-to-Expect.pdf' : 'Amplify-AI-Retreat-Agenda.pdf',
+  jetsAndCapital
+    ? 'Amplify-AI-Retreat-What-to-Expect-Jets-and-Capital.pdf'
+    : oneSheet
+      ? 'Amplify-AI-Retreat-What-to-Expect.pdf'
+      : 'Amplify-AI-Retreat-Agenda.pdf',
 );
 
 const MIME = {
@@ -55,6 +71,13 @@ function startStaticServer() {
           return;
         }
 
+        if (pathname === '/agenda-jets-and-capital-cover' || pathname === '/agenda-jets-and-capital-cover/') {
+          const html = await readFile(coverPath, 'utf-8');
+          res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+          res.end(html);
+          return;
+        }
+
         if (pathname === '/agenda' || pathname === '/agenda/') {
           const html = await readFile(docPath, 'utf-8');
           res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -63,7 +86,7 @@ function startStaticServer() {
         }
 
         if (pathname === '/') {
-          res.writeHead(302, { Location: '/agenda/' });
+          res.writeHead(302, { Location: `${route}/` });
           res.end();
           return;
         }
@@ -91,29 +114,69 @@ function startStaticServer() {
   });
 }
 
-async function main() {
-  console.log('Starting export server…');
-  const { server, port } = await startStaticServer();
-  const url = `http://127.0.0.1:${port}${route}/`;
-
-  console.log('Launching browser…');
-  const browser = await chromium.launch();
-  const page = await browser.newPage(
-    oneSheet ? { viewport: { width: 816, height: 1056 } } : undefined,
-  );
+async function renderPdf(page, url, viewport) {
+  if (viewport) {
+    await page.setViewportSize(viewport);
+  }
 
   await page.goto(url, { waitUntil: 'load', timeout: 60_000 });
   await page.waitForTimeout(2500);
 
-  await mkdir(outDir, { recursive: true });
-
-  const pdfBuffer = await page.pdf({
-    path: outFile,
+  return page.pdf({
     format: 'Letter',
     printBackground: true,
     preferCSSPageSize: true,
     margin: { top: 0, right: 0, bottom: 0, left: 0 },
   });
+}
+
+async function main() {
+  console.log('Starting export server…');
+  const { server, port } = await startStaticServer();
+  const baseUrl = `http://127.0.0.1:${port}`;
+  const oneSheetViewport = { width: 816, height: 1056 };
+
+  console.log('Launching browser…');
+  const browser = await chromium.launch();
+  const page = await browser.newPage(
+    oneSheet || jetsAndCapital ? { viewport: oneSheetViewport } : undefined,
+  );
+
+  await mkdir(outDir, { recursive: true });
+
+  let pdfBuffer;
+
+  if (jetsAndCapital) {
+    console.log('Rendering Jets & Capital cover page…');
+    const coverPdf = await renderPdf(
+      page,
+      `${baseUrl}/agenda-jets-and-capital-cover/`,
+      oneSheetViewport,
+    );
+
+    console.log('Rendering What to Expect content page…');
+    const contentPdf = await renderPdf(
+      page,
+      `${baseUrl}/agenda-one-sheet/`,
+      oneSheetViewport,
+    );
+
+    const merged = await PDFDocument.create();
+    const coverDoc = await PDFDocument.load(coverPdf);
+    const contentDoc = await PDFDocument.load(contentPdf);
+
+    const coverPages = await merged.copyPages(coverDoc, coverDoc.getPageIndices());
+    coverPages.forEach((p) => merged.addPage(p));
+
+    const contentPages = await merged.copyPages(contentDoc, contentDoc.getPageIndices());
+    contentPages.forEach((p) => merged.addPage(p));
+
+    pdfBuffer = Buffer.from(await merged.save());
+    await writeFile(outFile, pdfBuffer);
+  } else {
+    pdfBuffer = await renderPdf(page, `${baseUrl}${route}/`);
+    await writeFile(outFile, pdfBuffer);
+  }
 
   await browser.close();
   server.close();

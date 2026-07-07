@@ -16,8 +16,13 @@ import SponsorCarousel from '../components/sections/SponsorCarousel.astro';
 import PartnerCtaFooter from '../components/sections/PartnerCtaFooter';
 import { HLS_BACKGROUNDS } from '../content/hlsBackgrounds';
 import { JETS_AND_CAPITAL, JETS_AND_CAPITAL_LANDING } from '../config/jetsAndCapital';
+import { AGENDA_DOWNLOADS } from '../content/retreat';
 
 const { checkout, booking } = JETS_AND_CAPITAL_LANDING.ctas;
+const jetsAgendaDownloads = {
+  oneSheet: AGENDA_DOWNLOADS.oneSheetJetsAndCapital,
+  full: AGENDA_DOWNLOADS.full,
+};
 ---
 
 <BaseLayout
@@ -63,7 +68,7 @@ const { checkout, booking } = JETS_AND_CAPITAL_LANDING.ctas;
       </HlsSection>
 
       <FeaturesChess client:load />
-      <RetreatSchedule client:load />
+      <RetreatSchedule client:load agendaDownloads={jetsAgendaDownloads} />
       <FeaturesGrid client:load />
       <WhatsIncluded client:load />
       <CaseStudies client:load />

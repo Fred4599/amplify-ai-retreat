@@ -12,7 +12,8 @@
     "export:deck": "node scripts/export-pitch-deck-pdf.mjs",
     "export:run-of-show": "node scripts/export-run-of-show-pdf.mjs",
     "export:agenda": "node scripts/export-attendee-agenda-pdf.mjs",
-    "export:agenda:one-sheet": "node scripts/export-attendee-agenda-pdf.mjs --one-sheet"
+    "export:agenda:one-sheet": "node scripts/export-attendee-agenda-pdf.mjs --one-sheet",
+    "export:agenda:jets-and-capital": "node scripts/export-attendee-agenda-pdf.mjs --jets-and-capital"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",

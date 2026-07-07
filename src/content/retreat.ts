@@ -133,4 +133,5 @@ export const WHATS_INCLUDED = [
 export const AGENDA_DOWNLOADS = {
   full: '/downloads/Amplify-AI-Retreat-Agenda.pdf',
   oneSheet: '/downloads/Amplify-AI-Retreat-What-to-Expect.pdf',
+  oneSheetJetsAndCapital: '/downloads/Amplify-AI-Retreat-What-to-Expect-Jets-and-Capital.pdf',
 } as const;
