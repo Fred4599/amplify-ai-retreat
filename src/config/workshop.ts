@@ -25,24 +25,25 @@ export const WORKSHOP_HOSTS = [
   },
 ] as const;
 
-/** Free webinar — June 19, 2026. */
+/** Free webinar — July 20, 2026. */
 export const WORKSHOP = {
-  title: 'AI: The Differentiator',
-  tagline: 'Turn AI into revenue, speed, and leverage — starting this Friday.',
+  title: 'The AI Advantage: Save Time, Cut Costs & Grow Revenue',
+  tagline: 'Practical AI strategies for business owners and entrepreneurs.',
   subtitle: 'Free Live Webinar',
   /** ISO date for schema.org and sorting */
-  date: '2026-06-19',
+  date: '2026-07-20',
   /** Display line for the hero and form */
-  dateLine: 'Friday, June 19, 2026',
-  timeLine: '11:00 a.m. Mountain Time',
-  /** MDT in June — Utah observes daylight time */
-  startDateIso: '2026-06-19T11:00:00-06:00',
+  dateLine: 'Monday, July 20, 2026',
+  timeLine: '6:30 p.m. Mountain Time',
+  /** MDT in July — Utah observes daylight time */
+  startDateIso: '2026-07-20T18:30:00-06:00',
   durationMinutes: 60,
   path: '/workshop',
   description:
-    'A free live session for business owners ready to use AI to win more deals, save hours every week, and stay ahead of competitors still guessing. Walk away with a clear picture of where AI fits in your business — and your next move.',
-  /** Update manually as registrations come in — shown in social proof UI */
-  registrationCount: 50,
+    'AI can do far more than write emails or generate social media posts. When used strategically, it can help you eliminate repetitive work, reduce unnecessary expenses, improve customer experiences, and uncover new opportunities for growth.',
+  audienceDescription:
+    'Join us for a practical webinar designed to help business owners and entrepreneurs understand what AI can actually do for them. You do not need to be an AI expert. Bring an open mind, a business challenge, and a willingness to explore what is possible.',
+  bottomTitle: 'Discover Your Biggest AI Opportunity',
 } as const;
 
 export const WORKSHOP_PROOF_STATS = [
@@ -73,20 +74,10 @@ export const WORKSHOP_TESTIMONIALS = [
   },
 ] as const;
 
-export const WORKSHOP_THEMES = [
-  {
-    eyebrow: 'The opportunity',
-    title: 'Where AI is creating margin right now',
-    body: 'Owners who move first are winning faster sales cycles, leaner operations, and better client experiences. We will show you where AI is already paying off in real businesses — and where the biggest openings are in yours.',
-  },
-  {
-    eyebrow: 'The playbook',
-    title: 'How winning owners use AI as a differentiator',
-    body: 'The gap is not about having the fanciest tools. It is about knowing which workflows to automate, which decisions to keep human, and how to stack small wins into compounding advantage. You will leave with a practical lens for evaluating every AI opportunity.',
-  },
-  {
-    eyebrow: 'The unlock',
-    title: 'Plug AI into your business without losing what makes you you',
-    body: 'The owners who win treat AI as leverage — not a replacement. We will walk through how to adopt AI in a way that amplifies your judgment, protects your brand, and creates capacity you can reinvest in growth.',
-  },
+export const WORKSHOP_OUTCOMES = [
+  'Identify tasks and bottlenecks AI could remove from your business',
+  'Discover practical ways to save hours of work each week',
+  'Learn how AI can reduce costs and improve efficiency',
+  'Explore ways to generate leads, improve follow-up, and increase revenue',
+  'Leave with clear ideas you can begin implementing immediately',
 ] as const;

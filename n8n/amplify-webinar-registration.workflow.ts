@@ -96,14 +96,14 @@ const formatRegistration = node({
           {
             id: 'source',
             name: 'source',
-            value: 'Amplify AI — Webinar (June 19, 2026)',
+            value: 'Amplify AI — Webinar (July 20, 2026)',
             type: 'string',
           },
           {
             id: 'registrationNotes',
             name: 'registrationNotes',
             value: expr(
-              '{{ "Webinar: AI — The Differentiator\\nDate: Friday, June 19, 2026 at 11:00 a.m. MT\\nCompany: " + ($json.body?.company ?? $json.company ?? "—") + "\\nSubmitted: " + ($json.body?.submittedAt ?? $json.submittedAt ?? "—") }}',
+              '{{ "Webinar: The AI Advantage: Save Time, Cut Costs & Grow Revenue\\nDate: Monday, July 20, 2026 at 6:30 p.m. MT\\nCompany: " + ($json.body?.company ?? $json.company ?? "—") + "\\nSubmitted: " + ($json.body?.submittedAt ?? $json.submittedAt ?? "—") }}',
             ),
             type: 'string',
           },
@@ -128,8 +128,8 @@ const formatRegistration = node({
       submittedAt: '2026-06-12T00:00:00.000Z',
       firstName: 'Jane',
       lastName: 'Doe',
-      source: 'Amplify AI — Webinar (June 19, 2026)',
-      registrationNotes: 'Webinar: AI — The Differentiator\nDate: Friday, June 19, 2026 at 11:00 a.m. MT\nCompany: Acme Co',
+      source: 'Amplify AI — Webinar (July 20, 2026)',
+      registrationNotes: 'Webinar: The AI Advantage: Save Time, Cut Costs & Grow Revenue\nDate: Monday, July 20, 2026 at 6:30 p.m. MT\nCompany: Acme Co',
       emailSubject: 'New Webinar Registration — Jane Doe',
     },
   ],
@@ -180,7 +180,7 @@ const sendRegistrationEmail = node({
       subject: expr('{{ $json.emailSubject }}'),
       emailType: 'html',
       message: expr(
-        '{{ "<div style=\\"font-family: Barlow, Arial, sans-serif; color:#111; line-height:1.6; max-width:640px;\\">" + "<h2 style=\\"margin:0 0 20px; font-style:italic;\\">Webinar Registration — AI: The Differentiator</h2>" + "<p style=\\"margin:0 0 16px; color:#444;\\"><strong>Event:</strong> Friday, June 19, 2026 at 11:00 a.m. MT</p>" + "<p style=\\"margin:0 0 16px; color:#444;\\"><strong>Submitted:</strong> " + ($json.submittedAt || "—") + "</p>" + "<p><strong>Full Name:</strong><br>" + ($json.fullName || "—") + "</p>" + "<p><strong>Email:</strong><br><a href=\\"mailto:" + ($json.email || "") + "\\">" + ($json.email || "—") + "</a></p>" + "<p><strong>Phone:</strong><br>" + ($json.phone || "—") + "</p>" + "<p><strong>Company:</strong><br>" + ($json.company || "—") + "</p>" + "</div>" }}',
+        '{{ "<div style=\\"font-family: Barlow, Arial, sans-serif; color:#111; line-height:1.6; max-width:640px;\\">" + "<h2 style=\\"margin:0 0 20px; font-style:italic;\\">Webinar Registration — The AI Advantage</h2>" + "<p style=\\"margin:0 0 16px; color:#444;\\"><strong>Event:</strong> Monday, July 20, 2026 at 6:30 p.m. MT</p>" + "<p style=\\"margin:0 0 16px; color:#444;\\"><strong>Submitted:</strong> " + ($json.submittedAt || "—") + "</p>" + "<p><strong>Full Name:</strong><br>" + ($json.fullName || "—") + "</p>" + "<p><strong>Email:</strong><br><a href=\\"mailto:" + ($json.email || "") + "\\">" + ($json.email || "—") + "</a></p>" + "<p><strong>Phone:</strong><br>" + ($json.phone || "—") + "</p>" + "<p><strong>Company:</strong><br>" + ($json.company || "—") + "</p>" + "</div>" }}',
       ),
       options: {
         replyTo: expr('{{ $json.email }}'),

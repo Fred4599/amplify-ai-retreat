@@ -10,7 +10,7 @@ import {
   WORKSHOP_PRESENTER,
   WORKSHOP_PROOF_STATS,
   WORKSHOP_TESTIMONIALS,
-  WORKSHOP_THEMES,
+  WORKSHOP_OUTCOMES,
 } from '../config/workshop';
 import { MEDIA } from '../config/media';
 
@@ -98,10 +98,6 @@ const pageDescription = WORKSHOP.description;
           {WORKSHOP.description}
         </p>
 
-        <p class="shrink-0 mt-6 text-white/75 font-body text-sm sm:text-base">
-          <span class="text-white font-medium">{WORKSHOP.registrationCount}+</span> business owners already registered
-        </p>
-
         <div class="shrink-0 mt-6 sm:mt-8 w-full max-w-xl px-1">
           <WorkshopRegistrationForm idPrefix="hero" variant="hero" showHeader={false} />
         </div>
@@ -119,31 +115,31 @@ const pageDescription = WORKSHOP.description;
       </div>
     </section>
 
-    <!-- Themes -->
+    <!-- Outcomes -->
     <section class="relative z-10 bg-black w-full py-20 sm:py-28 px-4 sm:px-6">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-4xl mx-auto">
         <div class="text-center mb-14 sm:mb-16">
           <p class="liquid-glass inline-block rounded-full px-4 py-1.5 mb-6">
             <span class="text-white text-xs font-medium font-body uppercase tracking-wider">
-              What You'll Walk Away With
+              During This Webinar
             </span>
           </p>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading italic text-white tracking-tight">
-            Three plays every growth-minded owner needs
+            Turn possibility into practical next steps
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-          {WORKSHOP_THEMES.map((theme, index) => (
-            <article class="rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 sm:p-8 flex flex-col">
-              <span class="text-white/40 font-body text-xs uppercase tracking-widest mb-3">
-                {String(index + 1).padStart(2, '0')} · {theme.eyebrow}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          {WORKSHOP_OUTCOMES.map((outcome, index) => (
+            <article class:list={[
+              'rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 sm:p-7 flex items-start gap-4',
+              index === WORKSHOP_OUTCOMES.length - 1 ? 'md:col-span-2' : '',
+            ]}>
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-black font-heading italic text-sm">
+                {String(index + 1).padStart(2, '0')}
               </span>
-              <h3 class="text-xl sm:text-2xl font-heading italic text-white tracking-tight mb-4 leading-[1.15]">
-                {theme.title}
-              </h3>
-              <p class="text-white/60 font-body font-light text-sm sm:text-base leading-relaxed flex-1">
-                {theme.body}
+              <p class="text-white/75 font-body font-light text-base sm:text-lg leading-relaxed">
+                {outcome}
               </p>
             </article>
           ))}
@@ -232,12 +228,10 @@ const pageDescription = WORKSHOP.description;
     <section class="relative z-10 bg-black w-full py-16 sm:py-20 px-4 sm:px-6 border-t border-white/5">
       <div class="max-w-3xl mx-auto text-center">
         <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading italic text-white tracking-tight mb-6">
-          Built for business owners who want results, not hype
+          No AI expertise required
         </h2>
         <p class="text-white/60 font-body font-light text-base sm:text-lg leading-relaxed">
-          No jargon. No theory for theory's sake. This is a practical session for founders,
-          operators, and entrepreneurs who want AI to create capacity, revenue, and leverage —
-          starting with the workflows that matter most in your business today.
+          {WORKSHOP.audienceDescription}
         </p>
         <button
           type="button"
