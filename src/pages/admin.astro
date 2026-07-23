@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdminDashboard from '../components/admin/AdminDashboard';
+---
+
+<BaseLayout
+  title="Admin — Amplify AI Retreat"
+  description="Internal submissions dashboard for Amplify AI Retreat applications and webinar registrations."
+  path="/admin"
+  noindex={true}
+>
+  <main
+    id="main-content"
+    class="min-h-screen w-full max-w-full overflow-x-hidden pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(3rem,env(safe-area-inset-bottom))] px-4 sm:px-6"
+  >
+    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent pointer-events-none"></div>
+    <div class="relative max-w-5xl mx-auto w-full">
+      <AdminDashboard client:load />
+    </div>
+  </main>
+</BaseLayout>

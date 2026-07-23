@@ -12,7 +12,7 @@ export default defineConfig({
     react(),
     tailwind(),
     sitemap({
-      filter: (page) => !page.includes('/apply'),
+      filter: (page) => !page.includes('/apply') && !page.includes('/admin'),
     }),
   ],
 });
