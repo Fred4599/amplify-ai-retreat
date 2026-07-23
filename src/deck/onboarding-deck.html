@@ -7,18 +7,18 @@
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #000000;
       --text: #ffffff;
-      --muted: rgba(255, 255, 255, 0.6);
-      --muted-soft: rgba(255, 255, 255, 0.45);
-      --glass: rgba(255, 255, 255, 0.06);
-      --glass-border: rgba(255, 255, 255, 0.12);
+      --muted: rgba(255, 255, 255, 0.82);
+      --glass: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.18);
       --font-heading: 'Instrument Serif', serif;
       --font-body: 'Barlow', sans-serif;
-      --slide-pad: clamp(28px, 5vw, 72px);
+      --slide-pad: clamp(32px, 5.5vw, 80px);
+      --text-shadow: 0 2px 28px rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.9);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,7 +59,7 @@
       padding: var(--slide-pad);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.45s ease, visibility 0.45s;
+      transition: opacity 0.5s ease, visibility 0.5s;
       background: var(--bg);
       overflow: hidden;
     }
@@ -75,31 +75,29 @@
       background-size: cover;
       background-position: center;
       z-index: 0;
+      transform: scale(1.04);
     }
 
     .slide-bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.88) 55%, #000 100%);
-    }
-
-    .slide-bg.overlay-heavy::after {
-      background: linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0.96) 100%);
+      background:
+        radial-gradient(ellipse 80% 70% at 50% 40%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.78) 55%, #000 100%),
+        linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.88) 100%);
     }
 
     .slide-content {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 1100px;
-      max-height: 100%;
-      overflow: auto;
+      max-width: 1180px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: clamp(12px, 2vh, 24px);
+      gap: clamp(18px, 2.8vh, 36px);
+      text-shadow: var(--text-shadow);
     }
 
     .slide-content.align-left {
@@ -110,63 +108,63 @@
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
+      padding: 10px 22px;
       border-radius: 999px;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(12px);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
-    }
-
-    .eyebrow-dark {
       background: #fff;
       color: #000;
-      border: none;
-      letter-spacing: 0.08em;
+      font-size: clamp(12px, 1.4vw, 16px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-shadow: none;
     }
 
-    h1, h2, h3 {
+    .eyebrow-ghost {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      backdrop-filter: blur(12px);
+    }
+
+    h1, h2 {
       font-family: var(--font-heading);
       font-style: italic;
       font-weight: 400;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
+      line-height: 0.98;
+      letter-spacing: -0.025em;
+      color: #fff;
     }
 
     h1 {
-      font-size: clamp(2.4rem, 7vw, 5.25rem);
-      max-width: 16ch;
+      font-size: clamp(3.4rem, 9.5vw, 7.5rem);
+      max-width: 14ch;
     }
 
-    h1.title-hero {
-      font-size: clamp(2.6rem, 7.5vw, 5.75rem);
+    h1.display {
+      font-size: clamp(3.6rem, 10vw, 8rem);
       max-width: none;
-      line-height: 1.02;
     }
 
     h2 {
-      font-size: clamp(1.85rem, 5vw, 3.75rem);
-      max-width: 20ch;
+      font-size: clamp(2.8rem, 7.5vw, 5.75rem);
+      max-width: 16ch;
     }
 
-    h2.hero-tagline {
-      font-size: clamp(1.65rem, 4.2vw, 2.85rem);
-      color: rgba(255, 255, 255, 0.92);
-      margin: 0.35rem 0 0;
-      max-width: none;
+    h2.wide {
+      max-width: 18ch;
     }
 
     .lead {
-      font-size: clamp(0.95rem, 2vw, 1.25rem);
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.55;
-      max-width: 42rem;
+      font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.35;
+      max-width: 28ch;
+      opacity: 0.92;
+    }
+
+    .lead.wide {
+      max-width: 36ch;
     }
 
     .presented-by {
@@ -174,64 +172,78 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem 0.55rem;
-      font-size: clamp(0.85rem, 1.6vw, 1rem);
-      font-weight: 500;
+      gap: 0.5rem 0.65rem;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      font-weight: 600;
       letter-spacing: 0.04em;
-      color: rgba(255, 255, 255, 0.72);
+      color: #fff;
+      opacity: 0.88;
+      text-shadow: var(--text-shadow);
     }
 
     .presented-by-logo {
-      height: clamp(28px, 3.2vw, 38px);
-      width: clamp(28px, 3.2vw, 38px);
+      height: clamp(32px, 3.5vw, 42px);
+      width: clamp(32px, 3.5vw, 42px);
       object-fit: contain;
-      opacity: 0.95;
     }
 
     .glass {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      backdrop-filter: blur(16px);
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(12px, 2vw, 20px);
-      width: 100%;
+      border-radius: 20px;
+      backdrop-filter: blur(18px);
+      text-shadow: none;
     }
 
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: clamp(10px, 1.5vw, 16px);
+      gap: clamp(14px, 2vw, 22px);
+      width: 100%;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(14px, 2vw, 22px);
       width: 100%;
     }
 
     @media (max-width: 900px) {
-      .grid-3 { grid-template-columns: 1fr; }
-      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
     }
 
     .card {
-      padding: clamp(16px, 2.2vw, 26px);
+      padding: clamp(22px, 3vw, 34px);
       text-align: left;
     }
 
-    .card h4 {
-      font-family: var(--font-heading);
-      font-style: italic;
-      font-size: clamp(1.05rem, 2.1vw, 1.45rem);
-      margin-bottom: 8px;
+    .card .kicker {
+      font-size: clamp(13px, 1.5vw, 16px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: #fff;
+      opacity: 0.7;
+      margin-bottom: 10px;
     }
 
-    .card p, .card li {
-      font-size: clamp(0.78rem, 1.45vw, 0.95rem);
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.5;
+    .card h3 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(1.85rem, 3.4vw, 2.65rem);
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .card p,
+    .card li {
+      font-size: clamp(1.1rem, 1.9vw, 1.35rem);
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.4;
+      opacity: 0.9;
     }
 
     .card ul {
@@ -239,8 +251,8 @@
     }
 
     .card ul li {
-      padding: 4px 0;
-      padding-left: 14px;
+      padding: 6px 0;
+      padding-left: 18px;
       position: relative;
     }
 
@@ -248,102 +260,136 @@
       content: '—';
       position: absolute;
       left: 0;
-      opacity: 0.4;
+      opacity: 0.55;
     }
 
-    .day-num {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted-soft);
-      margin-bottom: 6px;
-      font-family: var(--font-body);
-      font-style: normal;
-      font-weight: 500;
-    }
-
-    .tool-name {
-      font-family: var(--font-heading);
-      font-style: italic;
-      font-size: clamp(1.75rem, 4vw, 2.75rem);
-      color: #fff;
-      line-height: 1.1;
-    }
-
-    .tool-role {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted-soft);
-      margin-top: 8px;
-      margin-bottom: 10px;
-    }
-
-    .ask-prompt {
+    .ask-box {
       width: 100%;
+      padding: clamp(28px, 4vw, 48px);
       text-align: left;
-      padding: clamp(22px, 3vw, 36px);
     }
 
-    .ask-prompt p {
+    .ask-box p {
       font-family: var(--font-heading);
       font-style: italic;
-      font-size: clamp(1.35rem, 3.2vw, 2.15rem);
+      font-size: clamp(1.9rem, 4.2vw, 3.15rem);
       color: #fff;
-      line-height: 1.25;
+      line-height: 1.15;
+    }
+
+    .tool-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(20px, 3vh, 32px);
+    }
+
+    .tool-mark {
+      width: clamp(88px, 12vw, 140px);
+      height: clamp(88px, 12vw, 140px);
+      object-fit: contain;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.55));
+    }
+
+    .tool-mark.wide {
+      width: clamp(160px, 22vw, 280px);
+      height: auto;
+    }
+
+    .tool-grid .tool-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      padding: clamp(24px, 3vw, 36px) clamp(16px, 2vw, 24px);
+    }
+
+    .tool-grid .tool-card img {
+      width: clamp(64px, 8vw, 96px);
+      height: clamp(64px, 8vw, 96px);
+      object-fit: contain;
+    }
+
+    .tool-grid .tool-card h3 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: #fff;
+      margin: 0;
+    }
+
+    .tool-grid .tool-card p {
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+      font-weight: 500;
+      color: #fff;
+      opacity: 0.9;
+      max-width: 16ch;
+      margin: 0;
+    }
+
+    .contrast-bad {
+      border-color: rgba(255, 120, 120, 0.35);
+      background: rgba(255, 60, 60, 0.08);
+    }
+
+    .contrast-good {
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .checklist {
       width: 100%;
-      text-align: left;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
+      text-align: left;
     }
 
     .check-item {
       display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: clamp(14px, 2vw, 20px) clamp(16px, 2.2vw, 24px);
+      align-items: center;
+      gap: 18px;
+      padding: clamp(18px, 2.4vw, 26px) clamp(20px, 2.6vw, 28px);
     }
 
     .check-mark {
       flex-shrink: 0;
-      width: 28px;
-      height: 28px;
+      width: clamp(36px, 4vw, 48px);
+      height: clamp(36px, 4vw, 48px);
       border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.35);
+      border: 2px solid rgba(255,255,255,0.55);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 700;
       color: #fff;
-      margin-top: 2px;
     }
 
     .check-item strong {
-      display: block;
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      font-weight: 500;
+      font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+      font-weight: 600;
       color: #fff;
-      margin-bottom: 4px;
+      line-height: 1.2;
     }
 
-    .check-item span {
-      font-size: clamp(0.78rem, 1.4vw, 0.92rem);
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.45;
+    .check-item .sub {
+      display: block;
+      margin-top: 4px;
+      font-size: clamp(1rem, 1.7vw, 1.2rem);
+      font-weight: 500;
+      color: #fff;
+      opacity: 0.8;
     }
 
     .progress-bar {
       position: fixed;
       top: 0;
       left: 0;
-      height: 3px;
+      height: 4px;
       background: #fff;
-      transition: width 0.3s;
+      transition: width 0.3s ease;
       z-index: 1000;
     }
 
@@ -356,32 +402,34 @@
       align-items: center;
       gap: 16px;
       z-index: 1000;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
       backdrop-filter: blur(12px);
-      padding: 8px 16px;
+      padding: 10px 18px;
       border-radius: 999px;
       border: 1px solid var(--glass-border);
     }
 
     .nav-btn {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.12);
       border: none;
       color: #fff;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1;
     }
 
-    .nav-btn:hover { background: rgba(255,255,255,0.2); }
+    .nav-btn:hover { background: rgba(255,255,255,0.22); }
 
     .slide-counter {
-      color: var(--muted);
-      font-size: 12px;
-      min-width: 48px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      min-width: 56px;
       text-align: center;
+      opacity: 0.85;
     }
 
     .brand-footer {
@@ -389,69 +437,64 @@
       bottom: clamp(16px, 3vh, 28px);
       right: clamp(16px, 3vw, 28px);
       z-index: 999;
-      opacity: 0.35;
-      font-size: 10px;
-      letter-spacing: 0.06em;
+      opacity: 0.45;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      color: #fff;
     }
 
     .notes-hint {
       position: fixed;
-      top: 12px;
+      top: 14px;
       right: clamp(12px, 2vw, 24px);
       z-index: 1001;
-      font-size: 10px;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.45);
     }
 
     .notes-panel {
       position: fixed;
-      bottom: 72px;
+      bottom: 78px;
       left: 50%;
       transform: translateX(-50%);
-      width: min(92vw, 720px);
+      width: min(92vw, 760px);
       max-height: 28vh;
       overflow-y: auto;
       z-index: 1001;
       display: none;
-      padding: 16px 20px;
-      background: rgba(0,0,0,0.88);
+      padding: 18px 22px;
+      background: rgba(0,0,0,0.92);
       border: 1px solid var(--glass-border);
-      border-radius: 14px;
+      border-radius: 16px;
       backdrop-filter: blur(16px);
     }
 
     .notes-panel.visible { display: block; }
 
     .notes-panel .notes-title {
-      font-size: 9px;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--muted-soft);
-      margin-bottom: 8px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 10px;
     }
 
     .notes-panel .notes-body {
-      font-size: 13px;
-      font-weight: 300;
+      font-size: 15px;
+      font-weight: 500;
       line-height: 1.5;
-      color: rgba(255, 255, 255, 0.88);
+      color: #fff;
       text-align: left;
     }
 
     .notes-panel .notes-body strong {
-      font-weight: 500;
-      color: #fff;
-    }
-
-    body.pdf-export .notes-hint,
-    body.pdf-export .notes-panel,
-    body.pdf-export .nav-controls,
-    body.pdf-export .progress-bar,
-    body.pdf-export .brand-footer {
-      display: none !important;
+      font-weight: 700;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -469,160 +512,153 @@
 
   <div class="slide-deck" id="deck">
 
-    <!-- 1. Title -->
+    <!-- 1 -->
     <section class="slide active" data-slide="1">
       <div class="slide-bg" style="background-image: url('/media/hero-poster.webp')"></div>
       <div class="slide-content">
-        <span class="eyebrow eyebrow-dark">Attendee Onboarding</span>
-        <h1 class="title-hero">Welcome to the<br />Amplify AI Retreat</h1>
+        <span class="eyebrow">Attendee Onboarding</span>
+        <h1 class="display">Amplify AI Retreat</h1>
         <p class="presented-by">
           <span>Presented by</span>
-          <img src="/elevated-worldwide-logo.png" alt="" class="presented-by-logo" width="38" height="38" decoding="async" />
+          <img src="/elevated-worldwide-logo.png" alt="" class="presented-by-logo" width="42" height="42" decoding="async" />
           <span>Elevated Worldwide</span>
         </p>
-        <h2 class="hero-tagline">What to expect.<br />How to prepare.</h2>
-        <p class="lead" style="font-size: clamp(0.8rem, 1.5vw, 0.95rem); margin-top: -4px;">
-          July 29–31, 2026 · The Hive Event Center · Logan, Utah
-        </p>
+        <p class="lead">What to expect.<br />How to prepare.</p>
       </div>
     </section>
 
-    <!-- 2. Tonight's agenda -->
+    <!-- 2 -->
     <section class="slide" data-slide="2">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-shift.webp')"></div>
-      <div class="slide-content" style="max-width: 1040px;">
-        <span class="eyebrow">Tonight</span>
-        <h2>Three things before you arrive.</h2>
-        <div class="grid-3" style="margin-top: 8px;">
-          <div class="glass card">
-            <div class="day-num">01</div>
-            <h4>The run of show</h4>
-            <p>What the three days look like — mornings, builds, evenings, and how the room works.</p>
-          </div>
-          <div class="glass card">
-            <div class="day-num">02</div>
-            <h4>Your business need</h4>
-            <p>Come already knowing the problem you're bringing. That's the whole game.</p>
-          </div>
-          <div class="glass card">
-            <div class="day-num">03</div>
-            <h4>Your tools</h4>
-            <p>ChatGPT, Claude, and Lovable — set up before Wednesday so you can build on day one.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. Three-day arc -->
-    <section class="slide" data-slide="3">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-logan.webp')"></div>
-      <div class="slide-content" style="max-width: 1080px;">
-        <span class="eyebrow">The Arc</span>
-        <h2>Three days.<br />One breakthrough.</h2>
-        <p class="lead">This isn't a conference. It's a working retreat — you bring a real problem and leave with a real path forward.</p>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-shift.webp')"></div>
+      <div class="slide-content" style="max-width: 1120px;">
+        <span class="eyebrow eyebrow-ghost">Tonight</span>
+        <h2 class="wide">Three things.</h2>
         <div class="grid-3">
           <div class="glass card">
-            <div class="day-num">Wed · Day 1</div>
-            <h4>Diagnose &amp; Design</h4>
-            <p>Name the problem. Open curiosity. Build something real before the sun goes down.</p>
+            <div class="kicker">01</div>
+            <h3>Run of show</h3>
+            <p>What the three days look like.</p>
           </div>
           <div class="glass card">
-            <div class="day-num">Thu · Day 2</div>
-            <h4>Build &amp; Breakthrough</h4>
-            <p>AI as your partner in the morning. AI as your employee in the afternoon.</p>
+            <div class="kicker">02</div>
+            <h3>Your ask</h3>
+            <p>The business need you're bringing.</p>
           </div>
           <div class="glass card">
-            <div class="day-num">Fri · Day 3</div>
-            <h4>Deploy &amp; Connect</h4>
-            <p>Show what you built. Close the loop. Cap it with the river float.</p>
+            <div class="kicker">03</div>
+            <h3>Your tools</h3>
+            <p>ChatGPT. Claude. Lovable.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. Day 1 -->
+    <!-- 3 -->
+    <section class="slide" data-slide="3">
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-logan.webp')"></div>
+      <div class="slide-content" style="max-width: 1140px;">
+        <span class="eyebrow eyebrow-ghost">The Arc</span>
+        <h2>Three days.<br />One breakthrough.</h2>
+        <div class="grid-3">
+          <div class="glass card">
+            <div class="kicker">Wed</div>
+            <h3>Diagnose &amp; Design</h3>
+            <p>Name it. Build it.</p>
+          </div>
+          <div class="glass card">
+            <div class="kicker">Thu</div>
+            <h3>Build &amp; Breakthrough</h3>
+            <p>Partner → Employee.</p>
+          </div>
+          <div class="glass card">
+            <div class="kicker">Fri</div>
+            <h3>Deploy &amp; Connect</h3>
+            <p>Show. Send-off. River.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -->
     <section class="slide" data-slide="4">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-stack.webp')"></div>
-      <div class="slide-content align-left" style="max-width: 980px;">
-        <span class="eyebrow">Day 1 · Wednesday</span>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-stack.webp')"></div>
+      <div class="slide-content align-left" style="max-width: 1040px;">
+        <span class="eyebrow eyebrow-ghost">Day 1 · Wednesday</span>
         <h2>Diagnose &amp; Design</h2>
-        <p class="lead" style="text-align: left;">Get clear. Get curious. Build.</p>
         <div class="grid-2">
           <div class="glass card">
-            <div class="day-num">Morning</div>
-            <h4>Welcome → Bill &amp; Tony → Braydon</h4>
+            <div class="kicker">Morning</div>
+            <h3>Mindset → AI</h3>
             <ul>
-              <li>Quiet reflection + introductions</li>
-              <li>Mindset with Bill &amp; Tony</li>
-              <li>Brainstorm with AI</li>
+              <li>Introductions</li>
+              <li>Bill &amp; Tony</li>
+              <li>Brainstorm with Braydon</li>
             </ul>
           </div>
           <div class="glass card">
-            <div class="day-num">Afternoon &amp; Evening</div>
-            <h4>Lovable build + park night</h4>
+            <div class="kicker">Afternoon</div>
+            <h3>Build + Park</h3>
             <ul>
-              <li>Lovable setup &amp; training</li>
-              <li>Hands-on build session</li>
-              <li>Pizza + curiosity games at the park</li>
+              <li>Lovable training</li>
+              <li>Hands-on build</li>
+              <li>Pizza &amp; games</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5. Day 2 -->
+    <!-- 5 -->
     <section class="slide" data-slide="5">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-operators.webp')"></div>
-      <div class="slide-content align-left" style="max-width: 980px;">
-        <span class="eyebrow">Day 2 · Thursday</span>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-operators.webp')"></div>
+      <div class="slide-content align-left" style="max-width: 1040px;">
+        <span class="eyebrow eyebrow-ghost">Day 2 · Thursday</span>
         <h2>Build &amp; Breakthrough</h2>
-        <p class="lead" style="text-align: left;">Partner in the morning. Employee in the afternoon.</p>
         <div class="grid-2">
           <div class="glass card">
-            <div class="day-num">Morning · Partner</div>
-            <h4>Integrations + practice</h4>
+            <div class="kicker">Morning · Partner</div>
+            <h3>Integrations</h3>
             <ul>
-              <li>Quick check-in on last night</li>
-              <li>Connect ChatGPT or Claude to your tools</li>
-              <li>Hands-on practice with guides in the room</li>
+              <li>Connect your tools</li>
+              <li>Practice in the room</li>
+              <li>Guides circulating</li>
             </ul>
           </div>
           <div class="glass card">
-            <div class="day-num">Afternoon · Employee</div>
-            <h4>Strategy + workflows</h4>
+            <div class="kicker">Afternoon · Employee</div>
+            <h3>Workflows</h3>
             <ul>
-              <li>Business strategy with Bill &amp; Tony</li>
-              <li>Workflow training — craft your first AI employee</li>
-              <li>Evening barbecue + open build time</li>
+              <li>Bill &amp; Tony strategy</li>
+              <li>Craft your AI employee</li>
+              <li>Barbecue + open build</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 6. Day 3 -->
+    <!-- 6 -->
     <section class="slide" data-slide="6">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-proof.webp')"></div>
-      <div class="slide-content align-left" style="max-width: 980px;">
-        <span class="eyebrow">Day 3 · Friday</span>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-proof.webp')"></div>
+      <div class="slide-content align-left" style="max-width: 1040px;">
+        <span class="eyebrow eyebrow-ghost">Day 3 · Friday</span>
         <h2>Deploy &amp; Connect</h2>
-        <p class="lead" style="text-align: left;">See the room. Close the loop. Unplug.</p>
         <div class="grid-2">
           <div class="glass card">
-            <div class="day-num">Morning</div>
-            <h4>Show &amp; Share + send-off</h4>
+            <div class="kicker">Morning</div>
+            <h3>Show &amp; Share</h3>
             <ul>
-              <li>See what everyone built</li>
-              <li>Celebrate wins across the cohort</li>
-              <li>Take-home playbook in hand</li>
+              <li>See the room's wins</li>
+              <li>Send-off ceremony</li>
+              <li>Take-home playbook</li>
             </ul>
           </div>
           <div class="glass card">
-            <div class="day-num">Afternoon</div>
-            <h4>River float</h4>
+            <div class="kicker">Afternoon</div>
+            <h3>River float</h3>
             <ul>
-              <li>On the water by ~2:00 PM</li>
-              <li>Done ~4:00–5:00 PM</li>
+              <li>On the water ~2 PM</li>
+              <li>Done ~4–5 PM</li>
               <li>Evening on your own</li>
             </ul>
           </div>
@@ -630,181 +666,156 @@
       </div>
     </section>
 
-    <!-- 7. Prep: your ask -->
+    <!-- 7 -->
     <section class="slide" data-slide="7">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-reality.webp')"></div>
-      <div class="slide-content" style="max-width: 920px;">
-        <span class="eyebrow">Prepare</span>
-        <h2>Come with your ask.</h2>
-        <p class="lead">
-          Wednesday morning starts with introductions. If you don't know the business problem you came to solve, the room can't help you move it.
-        </p>
-        <div class="glass ask-prompt">
-          <p>“What's the one bottleneck in my business that, if AI helped me solve it this week, would change everything?”</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. What a good ask looks like -->
-    <section class="slide" data-slide="8">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-cost.webp')"></div>
-      <div class="slide-content" style="max-width: 1040px;">
-        <span class="eyebrow">Your Ask</span>
-        <h2>Make it specific.</h2>
-        <div class="grid-2" style="margin-top: 4px;">
-          <div class="glass card" style="border-color: rgba(255,100,100,0.22); background: rgba(255,60,60,0.04);">
-            <div class="day-num">Too vague</div>
-            <h4>“I want to use AI more.”</h4>
-            <p>Sounds familiar — and it won't get you a win by Wednesday night.</p>
-          </div>
-          <div class="glass card" style="border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.08);">
-            <div class="day-num">Ready for the room</div>
-            <h4>“I need a way to follow up leads within an hour without hiring.”</h4>
-            <p>Clear problem. Clear win. Something we can build toward.</p>
-          </div>
-        </div>
-        <p class="lead" style="margin-top: 4px;">
-          Write it down before Wednesday. Sit with it at breakfast if you need to — but don't walk into introductions empty-handed.
-        </p>
-      </div>
-    </section>
-
-    <!-- 9. Tools overview -->
-    <section class="slide" data-slide="9">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-intimacy.webp')"></div>
-      <div class="slide-content" style="max-width: 1080px;">
-        <span class="eyebrow">Your Toolkit</span>
-        <h2>Three tools.<br />That's the whole stack.</h2>
-        <p class="lead">If you have these set up before you arrive, you're ready to build on day one.</p>
-        <div class="grid-3">
-          <div class="glass card" style="text-align: center;">
-            <div class="tool-name">ChatGPT</div>
-            <div class="tool-role">Thinking partner</div>
-            <p style="text-align: center;">Brainstorm, plans, and everyday AI work.</p>
-          </div>
-          <div class="glass card" style="text-align: center;">
-            <div class="tool-name">Claude</div>
-            <div class="tool-role">Deep work + workflows</div>
-            <p style="text-align: center;">Integrations, longer context, AI employee workflows.</p>
-          </div>
-          <div class="glass card" style="text-align: center;">
-            <div class="tool-name">Lovable</div>
-            <div class="tool-role">Build in the room</div>
-            <p style="text-align: center;">Create real tools around your business problem.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10. ChatGPT + Claude -->
-    <section class="slide" data-slide="10">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-objections.webp')"></div>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-reality.webp')"></div>
       <div class="slide-content" style="max-width: 1000px;">
-        <span class="eyebrow">ChatGPT · Claude</span>
-        <h2>Use what you already have.</h2>
-        <p class="lead">
-          The principles are the same on both. If you already subscribe to one, bring that. If you have neither, pick one and get logged in before Wednesday.
-        </p>
+        <span class="eyebrow eyebrow-ghost">Prepare</span>
+        <h2>Come with<br />your ask.</h2>
+        <div class="glass ask-box">
+          <p>What's the one bottleneck that, if AI helped you solve it this week, would change everything?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide" data-slide="8">
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-cost.webp')"></div>
+      <div class="slide-content" style="max-width: 1100px;">
+        <span class="eyebrow eyebrow-ghost">Your Ask</span>
+        <h2>Make it specific.</h2>
         <div class="grid-2">
-          <div class="glass card">
-            <h4>ChatGPT</h4>
-            <p>Simple, accessible, great for brainstorming and daily automation. Think iPhone — easy to jump in.</p>
+          <div class="glass card contrast-bad">
+            <div class="kicker">Too vague</div>
+            <h3>“I want to use AI more.”</h3>
+            <p>Won't get you a win by Wednesday night.</p>
           </div>
-          <div class="glass card">
-            <h4>Claude</h4>
-            <p>Deep customization and workflows. Think Android — more dials when you want them. Same core power.</p>
+          <div class="glass card contrast-good">
+            <div class="kicker">Ready</div>
+            <h3>“Follow up leads in under an hour — without hiring.”</h3>
+            <p>Clear problem. Clear win. Buildable.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 11. Lovable -->
+    <!-- 9 -->
+    <section class="slide" data-slide="9">
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-intimacy.webp')"></div>
+      <div class="slide-content" style="max-width: 1140px;">
+        <span class="eyebrow eyebrow-ghost">Your Toolkit</span>
+        <h2>Three tools.</h2>
+        <div class="grid-3 tool-grid">
+          <div class="glass tool-card">
+            <img src="/media/tools/chatgpt.svg" alt="ChatGPT" />
+            <h3>ChatGPT</h3>
+            <p>Thinking partner</p>
+          </div>
+          <div class="glass tool-card">
+            <img src="/media/tools/claude.svg" alt="Claude" />
+            <h3>Claude</h3>
+            <p>Deep work + workflows</p>
+          </div>
+          <div class="glass tool-card">
+            <img src="/media/tools/lovable.svg" alt="Lovable" />
+            <h3>Lovable</h3>
+            <p>Build in the room</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide" data-slide="10">
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-objections.webp')"></div>
+      <div class="slide-content" style="max-width: 1080px;">
+        <span class="eyebrow eyebrow-ghost">ChatGPT · Claude</span>
+        <h2>Use what<br />you have.</h2>
+        <div class="grid-2 tool-grid">
+          <div class="glass tool-card">
+            <img src="/media/tools/chatgpt.svg" alt="ChatGPT" />
+            <h3>ChatGPT</h3>
+            <p>Simple. Fast. Everyday AI.</p>
+          </div>
+          <div class="glass tool-card">
+            <img src="/media/tools/claude.svg" alt="Claude" />
+            <h3>Claude</h3>
+            <p>Deep. Custom. Workflows.</p>
+          </div>
+        </div>
+        <p class="lead wide">Same principles. Bring the one you already pay for.</p>
+      </div>
+    </section>
+
+    <!-- 11 -->
     <section class="slide" data-slide="11">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-stack.webp')"></div>
-      <div class="slide-content" style="max-width: 920px;">
-        <span class="eyebrow">Lovable</span>
-        <h2>Create your account<br />before you arrive.</h2>
-        <p class="lead">
-          Wednesday afternoon is a Lovable build session. Account ready = building in minutes, not stuck on signup.
-        </p>
-        <div class="glass card" style="width: 100%; text-align: center;">
-          <h4 style="margin-bottom: 10px;">lovable.dev</h4>
-          <p style="max-width: 36rem; margin: 0 auto;">
-            Sign up, confirm your email, and make sure you can log in on the laptop you'll bring to The Hive.
-          </p>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-stack.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow eyebrow-ghost">Lovable</span>
+        <div class="tool-hero">
+          <img class="tool-mark" src="/media/tools/lovable.svg" alt="Lovable" />
+          <h2>Create your account<br />before Wednesday.</h2>
+          <p class="lead">lovable.dev — signup done. Email confirmed. Laptop ready.</p>
         </div>
       </div>
     </section>
 
-    <!-- 12. Checklist -->
+    <!-- 12 -->
     <section class="slide" data-slide="12">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-proof.webp')"></div>
-      <div class="slide-content" style="max-width: 880px;">
-        <span class="eyebrow">Before Wednesday</span>
-        <h2>You're set if you have these.</h2>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-proof.webp')"></div>
+      <div class="slide-content" style="max-width: 920px;">
+        <span class="eyebrow eyebrow-ghost">Before Wednesday</span>
+        <h2>You're set.</h2>
         <div class="checklist">
           <div class="glass check-item">
             <div class="check-mark" aria-hidden="true">✓</div>
             <div>
               <strong>Your business need written down</strong>
-              <span>One clear bottleneck you're bringing into the room.</span>
+              <span class="sub">One clear bottleneck.</span>
             </div>
           </div>
           <div class="glass check-item">
             <div class="check-mark" aria-hidden="true">✓</div>
             <div>
-              <strong>ChatGPT account ready</strong>
-              <span>Logged in on the device you'll use at the retreat.</span>
+              <strong>ChatGPT ready</strong>
+              <span class="sub">Logged in on the laptop you're bringing.</span>
             </div>
           </div>
           <div class="glass check-item">
             <div class="check-mark" aria-hidden="true">✓</div>
             <div>
-              <strong>Claude account ready</strong>
-              <span>Same — or commit to using ChatGPT if that's already your stack.</span>
+              <strong>Claude ready</strong>
+              <span class="sub">Or commit to ChatGPT if that's your stack.</span>
             </div>
           </div>
           <div class="glass check-item">
             <div class="check-mark" aria-hidden="true">✓</div>
             <div>
               <strong>Lovable account created</strong>
-              <span>Signup done. Email confirmed. Ready to build Wednesday afternoon.</span>
+              <span class="sub">Ready to build Wednesday afternoon.</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 13. Optional Tuesday -->
+    <!-- 13 -->
     <section class="slide" data-slide="13">
-      <div class="slide-bg overlay-heavy" style="background-image: url('/media/deck/deck-bg-logan.webp')"></div>
-      <div class="slide-content" style="max-width: 900px;">
-        <span class="eyebrow">Optional · Tuesday night</span>
+      <div class="slide-bg" style="background-image: url('/media/deck/deck-bg-logan.webp')"></div>
+      <div class="slide-content">
+        <span class="eyebrow eyebrow-ghost">Optional · Tuesday</span>
         <h2>In town early?</h2>
-        <p class="lead">
-          Around 8:00 PM, anyone already in Logan is welcome to grab ice cream at the Creamery with us.
-          Purely social — no programming, no pressure.
-        </p>
-        <div class="glass card" style="width: 100%; text-align: center;">
-          <h4>Tuesday, July 28 · ~8:00 PM</h4>
-          <p style="max-width: 32rem; margin: 0 auto;">Come say hey. Meet a few faces before Wednesday kickoff.</p>
-        </div>
+        <p class="lead">Creamery · ~8 PM<br />Ice cream. Purely social.</p>
       </div>
     </section>
 
-    <!-- 14. Close -->
+    <!-- 14 -->
     <section class="slide" data-slide="14">
       <div class="slide-bg" style="background-image: url('/media/hero-poster.webp')"></div>
       <div class="slide-content">
-        <span class="eyebrow eyebrow-dark">See You In Logan</span>
-        <h1 class="title-hero">Bring your problem.<br />Leave with a path.</h1>
-        <p class="lead">
-          Know your ask. Have ChatGPT, Claude, and Lovable ready.
-          We'll do the rest together in the room.
-        </p>
-        <p class="lead" style="font-size: clamp(0.85rem, 1.6vw, 1.05rem); margin-top: -4px;">
-          Questions? Ask them now — or reach out anytime before July 29.
-        </p>
+        <span class="eyebrow">See You In Logan</span>
+        <h1 class="display">Bring your problem.<br />Leave with a path.</h1>
+        <p class="lead wide">Know your ask. Have the three tools ready.</p>
       </div>
     </section>
 
@@ -820,20 +831,20 @@
 
   <script>
     const SPEAKER_NOTES = [
-      '<strong>Goal:</strong> Warm welcome — this is orientation, not a sales pitch.<br><strong>Say:</strong> "Tonight is about getting you ready so Wednesday is a win from the first hour."',
+      '<strong>Goal:</strong> Warm welcome — orientation, not a sales pitch.<br><strong>Say:</strong> "Tonight is about getting you ready so Wednesday is a win from hour one."',
       '<strong>Goal:</strong> Frame the call in three beats.<br><strong>Say:</strong> "Run of show, your ask, and your tools. That\'s it."',
       '<strong>Goal:</strong> Set the arc without drowning in times.<br><strong>Say:</strong> "Day 1 diagnose and build. Day 2 partner then employee. Day 3 show and share, then the river."',
-      '<strong>Goal:</strong> Day 1 feel — introductions matter, then build.<br><strong>Say:</strong> "Morning is human + mindset. Afternoon is Lovable. Evening is pizza and games at the park."',
-      '<strong>Goal:</strong> Day 2 = integrations and workflows.<br><strong>Say:</strong> "Morning you connect AI to your real tools. Afternoon you craft your first AI employee — with Bill and Tony on strategy in the middle."',
+      '<strong>Goal:</strong> Day 1 feel.<br><strong>Say:</strong> "Morning is human + mindset with Bill and Tony. Afternoon is Lovable. Evening is pizza and games."',
+      '<strong>Goal:</strong> Day 2 = integrations and workflows.<br><strong>Say:</strong> "Morning you connect AI to real tools. Afternoon you craft your first AI employee."',
       '<strong>Goal:</strong> Day 3 is celebration + adventure.<br><strong>Say:</strong> "Show &amp; Share is the big morning. Then send-off, then we float."',
-      '<strong>Goal:</strong> This is the most important prep ask.<br><strong>Say:</strong> "If you show up without a problem, introductions will stall you. Write the ask tonight."',
-      '<strong>Goal:</strong> Make vague vs specific visceral.<br><strong>Ask the room:</strong> "Who wants to share a rough draft of their ask out loud?"',
-      '<strong>Goal:</strong> Simplify the stack.<br><strong>Say:</strong> "ChatGPT, Claude, Lovable. That\'s the whole tech list."',
+      '<strong>Goal:</strong> Most important prep.<br><strong>Say:</strong> "If you show up without a problem, introductions will stall you. Write the ask tonight."',
+      '<strong>Goal:</strong> Vague vs specific.<br><strong>Ask the room:</strong> "Who wants to share a rough draft of their ask?"',
+      '<strong>Goal:</strong> Simplify the stack — logos should stick visually.<br><strong>Say:</strong> "ChatGPT, Claude, Lovable. That\'s the whole tech list."',
       '<strong>Goal:</strong> Reduce tool anxiety.<br><strong>Say:</strong> "If you already pay for one, use that. Principles transfer. Don\'t buy both unless you want to."',
-      '<strong>Goal:</strong> Remove Wednesday friction.<br><strong>Say:</strong> "Create the Lovable account this week. Confirm the email. Test login on the laptop you\'re bringing."',
-      '<strong>Goal:</strong> Leave with a checklist people can screenshot.<br><strong>Say:</strong> "Four boxes. Hit them and you\'re set for success."',
-      '<strong>Goal:</strong> Optional social — low pressure.<br><strong>Say:</strong> "If you\'re in town Tuesday, Creamery around eight. Ice cream. That\'s the whole invite."',
-      '<strong>Goal:</strong> Close + open for Q&amp;A.<br><strong>Say:</strong> "Any questions on schedule, prep, or tools? Ask now."',
+      '<strong>Goal:</strong> Remove Wednesday friction.<br><strong>Say:</strong> "Create the Lovable account this week. Confirm email. Test login on the laptop you\'re bringing."',
+      '<strong>Goal:</strong> Screenshot-worthy checklist.<br><strong>Say:</strong> "Four boxes. Hit them and you\'re set."',
+      '<strong>Goal:</strong> Optional social — low pressure.<br><strong>Say:</strong> "If you\'re in town Tuesday, Creamery around eight."',
+      '<strong>Goal:</strong> Close + open Q&amp;A.<br><strong>Say:</strong> "Any questions on schedule, prep, or tools? Ask now."',
     ];
 
     let current = 1;
@@ -855,7 +866,7 @@
     function toggleNotes() {
       notesVisible = !notesVisible;
       notesPanel.classList.toggle('visible', notesVisible);
-      notesHint.style.opacity = notesVisible ? '0.7' : '0.35';
+      notesHint.style.opacity = notesVisible ? '0.75' : '0.45';
       if (notesVisible) updateNotes();
     }
 

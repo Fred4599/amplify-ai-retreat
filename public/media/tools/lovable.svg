@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img">
+  <title>Lovable</title>
+  <defs>
+    <linearGradient id="lg" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6B3D"/>
+      <stop offset="0.45" stop-color="#E84A8A"/>
+      <stop offset="1" stop-color="#5B6CFF"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#lg)" d="M32 54.5S10 40.2 10 24.6C10 16.8 16.2 11 23.5 11c4.2 0 8.1 2.1 10.5 5.4C36.4 13.1 40.3 11 44.5 11 51.8 11 58 16.8 58 24.6 58 40.2 32 54.5 32 54.5z"/>
+</svg>
