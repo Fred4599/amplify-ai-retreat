@@ -60,9 +60,9 @@ export default function RetreatSchedule({ agendaDownloads = AGENDA_DOWNLOADS }: 
       >
         <Sparkles className="w-5 h-5 text-white/50 shrink-0 mt-0.5" aria-hidden="true" />
         <p className="text-white/70 font-body font-light text-sm sm:text-base leading-relaxed text-left">
-          <span className="text-white/90 font-medium">Arriving early?</span> Join us the evening of{' '}
-          {WELCOME_RECEPTION.date} for a welcome reception at The Hive — your first chance to meet
-          the room.
+          <span className="text-white/90 font-medium">Arriving early?</span> If you're in town the evening of{' '}
+          {WELCOME_RECEPTION.date}, join us around 8 for ice cream at the Creamery — purely social,
+          for whoever's already here.
         </p>
       </motion.div>
 

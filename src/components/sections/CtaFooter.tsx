@@ -108,7 +108,7 @@ export default function CtaFooter({ applyHref = '/apply' }: CtaFooterProps) {
               © 2026 Amplify AI Retreat. Unlock human potential through AI.
             </p>
             <p className="text-white/40 text-xs font-body font-light">
-              {eventDatesLine()} · Welcome reception {WELCOME_RECEPTION.date}
+              {eventDatesLine()} · Optional Creamery meetup {WELCOME_RECEPTION.date}
             </p>
             <a
               href={VENUE.mapsUrl}

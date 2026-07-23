@@ -25,7 +25,7 @@ export const WAIVER_SECTIONS: WaiverSection[] = [
     number: '1',
     title: 'Retreat and Activities',
     paragraphs: [
-      'The Retreat includes the welcome reception on July 28, 2026; educational and working sessions from July 29–31, 2026; meals, games, networking, optional open build time, off-site activities, transportation connected with Retreat activities, and a river float (collectively, the "Activities"). I understand that the schedule, location, vendors, and specific Activities may change because of weather, safety, logistics, or other circumstances.',
+      'The Retreat includes an optional informal gather on July 28, 2026 (ice cream at the Creamery for attendees already in town); educational and working sessions from July 29–31, 2026; meals, games, networking, optional open build time, off-site activities, transportation connected with Retreat activities, and a river float (collectively, the "Activities"). I understand that the schedule, location, vendors, and specific Activities may change because of weather, safety, logistics, or other circumstances.',
     ],
   },
   {

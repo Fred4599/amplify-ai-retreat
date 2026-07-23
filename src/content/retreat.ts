@@ -3,7 +3,7 @@
 export const WELCOME_RECEPTION = {
   date: 'July 28, 2026',
   summary:
-    'Join us the evening of July 28 for a welcome reception at The Hive — your first chance to meet the room.',
+    'If you\'re in town the evening of July 28, join us around 8 for ice cream at the Creamery — purely social, for whoever\'s already here.',
 } as const;
 
 export type ScheduleBlock = {
@@ -31,7 +31,7 @@ export const RETREAT_DAYS: RetreatDay[] = [
         period: 'Morning',
         items: [
           'Welcome & connect — meet the cohort, name your problem',
-          'Unlock curiosity — mindset for breakthroughs',
+          'Unlock curiosity — mindset for breakthroughs with Bill & Tony',
           'Brainstorm with AI — ideas into plans',
         ],
       },
@@ -46,7 +46,7 @@ export const RETREAT_DAYS: RetreatDay[] = [
         period: 'Evening',
         sub: 'Off-site',
         items: [
-          'Catered dinner — great food, real conversation',
+          'Pizza dinner at the park — great food, real conversation',
           'Curiosity games — let loose in the spirit of curiosity',
         ],
       },
@@ -63,16 +63,16 @@ export const RETREAT_DAYS: RetreatDay[] = [
         sub: 'Partner',
         items: [
           'Progress check-in — wins from last night',
-          'Collaborate with AI — work side-by-side',
-          'Practice in the room — AI as work partner',
+          'Integrations training — connect ChatGPT or Claude to the tools you already use',
+          'Practice in the room — AI as work partner, guides circulating',
         ],
       },
       {
         period: 'Afternoon',
         sub: 'Employee',
         items: [
-          'Train AI workflows — tasks on your behalf',
           'Business strategy — SOPs, make it stick',
+          'Workflow training — craft your first AI employee',
           'Celebrate wins — toward your solution',
         ],
       },
@@ -93,7 +93,6 @@ export const RETREAT_DAYS: RetreatDay[] = [
         period: 'Morning',
         items: [
           'Show & Share — see what the room built',
-          'AI agents — when systems work for you',
           'Send-off — wins + take-home playbook',
         ],
       },
