@@ -78,7 +78,12 @@ const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
             </a>
           </div>
 
-          <form id="application-form" class="flex flex-col gap-5">
+          <form
+            id="application-form"
+            class="flex flex-col gap-5"
+            data-webhook={webhook}
+            data-source={sourceParam}
+          >
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="sm:col-span-2">
                 <label for="fullName" class={labelClass}>Full Name</label>
@@ -180,56 +185,57 @@ const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
     </div>
   </main>
 
-  <script define:vars={{ webhook, sourceParam }}>
-    const form = document.getElementById('application-form');
+  <script>
+    import { submitRetreatApplication } from '../lib/form-submissions';
+
+    const form = document.getElementById('application-form') as HTMLFormElement | null;
     const success = document.getElementById('application-success');
     const errorEl = document.getElementById('application-error');
-    const submitBtn = document.getElementById('application-submit');
+    const submitBtn = document.getElementById('application-submit') as HTMLButtonElement | null;
 
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (!webhook) {
-        errorEl.textContent = 'Application form is not configured yet. Please try again later.';
-        errorEl.classList.remove('hidden');
-        return;
-      }
+      if (!form || !errorEl || !submitBtn || !success) return;
+
+      const webhook = form.dataset.webhook ?? '';
+      const sourceParam = form.dataset.source ?? '';
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Submitting…';
       errorEl.classList.add('hidden');
 
       const data = new FormData(form);
-      const payload = {
-        fullName: data.get('fullName'),
-        email: data.get('email'),
-        phone: data.get('phone'),
-        companyWebsite: data.get('companyWebsite'),
-        annualSales: data.get('annualSales'),
-        employeeCount: data.get('employeeCount'),
-        businessDescription: data.get('businessDescription'),
-        bottleneck: data.get('bottleneck'),
-        aiUsage: data.get('aiUsage'),
-        successOutcome: data.get('successOutcome'),
-        source: sourceParam || 'Amplify AI Retreat — Application',
-        submittedAt: new Date().toISOString(),
-      };
+      const result = await submitRetreatApplication({
+        webhook,
+        payload: {
+          fullName: String(data.get('fullName') ?? ''),
+          email: String(data.get('email') ?? ''),
+          phone: String(data.get('phone') ?? ''),
+          companyWebsite: String(data.get('companyWebsite') ?? ''),
+          annualSales: String(data.get('annualSales') ?? ''),
+          employeeCount: String(data.get('employeeCount') ?? ''),
+          businessDescription: String(data.get('businessDescription') ?? ''),
+          bottleneck: String(data.get('bottleneck') ?? ''),
+          aiUsage: String(data.get('aiUsage') ?? ''),
+          successOutcome: String(data.get('successOutcome') ?? ''),
+          source: sourceParam || 'Amplify AI Retreat — Application',
+          submittedAt: new Date().toISOString(),
+        },
+      });
 
-      try {
-        const res = await fetch(webhook, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error('Submission failed');
-
-        form.classList.add('hidden');
-        success.classList.remove('hidden');
-      } catch {
-        errorEl.textContent = 'Something went wrong. Please try again or email us directly.';
+      if (!result.ok) {
+        errorEl.textContent =
+          result.error.includes('not configured')
+            ? result.error
+            : 'Something went wrong. Please try again or email us directly.';
         errorEl.classList.remove('hidden');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Application';
+        return;
       }
+
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
     });
   </script>
 </BaseLayout>

@@ -1,6 +1,12 @@
 ---
 import WorkshopRegistrationForm from './WorkshopRegistrationForm.astro';
 import { WORKSHOP } from '../../config/workshop';
+
+interface Props {
+  webhook?: string;
+}
+
+const { webhook = '' } = Astro.props;
 ---
 
 <div
@@ -44,7 +50,7 @@ import { WORKSHOP } from '../../config/workshop';
     </div>
 
     <div class="px-6 py-6">
-      <WorkshopRegistrationForm idPrefix="modal" variant="panel" showHeader={false} />
+      <WorkshopRegistrationForm idPrefix="modal" variant="panel" showHeader={false} webhook={webhook} />
     </div>
   </div>
 </div>

@@ -99,7 +99,7 @@ const pageDescription = WORKSHOP.description;
         </p>
 
         <div class="shrink-0 mt-6 sm:mt-8 w-full max-w-xl px-1">
-          <WorkshopRegistrationForm idPrefix="hero" variant="hero" showHeader={false} />
+          <WorkshopRegistrationForm idPrefix="hero" variant="hero" showHeader={false} webhook={webhook} />
         </div>
 
         <div class="shrink-0 mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-2xl">
@@ -250,7 +250,7 @@ const pageDescription = WORKSHOP.description;
 
       <div class="relative max-w-xl mx-auto w-full">
         <div class="rounded-3xl overflow-hidden w-full border border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl">
-          <WorkshopRegistrationForm idPrefix="bottom" variant="panel" />
+          <WorkshopRegistrationForm idPrefix="bottom" variant="panel" webhook={webhook} />
         </div>
 
         <p class="text-center text-white/40 font-body text-xs mt-8 max-w-md mx-auto leading-relaxed">
@@ -261,9 +261,11 @@ const pageDescription = WORKSHOP.description;
     </section>
   </main>
 
-  <WorkshopRegistrationModal />
+  <WorkshopRegistrationModal webhook={webhook} />
 
-  <script define:vars={{ webhook }}>
+  <script>
+    import { submitWebinarRegistration } from '../lib/form-submissions';
+
     const modal = document.getElementById('registration-modal');
 
     function openRegistration() {
@@ -299,7 +301,7 @@ const pageDescription = WORKSHOP.description;
       if (event.key === 'Escape' && modal && !modal.hidden) closeRegistration();
     });
 
-    function showSuccess(form) {
+    function showSuccess(form: HTMLFormElement) {
       const prefix = form.id.replace('-form', '');
       form.hidden = true;
       const success = document.getElementById(`${prefix}-success`);
@@ -310,10 +312,10 @@ const pageDescription = WORKSHOP.description;
       closeRegistration();
     }
 
-    function showError(form, message) {
+    function showError(form: HTMLFormElement, message: string) {
       const prefix = form.id.replace('-form', '');
       const errorEl = document.getElementById(`${prefix}-error`);
-      const submitBtn = document.getElementById(`${prefix}-submit`);
+      const submitBtn = document.getElementById(`${prefix}-submit`) as HTMLButtonElement | null;
       if (errorEl) {
         errorEl.textContent = message;
         errorEl.classList.remove('hidden');
@@ -325,18 +327,14 @@ const pageDescription = WORKSHOP.description;
       }
     }
 
-    document.querySelectorAll('[data-webinar-form]').forEach((form) => {
+    document.querySelectorAll<HTMLFormElement>('[data-webinar-form]').forEach((form) => {
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const prefix = form.id.replace('-form', '');
-        const submitBtn = document.getElementById(`${prefix}-submit`);
+        const submitBtn = document.getElementById(`${prefix}-submit`) as HTMLButtonElement | null;
         const errorEl = document.getElementById(`${prefix}-error`);
-
-        if (!webhook) {
-          showError(form, 'Registration is not configured yet. Please try again later.');
-          return;
-        }
+        const webhook = form.dataset.webhook ?? '';
 
         if (submitBtn) {
           submitBtn.disabled = true;
@@ -348,28 +346,30 @@ const pageDescription = WORKSHOP.description;
         }
 
         const data = new FormData(form);
-        const payload = {
-          fullName: data.get('fullName'),
-          email: data.get('email'),
-          phone: '',
-          company: '',
-          submittedAt: new Date().toISOString(),
-        };
+        const result = await submitWebinarRegistration({
+          webhook,
+          payload: {
+            fullName: String(data.get('fullName') ?? ''),
+            email: String(data.get('email') ?? ''),
+            phone: '',
+            company: '',
+            submittedAt: new Date().toISOString(),
+          },
+        });
 
-        try {
-          const res = await fetch(webhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-          if (!res.ok) throw new Error('Submission failed');
-
-          document.querySelectorAll('[data-webinar-form]').forEach((otherForm) => {
-            showSuccess(otherForm);
-          });
-        } catch {
-          showError(form, 'Something went wrong. Please try again or email us directly.');
+        if (!result.ok) {
+          showError(
+            form,
+            result.error.includes('not configured')
+              ? result.error
+              : 'Something went wrong. Please try again or email us directly.',
+          );
+          return;
         }
+
+        document.querySelectorAll<HTMLFormElement>('[data-webinar-form]').forEach((otherForm) => {
+          showSuccess(otherForm);
+        });
       });
     });
   </script>

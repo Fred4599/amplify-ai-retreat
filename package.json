@@ -19,6 +19,7 @@
     "@astrojs/react": "^4.2.1",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/tailwind": "^6.0.2",
+    "@supabase/supabase-js": "^2.110.8",
     "astro": "^5.7.10",
     "clsx": "^2.1.1",
     "iconify-icon": "^2.1.0",

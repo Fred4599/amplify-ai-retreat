@@ -5,9 +5,10 @@ interface Props {
   idPrefix: string;
   variant?: 'hero' | 'panel';
   showHeader?: boolean;
+  webhook?: string;
 }
 
-const { idPrefix, variant = 'panel', showHeader = true } = Astro.props;
+const { idPrefix, variant = 'panel', showHeader = true, webhook = '' } = Astro.props;
 
 const inputClass =
   'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30 transition-colors';
@@ -60,6 +61,7 @@ const isHero = variant === 'hero';
     <form
       id={`${idPrefix}-form`}
       data-webinar-form
+      data-webhook={webhook}
       class:list={[
         'flex flex-col gap-4',
         isHero ? 'sm:flex-row sm:items-end sm:gap-3' : 'gap-5',
