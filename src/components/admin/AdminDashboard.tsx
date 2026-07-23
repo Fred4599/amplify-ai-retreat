@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js';
 import { getSupabaseBrowserClient } from '../../lib/supabase';
 import type {
   AdminTab,
+  ParticipantWaiver,
   RetreatApplication,
   WebinarRegistration,
 } from '../../lib/admin-types';
@@ -44,10 +45,12 @@ export default function AdminDashboard() {
   const [query, setQuery] = useState('');
   const [applications, setApplications] = useState<RetreatApplication[]>([]);
   const [webinars, setWebinars] = useState<WebinarRegistration[]>([]);
+  const [waivers, setWaivers] = useState<ParticipantWaiver[]>([]);
   const [dataError, setDataError] = useState('');
   const [dataLoading, setDataLoading] = useState(false);
   const [selectedApp, setSelectedApp] = useState<RetreatApplication | null>(null);
   const [selectedWebinar, setSelectedWebinar] = useState<WebinarRegistration | null>(null);
+  const [selectedWaiver, setSelectedWaiver] = useState<ParticipantWaiver | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
@@ -86,7 +89,7 @@ export default function AdminDashboard() {
       setDataLoading(true);
       setDataError('');
 
-      const [appsResult, webinarsResult] = await Promise.all([
+      const [appsResult, webinarsResult, waiversResult] = await Promise.all([
         supabase!
           .from('retreat_applications')
           .select('*')
@@ -95,21 +98,28 @@ export default function AdminDashboard() {
           .from('webinar_registrations')
           .select('*')
           .order('submitted_at', { ascending: false }),
+        supabase!
+          .from('participant_waivers')
+          .select('*')
+          .order('signed_at', { ascending: false }),
       ]);
 
       if (cancelled) return;
 
-      if (appsResult.error || webinarsResult.error) {
+      if (appsResult.error || webinarsResult.error || waiversResult.error) {
         setDataError(
           appsResult.error?.message ||
             webinarsResult.error?.message ||
+            waiversResult.error?.message ||
             'Could not load submissions. Confirm this email is on the admin allowlist.',
         );
         setApplications([]);
         setWebinars([]);
+        setWaivers([]);
       } else {
         setApplications((appsResult.data ?? []) as RetreatApplication[]);
         setWebinars((webinarsResult.data ?? []) as WebinarRegistration[]);
+        setWaivers((waiversResult.data ?? []) as ParticipantWaiver[]);
       }
 
       setDataLoading(false);
@@ -145,6 +155,18 @@ export default function AdminDashboard() {
     );
   }, [webinars, query]);
 
+  const filteredWaivers = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return waivers;
+    return waivers.filter((row) =>
+      [row.legal_name, row.preferred_name, row.email, row.phone, row.emergency_name]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .includes(q),
+    );
+  }, [waivers, query]);
+
   async function handleSignIn(event: FormEvent) {
     event.preventDefault();
     if (!supabase) return;
@@ -164,6 +186,7 @@ export default function AdminDashboard() {
     await supabase.auth.signOut();
     setSelectedApp(null);
     setSelectedWebinar(null);
+    setSelectedWaiver(null);
   }
 
   if (!supabase) {
@@ -259,12 +282,13 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         <button
           type="button"
           onClick={() => {
             setTab('applications');
             setSelectedWebinar(null);
+            setSelectedWaiver(null);
           }}
           className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
             tab === 'applications'
@@ -280,6 +304,7 @@ export default function AdminDashboard() {
           onClick={() => {
             setTab('webinar');
             setSelectedApp(null);
+            setSelectedWaiver(null);
           }}
           className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
             tab === 'webinar'
@@ -289,6 +314,22 @@ export default function AdminDashboard() {
         >
           <p className="text-white/50 text-xs font-body uppercase tracking-wider">Webinar</p>
           <p className="text-2xl font-heading italic text-white mt-1">{webinars.length}</p>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setTab('waivers');
+            setSelectedApp(null);
+            setSelectedWebinar(null);
+          }}
+          className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+            tab === 'waivers'
+              ? 'border-white/30 bg-white/10'
+              : 'border-white/10 bg-white/[0.04] hover:bg-white/[0.07]'
+          }`}
+        >
+          <p className="text-white/50 text-xs font-body uppercase tracking-wider">Waivers</p>
+          <p className="text-2xl font-heading italic text-white mt-1">{waivers.length}</p>
         </button>
       </div>
 
@@ -355,29 +396,62 @@ export default function AdminDashboard() {
               </table>
             </div>
           )
-        ) : filteredWebinars.length === 0 ? (
-          <p className="p-8 text-center text-white/50 font-body text-sm">No webinar registrations yet.</p>
+        ) : tab === 'webinar' ? (
+          filteredWebinars.length === 0 ? (
+            <p className="p-8 text-center text-white/50 font-body text-sm">No webinar registrations yet.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[520px] text-left">
+                <thead className="border-b border-white/10 text-white/45 text-xs uppercase tracking-wider font-body">
+                  <tr>
+                    <th className="px-4 py-3 font-medium">Name</th>
+                    <th className="px-4 py-3 font-medium">Email</th>
+                    <th className="px-4 py-3 font-medium">Submitted</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredWebinars.map((row) => (
+                    <tr
+                      key={row.id}
+                      onClick={() => setSelectedWebinar(row)}
+                      className="border-b border-white/5 hover:bg-white/[0.06] cursor-pointer transition-colors"
+                    >
+                      <td className="px-4 py-3 text-sm text-white font-body">{row.full_name}</td>
+                      <td className="px-4 py-3 text-sm text-white/75 font-body">{row.email}</td>
+                      <td className="px-4 py-3 text-sm text-white/55 font-body whitespace-nowrap">
+                        {formatDate(row.submitted_at)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        ) : filteredWaivers.length === 0 ? (
+          <p className="p-8 text-center text-white/50 font-body text-sm">No signed waivers yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[520px] text-left">
+            <table className="w-full min-w-[560px] text-left">
               <thead className="border-b border-white/10 text-white/45 text-xs uppercase tracking-wider font-body">
                 <tr>
                   <th className="px-4 py-3 font-medium">Name</th>
                   <th className="px-4 py-3 font-medium">Email</th>
-                  <th className="px-4 py-3 font-medium">Submitted</th>
+                  <th className="px-4 py-3 font-medium">Version</th>
+                  <th className="px-4 py-3 font-medium">Signed</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredWebinars.map((row) => (
+                {filteredWaivers.map((row) => (
                   <tr
                     key={row.id}
-                    onClick={() => setSelectedWebinar(row)}
+                    onClick={() => setSelectedWaiver(row)}
                     className="border-b border-white/5 hover:bg-white/[0.06] cursor-pointer transition-colors"
                   >
-                    <td className="px-4 py-3 text-sm text-white font-body">{row.full_name}</td>
+                    <td className="px-4 py-3 text-sm text-white font-body">{row.legal_name}</td>
                     <td className="px-4 py-3 text-sm text-white/75 font-body">{row.email}</td>
+                    <td className="px-4 py-3 text-sm text-white/55 font-body">{row.agreement_version}</td>
                     <td className="px-4 py-3 text-sm text-white/55 font-body whitespace-nowrap">
-                      {formatDate(row.submitted_at)}
+                      {formatDate(row.signed_at)}
                     </td>
                   </tr>
                 ))}
@@ -387,7 +461,7 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      {(selectedApp || selectedWebinar) && (
+      {(selectedApp || selectedWebinar || selectedWaiver) && (
         <div
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6"
           role="dialog"
@@ -400,16 +474,17 @@ export default function AdminDashboard() {
             onClick={() => {
               setSelectedApp(null);
               setSelectedWebinar(null);
+              setSelectedWaiver(null);
             }}
           />
           <div className="relative w-full sm:max-w-lg max-h-[90svh] overflow-y-auto rounded-t-3xl sm:rounded-3xl border border-white/10 bg-black/95 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
                 <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-1">
-                  {selectedApp ? 'Application' : 'Webinar registration'}
+                  {selectedApp ? 'Application' : selectedWebinar ? 'Webinar registration' : 'Signed waiver'}
                 </p>
                 <h2 className="text-2xl font-heading italic text-white">
-                  {selectedApp?.full_name || selectedWebinar?.full_name}
+                  {selectedApp?.full_name || selectedWebinar?.full_name || selectedWaiver?.legal_name}
                 </h2>
               </div>
               <button
@@ -417,6 +492,7 @@ export default function AdminDashboard() {
                 onClick={() => {
                   setSelectedApp(null);
                   setSelectedWebinar(null);
+                  setSelectedWaiver(null);
                 }}
                 className="rounded-full border border-white/10 bg-white/5 p-2 text-white/80 hover:bg-white/10 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Close"
@@ -450,6 +526,28 @@ export default function AdminDashboard() {
                 <Field label="Phone" value={selectedWebinar.phone} />
                 <Field label="Company" value={selectedWebinar.company} />
                 <Field label="Submitted" value={formatDate(selectedWebinar.submitted_at)} />
+              </dl>
+            )}
+
+            {selectedWaiver && (
+              <dl className="space-y-4">
+                <Field label="Preferred name" value={selectedWaiver.preferred_name} />
+                <Field label="Email" value={selectedWaiver.email} />
+                <Field label="Phone" value={selectedWaiver.phone} />
+                <Field label="Address" value={selectedWaiver.street_address} />
+                <Field label="City / State / ZIP" value={selectedWaiver.city_state_zip} />
+                <Field label="Risk initials (4–10)" value={selectedWaiver.initials_risk} />
+                <Field label="Media initials (11–14)" value={selectedWaiver.initials_media} />
+                <Field label="Collaboration initials (15)" value={selectedWaiver.initials_collaboration} />
+                <Field label="Signature" value={selectedWaiver.signature_name} />
+                <Field label="Printed legal name" value={selectedWaiver.printed_legal_name} />
+                <Field label="Agreement version" value={selectedWaiver.agreement_version} />
+                <Field label="Signed" value={formatDate(selectedWaiver.signed_at)} />
+                <Field label="Emergency contact" value={selectedWaiver.emergency_name} />
+                <Field label="Relationship" value={selectedWaiver.emergency_relationship} />
+                <Field label="Emergency phone" value={selectedWaiver.emergency_phone} />
+                <Field label="Alternate phone" value={selectedWaiver.emergency_phone_alt} />
+                <Field label="Medical note" value={selectedWaiver.medical_note} />
               </dl>
             )}
           </div>

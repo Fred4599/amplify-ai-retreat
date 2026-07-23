@@ -1,0 +1,280 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ApplyNavbar from '../components/ApplyNavbar.astro';
+import {
+  WAIVER_ACKNOWLEDGMENT,
+  WAIVER_META,
+  WAIVER_PDF_PATH,
+  WAIVER_SECTIONS,
+  WAIVER_VERSION,
+} from '../content/waiver';
+
+const inputClass =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30 transition-colors';
+
+const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
+const initialsClass =
+  'w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-center font-body text-sm uppercase tracking-widest focus:outline-none focus:border-white/30';
+---
+
+<BaseLayout
+  title="Participant Waiver — Amplify AI Retreat"
+  description="Sign the Amplify AI Retreat participant release, waiver of liability, media release, and collaboration agreement."
+  path="/waiver"
+  noindex={true}
+>
+  <ApplyNavbar />
+
+  <main
+    id="main-content"
+    class="min-h-screen w-full max-w-full overflow-x-hidden pt-[max(6.5rem,env(safe-area-inset-top))] pb-[max(4rem,env(safe-area-inset-bottom))] px-4 sm:px-6 relative"
+  >
+    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent pointer-events-none"></div>
+
+    <div class="relative max-w-2xl mx-auto w-full">
+      <div class="rounded-3xl overflow-hidden w-full border border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl">
+        <div class="px-6 pt-8 pb-4 border-b border-white/10">
+          <p class="text-white/50 text-xs font-body uppercase tracking-widest mb-1">
+            Required before attendance
+          </p>
+          <h1 class="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
+            Participant waiver
+          </h1>
+          <p class="text-white/80 font-body text-sm mt-2">{WAIVER_META.eventLine}</p>
+          <p class="text-white/55 font-body text-sm mt-2 leading-relaxed">{WAIVER_META.venue}</p>
+          <a
+            href={WAIVER_PDF_PATH}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block mt-4 text-sm font-body text-white/70 underline underline-offset-4 hover:text-white transition-colors"
+          >
+            Download original PDF
+          </a>
+          <p class="text-white/40 font-body text-xs mt-2 leading-relaxed">
+            The online form below includes Tony’s collaboration language as Section 15 (shared creations freely reusable in the room; confidential business practices stay confidential).
+          </p>
+        </div>
+
+        <div class="px-6 py-6">
+          <div id="waiver-success" class="hidden py-12 text-center">
+            <p class="text-2xl font-heading italic text-white mb-3">Waiver received</p>
+            <p class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
+              Thanks — your signed participant agreement is on file. You’re all set for the retreat.
+            </p>
+            <a
+              href="/"
+              class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
+            >
+              Back to homepage
+            </a>
+          </div>
+
+          <form id="waiver-form" class="flex flex-col gap-6">
+            <div class="rounded-2xl border border-amber-200/20 bg-amber-200/5 px-4 py-3">
+              <p class="text-amber-100/90 font-body text-xs sm:text-sm leading-relaxed uppercase tracking-wide">
+                {WAIVER_META.important}
+              </p>
+            </div>
+
+            <p class="text-white/70 font-body text-sm leading-relaxed">{WAIVER_META.intro}</p>
+
+            <div class="max-h-[28rem] overflow-y-auto rounded-2xl border border-white/10 bg-black/30 p-4 sm:p-5 space-y-5">
+              {WAIVER_SECTIONS.map((section) => (
+                <section>
+                  <h2 class="text-white font-body text-sm font-semibold mb-2">
+                    {section.number}. {section.title}
+                  </h2>
+                  {section.paragraphs.map((paragraph) => (
+                    <p class="text-white/65 font-body text-sm leading-relaxed mb-2 last:mb-0">
+                      {paragraph}
+                    </p>
+                  ))}
+                </section>
+              ))}
+            </div>
+
+            <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+              <p class="text-white/80 font-body text-sm leading-relaxed">{WAIVER_ACKNOWLEDGMENT}</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="sm:col-span-2">
+                <label for="legalName" class={labelClass}>Participant legal name</label>
+                <input id="legalName" name="legalName" type="text" required autocomplete="name" class={inputClass} />
+              </div>
+              <div>
+                <label for="preferredName" class={labelClass}>Preferred name</label>
+                <input id="preferredName" name="preferredName" type="text" autocomplete="nickname" class={inputClass} />
+              </div>
+              <div>
+                <label for="email" class={labelClass}>Email</label>
+                <input id="email" name="email" type="email" required autocomplete="email" class={inputClass} />
+              </div>
+              <div>
+                <label for="phone" class={labelClass}>Mobile phone</label>
+                <input id="phone" name="phone" type="tel" required autocomplete="tel" class={inputClass} />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="streetAddress" class={labelClass}>Street address</label>
+                <input id="streetAddress" name="streetAddress" type="text" required autocomplete="street-address" class={inputClass} />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="cityStateZip" class={labelClass}>City / State / ZIP</label>
+                <input id="cityStateZip" name="cityStateZip" type="text" required autocomplete="address-level1" class={inputClass} />
+              </div>
+            </div>
+
+            <div class="space-y-4 rounded-2xl border border-white/10 p-4">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                <p class="text-white/75 font-body text-sm leading-relaxed flex-1">
+                  I specifically acknowledge Sections 4–10: risks, assumption of risk, release, waiver, indemnity, emergency care, and personal responsibility.
+                </p>
+                <div>
+                  <label for="initialsRisk" class={`${labelClass} sm:text-center`}>Initials</label>
+                  <input id="initialsRisk" name="initialsRisk" type="text" required maxlength="4" class={initialsClass} />
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between border-t border-white/10 pt-4">
+                <p class="text-white/75 font-body text-sm leading-relaxed flex-1">
+                  I specifically acknowledge Sections 11–14: photo, video, audio, likeness, participant-content release, and ownership terms.
+                </p>
+                <div>
+                  <label for="initialsMedia" class={`${labelClass} sm:text-center`}>Initials</label>
+                  <input id="initialsMedia" name="initialsMedia" type="text" required maxlength="4" class={initialsClass} />
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between border-t border-white/10 pt-4">
+                <p class="text-white/75 font-body text-sm leading-relaxed flex-1">
+                  I specifically acknowledge Section 15: shared creations may be freely reused among participants; confidential business practices remain confidential.
+                </p>
+                <div>
+                  <label for="initialsCollaboration" class={`${labelClass} sm:text-center`}>Initials</label>
+                  <input id="initialsCollaboration" name="initialsCollaboration" type="text" required maxlength="4" class={initialsClass} />
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="signatureName" class={labelClass}>Participant signature (type full legal name)</label>
+                <input id="signatureName" name="signatureName" type="text" required class={`${inputClass} font-heading italic text-lg`} />
+              </div>
+              <div>
+                <label for="printedLegalName" class={labelClass}>Printed legal name</label>
+                <input id="printedLegalName" name="printedLegalName" type="text" required class={inputClass} />
+              </div>
+            </div>
+
+            <label class="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 cursor-pointer">
+              <input id="agreedFull" name="agreedFull" type="checkbox" required class="mt-1 accent-white" />
+              <span class="text-sm text-white/80 font-body leading-relaxed">
+                I agree to this entire Participant Agreement, including the electronic signature.
+              </span>
+            </label>
+
+            <div class="border-t border-white/10 pt-5">
+              <p class="text-white/50 text-xs font-body uppercase tracking-widest mb-3">
+                Emergency contact (not a party to this Agreement)
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="emergencyName" class={labelClass}>Name</label>
+                  <input id="emergencyName" name="emergencyName" type="text" required class={inputClass} />
+                </div>
+                <div>
+                  <label for="emergencyRelationship" class={labelClass}>Relationship</label>
+                  <input id="emergencyRelationship" name="emergencyRelationship" type="text" required class={inputClass} />
+                </div>
+                <div>
+                  <label for="emergencyPhone" class={labelClass}>Primary phone</label>
+                  <input id="emergencyPhone" name="emergencyPhone" type="tel" required class={inputClass} />
+                </div>
+                <div>
+                  <label for="emergencyPhoneAlt" class={labelClass}>Alternate phone</label>
+                  <input id="emergencyPhoneAlt" name="emergencyPhoneAlt" type="tel" class={inputClass} />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="medicalNote" class={labelClass}>Relevant allergy / medical note (optional)</label>
+                  <textarea id="medicalNote" name="medicalNote" rows="2" class={`${inputClass} resize-none`}></textarea>
+                </div>
+              </div>
+            </div>
+
+            <p id="waiver-error" class="hidden text-red-400/90 text-sm font-body" role="alert"></p>
+
+            <button
+              type="submit"
+              id="waiver-submit"
+              class="bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full px-8 py-3.5 font-medium text-sm w-full sm:w-auto sm:self-center"
+            >
+              Sign & submit waiver
+            </button>
+
+            <p class="text-white/35 font-body text-xs leading-relaxed text-center">
+              Agreement version {WAIVER_VERSION}. This form is for retreat records; have qualified Utah counsel review before relying on it.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    import { submitParticipantWaiver } from '../lib/form-submissions';
+    import { WAIVER_VERSION } from '../content/waiver';
+
+    const form = document.getElementById('waiver-form') as HTMLFormElement | null;
+    const success = document.getElementById('waiver-success');
+    const errorEl = document.getElementById('waiver-error');
+    const submitBtn = document.getElementById('waiver-submit') as HTMLButtonElement | null;
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form || !errorEl || !submitBtn || !success) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+      errorEl.classList.add('hidden');
+
+      const data = new FormData(form);
+      const result = await submitParticipantWaiver({
+        payload: {
+          legalName: String(data.get('legalName') ?? ''),
+          preferredName: String(data.get('preferredName') ?? ''),
+          email: String(data.get('email') ?? ''),
+          phone: String(data.get('phone') ?? ''),
+          streetAddress: String(data.get('streetAddress') ?? ''),
+          cityStateZip: String(data.get('cityStateZip') ?? ''),
+          initialsRisk: String(data.get('initialsRisk') ?? '').trim().toUpperCase(),
+          initialsMedia: String(data.get('initialsMedia') ?? '').trim().toUpperCase(),
+          initialsCollaboration: String(data.get('initialsCollaboration') ?? '').trim().toUpperCase(),
+          signatureName: String(data.get('signatureName') ?? ''),
+          printedLegalName: String(data.get('printedLegalName') ?? ''),
+          signedAt: new Date().toISOString(),
+          emergencyName: String(data.get('emergencyName') ?? ''),
+          emergencyRelationship: String(data.get('emergencyRelationship') ?? ''),
+          emergencyPhone: String(data.get('emergencyPhone') ?? ''),
+          emergencyPhoneAlt: String(data.get('emergencyPhoneAlt') ?? ''),
+          medicalNote: String(data.get('medicalNote') ?? ''),
+          agreementVersion: WAIVER_VERSION,
+          agreedFull: data.get('agreedFull') === 'on',
+        },
+      });
+
+      if (!result.ok) {
+        errorEl.textContent =
+          result.error.includes('not configured')
+            ? result.error
+            : 'Something went wrong. Please try again or email us directly.';
+        errorEl.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign & submit waiver';
+        return;
+      }
+
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</BaseLayout>

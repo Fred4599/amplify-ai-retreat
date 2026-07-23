@@ -115,3 +115,60 @@ export async function submitWebinarRegistration(input: {
   const failed = results.find((result) => !result.ok);
   return failed ?? { ok: true };
 }
+
+export async function submitParticipantWaiver(input: {
+  payload: {
+    legalName: string;
+    preferredName: string;
+    email: string;
+    phone: string;
+    streetAddress: string;
+    cityStateZip: string;
+    initialsRisk: string;
+    initialsMedia: string;
+    initialsCollaboration: string;
+    signatureName: string;
+    printedLegalName: string;
+    signedAt: string;
+    emergencyName: string;
+    emergencyRelationship: string;
+    emergencyPhone: string;
+    emergencyPhoneAlt: string;
+    medicalNote: string;
+    agreementVersion: string;
+    agreedFull: boolean;
+  };
+}): Promise<DestinationResult> {
+  const { payload } = input;
+  const supabase = getSupabaseBrowserClient();
+
+  if (!supabase) {
+    return { ok: false, error: 'Waiver form is not configured yet. Please try again later.' };
+  }
+
+  const { error } = await supabase.from('participant_waivers').insert({
+    legal_name: payload.legalName,
+    preferred_name: payload.preferredName || null,
+    email: payload.email,
+    phone: payload.phone,
+    street_address: payload.streetAddress,
+    city_state_zip: payload.cityStateZip,
+    initials_risk: payload.initialsRisk,
+    initials_media: payload.initialsMedia,
+    initials_collaboration: payload.initialsCollaboration,
+    signature_name: payload.signatureName,
+    printed_legal_name: payload.printedLegalName,
+    signed_at: payload.signedAt,
+    emergency_name: payload.emergencyName,
+    emergency_relationship: payload.emergencyRelationship,
+    emergency_phone: payload.emergencyPhone,
+    emergency_phone_alt: payload.emergencyPhoneAlt || null,
+    medical_note: payload.medicalNote || null,
+    agreement_version: payload.agreementVersion,
+    agreed_full: payload.agreedFull,
+    user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+  });
+
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
