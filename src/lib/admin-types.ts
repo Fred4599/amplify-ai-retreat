@@ -56,6 +56,7 @@ export type RetreatAttendee = {
   phone: string | null;
   company: string | null;
   bio: string | null;
+  avatar_url: string | null;
   notes: string | null;
   application_id: string | null;
   user_id: string | null;

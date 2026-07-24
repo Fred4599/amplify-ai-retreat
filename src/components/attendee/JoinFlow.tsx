@@ -5,6 +5,7 @@ import {
   signInAttendee,
   signUpAttendee,
   updateMyAttendeeProfile,
+  uploadAttendeeAvatar,
   type AttendeeProfile,
 } from '../../lib/attendee-auth';
 
@@ -28,6 +29,9 @@ export default function JoinFlow() {
   const [company, setCompany] = useState('');
   const [bio, setBio] = useState('');
   const [phone, setPhone] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,6 +80,18 @@ export default function JoinFlow() {
     setCompany(profile.company || '');
     setBio(profile.bio || '');
     setPhone(profile.phone || '');
+    setAvatarUrl(profile.avatar_url || '');
+    if (profile.avatar_url) setAvatarPreview(profile.avatar_url);
+  }
+
+  function handleAvatarChange(file: File | null) {
+    setAvatarFile(file);
+    if (!file) {
+      setAvatarPreview(avatarUrl);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(file);
+    setAvatarPreview(objectUrl);
   }
 
   async function handleAuth(event: FormEvent) {
@@ -138,7 +154,29 @@ export default function JoinFlow() {
     setLoading(true);
     setError('');
 
-    const result = await updateMyAttendeeProfile({ company, bio, phone });
+    let nextAvatarUrl = avatarUrl;
+    if (avatarFile) {
+      const uploaded = await uploadAttendeeAvatar(avatarFile);
+      if (!uploaded.ok) {
+        setLoading(false);
+        setError(uploaded.error);
+        return;
+      }
+      nextAvatarUrl = uploaded.url;
+    }
+
+    if (!nextAvatarUrl) {
+      setLoading(false);
+      setError('Add a profile photo so others can recognize you.');
+      return;
+    }
+
+    const result = await updateMyAttendeeProfile({
+      company,
+      bio,
+      phone,
+      avatarUrl: nextAvatarUrl,
+    });
     setLoading(false);
 
     if (!result.ok) {
@@ -198,10 +236,37 @@ export default function JoinFlow() {
             {name ? `Welcome, ${name.split(' ')[0]}` : 'Your profile'}
           </h1>
           <p className="text-white/60 font-body text-sm mt-2 leading-relaxed">
-            Add your company and a short bio so other checked-in attendees can find you in Connect.
+            Add a photo, company, and short bio so other checked-in attendees can recognize you in Connect.
           </p>
         </div>
         <form onSubmit={handleProfile} className="px-6 py-6 flex flex-col gap-4">
+          <div>
+            <label htmlFor="join-avatar" className="block text-sm font-medium text-white/90 font-body mb-1.5">
+              Profile photo
+            </label>
+            <div className="flex items-center gap-4">
+              <div className="h-20 w-20 rounded-full overflow-hidden border border-white/15 bg-white/5 shrink-0">
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-white/35 font-body text-xs">
+                    Photo
+                  </div>
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <input
+                  id="join-avatar"
+                  type="file"
+                  accept="image/*"
+                  capture="user"
+                  onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
+                  className="block w-full text-sm font-body text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white file:text-black file:px-4 file:py-2 file:text-sm file:font-medium hover:file:bg-white/90"
+                />
+                <p className="text-white/40 font-body text-xs mt-2">JPEG, PNG, or HEIC · under 5MB</p>
+              </div>
+            </div>
+          </div>
           <div>
             <label htmlFor="join-company" className="block text-sm font-medium text-white/90 font-body mb-1.5">
               Company
