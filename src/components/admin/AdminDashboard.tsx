@@ -126,22 +126,29 @@ export default function AdminDashboard() {
         setWebinars([]);
         setWaivers([]);
       } else {
-        const waiverByEmail = new Map(
-          ((waiversResult.data ?? []) as ParticipantWaiver[]).map((row) => [
-            row.email.trim().toLowerCase(),
-            row.signed_at,
-          ]),
-        );
-        const nextAttendees = ((attendeesResult.data ?? []) as RetreatAttendee[]).map((row) => {
-          if (row.form_completed_at) return row;
-          const signedAt = waiverByEmail.get(row.email.trim().toLowerCase());
-          if (!signedAt) return row;
-          return { ...row, form_completed_at: signedAt };
-        });
-        setAttendees(nextAttendees);
-        setApplications((appsResult.data ?? []) as RetreatApplication[]);
-        setWebinars((webinarsResult.data ?? []) as WebinarRegistration[]);
-        setWaivers((waiversResult.data ?? []) as ParticipantWaiver[]);
+        try {
+          const waiverByEmail = new Map(
+            ((waiversResult.data ?? []) as ParticipantWaiver[])
+              .filter((row) => row.email)
+              .map((row) => [row.email.trim().toLowerCase(), row.signed_at]),
+          );
+          const nextAttendees = ((attendeesResult.data ?? []) as RetreatAttendee[]).map((row) => {
+            if (row.form_completed_at || !row.email) return row;
+            const signedAt = waiverByEmail.get(row.email.trim().toLowerCase());
+            if (!signedAt) return row;
+            return { ...row, form_completed_at: signedAt };
+          });
+          setAttendees(nextAttendees);
+          setApplications((appsResult.data ?? []) as RetreatApplication[]);
+          setWebinars((webinarsResult.data ?? []) as WebinarRegistration[]);
+          setWaivers((waiversResult.data ?? []) as ParticipantWaiver[]);
+        } catch (err) {
+          setDataError(err instanceof Error ? err.message : 'Could not process attendee data.');
+          setAttendees([]);
+          setApplications([]);
+          setWebinars([]);
+          setWaivers([]);
+        }
       }
 
       setDataLoading(false);
@@ -151,7 +158,7 @@ export default function AdminDashboard() {
     return () => {
       cancelled = true;
     };
-  }, [supabase, session, refreshKey]);
+  }, [supabase, session?.user?.id, refreshKey]);
 
   const filteredApplications = useMemo(() => {
     const q = query.trim().toLowerCase();

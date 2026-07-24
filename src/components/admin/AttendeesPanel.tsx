@@ -67,12 +67,21 @@ export default function AttendeesPanel({
   const [localQuery, setLocalQuery] = useState('');
 
   const emailSet = useMemo(
-    () => new Set(attendees.map((row) => row.email.trim().toLowerCase())),
+    () =>
+      new Set(
+        attendees
+          .map((row) => row.email?.trim().toLowerCase())
+          .filter((email): email is string => Boolean(email)),
+      ),
     [attendees],
   );
 
   const importableApplications = useMemo(
-    () => applications.filter((app) => !emailSet.has(app.email.trim().toLowerCase())),
+    () =>
+      applications.filter((app) => {
+        const email = app.email?.trim().toLowerCase();
+        return email ? !emailSet.has(email) : true;
+      }),
     [applications, emailSet],
   );
 
@@ -123,7 +132,7 @@ export default function AttendeesPanel({
       .from('retreat_attendees')
       .insert({
         full_name: fullName.trim(),
-        email: email.trim(),
+        email: email.trim() || null,
         phone: phone.trim() || null,
         company: company.trim() || null,
         notes: notes.trim() || null,
@@ -281,9 +290,8 @@ export default function AttendeesPanel({
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
           />
           <input
-            required
             type="email"
-            placeholder="Email"
+            placeholder="Email (optional)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
@@ -379,7 +387,7 @@ export default function AttendeesPanel({
                         {row.full_name}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-sm text-white/75 font-body">{row.email}</td>
+                    <td className="px-4 py-3 text-sm text-white/75 font-body">{row.email || '—'}</td>
                     <td className="px-4 py-3">
                       <StatusPill attendee={row} />
                     </td>
@@ -464,7 +472,7 @@ export default function AttendeesPanel({
             <dl className="space-y-4 text-sm font-body">
               <div>
                 <dt className="text-white/40 text-xs uppercase tracking-wider mb-1">Email</dt>
-                <dd className="text-white/90">{selected.email}</dd>
+                <dd className="text-white/90">{selected.email || 'No email on file'}</dd>
               </div>
               {selected.phone && (
                 <div>
@@ -496,14 +504,25 @@ export default function AttendeesPanel({
               </div>
             </dl>
             <div className="mt-6 flex flex-wrap gap-2">
-              <a
-                href={`/waiver?email=${encodeURIComponent(selected.email)}&from=checkin`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-white/15 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-body text-white/85"
-              >
-                Open waiver form
-              </a>
+              {selected.email ? (
+                <a
+                  href={`/waiver?email=${encodeURIComponent(selected.email)}&from=checkin`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/15 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-body text-white/85"
+                >
+                  Open waiver form
+                </a>
+              ) : (
+                <a
+                  href="/waiver"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/15 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-body text-white/85"
+                >
+                  Open blank waiver
+                </a>
+              )}
               <button
                 type="button"
                 disabled={busyId === selected.id}

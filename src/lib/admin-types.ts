@@ -52,7 +52,7 @@ export type ParticipantWaiver = {
 export type RetreatAttendee = {
   id: string;
   full_name: string;
-  email: string;
+  email: string | null;
   phone: string | null;
   company: string | null;
   notes: string | null;
