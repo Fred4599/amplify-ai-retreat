@@ -54,6 +54,12 @@ export default function ConnectPanel() {
   const [error, setError] = useState('');
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState('');
+  /** Per inbox request: also receive their contact on the channels you share. Default on. */
+  const [shareBackById, setShareBackById] = useState<Record<string, boolean>>({});
+
+  function shareBackFor(id: string) {
+    return shareBackById[id] !== false;
+  }
 
   async function reload(silent = false) {
     if (!silent) {
@@ -124,6 +130,7 @@ export default function ConnectPanel() {
         approve,
         shareEmail: share?.email,
         sharePhone: share?.phone,
+        shareBack: approve ? shareBackFor(item.id) : false,
       });
       await reload(true);
       if (approve) setSection('directory');
@@ -163,8 +170,8 @@ export default function ConnectPanel() {
         <p className="text-white/50 text-xs font-body uppercase tracking-wider mb-2">Connect</p>
         <h2 className="text-2xl font-heading italic text-white mb-2">Meet the room</h2>
         <p className="text-white/55 font-body text-sm leading-relaxed">
-          Browse checked-in guests by name, company, and bio. Request contact — they choose whether to share
-          email, phone, or both.
+          Browse checked-in guests by name, company, and bio. Request contact — they choose email, phone, or
+          both, and can share back so the exchange goes both ways.
         </p>
       </div>
 
@@ -353,8 +360,26 @@ export default function ConnectPanel() {
                   )}
 
                   <p className="text-white/55 font-body text-xs">
-                    Approve and choose what they can see from your profile.
+                    Choose what they can see from your profile. Turn on Also share back to get the same from them.
                   </p>
+
+                  <label className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={shareBackFor(item.id)}
+                      disabled={busy}
+                      onChange={(e) =>
+                        setShareBackById((prev) => ({ ...prev, [item.id]: e.target.checked }))
+                      }
+                      className="mt-0.5 accent-white"
+                    />
+                    <span className="min-w-0">
+                      <span className="block text-white font-body text-sm">Also share back</span>
+                      <span className="block text-white/50 font-body text-xs mt-0.5 leading-relaxed">
+                        When you approve, you’ll get their contact on the same channels (email / phone / both).
+                      </span>
+                    </span>
+                  </label>
 
                   <div className="flex flex-wrap gap-2">
                     <button
@@ -387,7 +412,7 @@ export default function ConnectPanel() {
                       onClick={() => void handleRespond(item, false)}
                       className="rounded-full border border-white/10 px-4 py-2 text-sm font-body text-white/55 hover:text-white/80 hover:bg-white/5 disabled:opacity-60 transition-colors"
                     >
-                      Decline
+                      Deny
                     </button>
                   </div>
                 </article>

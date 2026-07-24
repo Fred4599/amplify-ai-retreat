@@ -25,6 +25,8 @@ export type ConnectInboxItem = {
   requester_company: string | null;
   requester_bio: string | null;
   requester_avatar_url: string | null;
+  requester_has_email?: boolean;
+  requester_has_phone?: boolean;
 };
 
 export type ConnectBoard = {
@@ -80,6 +82,7 @@ export async function respondContactRequest(input: {
   approve: boolean;
   shareEmail?: boolean;
   sharePhone?: boolean;
+  shareBack?: boolean;
 }): Promise<{ id: string; status: string }> {
   const supabase = getSupabaseBrowserClient();
   if (!supabase) throw new Error('Connect is not configured.');
@@ -89,6 +92,7 @@ export async function respondContactRequest(input: {
     p_approve: input.approve,
     p_share_email: input.shareEmail ?? false,
     p_share_phone: input.sharePhone ?? false,
+    p_share_back: input.shareBack ?? false,
   });
   if (error) throw new Error(error.message);
 
