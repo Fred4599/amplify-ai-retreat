@@ -17,7 +17,6 @@ const initialsClass =
   'w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-center font-body text-sm uppercase tracking-widest focus:outline-none focus:border-white/30';
 
 const prefillEmail = Astro.url.searchParams.get('email')?.trim() ?? '';
-const fromCheckIn = Astro.url.searchParams.get('from') === 'checkin';
 ---
 
 <BaseLayout
@@ -62,19 +61,18 @@ const fromCheckIn = Astro.url.searchParams.get('from') === 'checkin';
           <div
             id="waiver-success"
             class="hidden py-12 text-center"
-            data-from-checkin={fromCheckIn ? '1' : '0'}
             data-email={prefillEmail}
           >
-            <p id="waiver-success-title" class="text-2xl font-heading italic text-white mb-3">Waiver received</p>
+            <p id="waiver-success-title" class="text-2xl font-heading italic text-white mb-3">Fully checked in</p>
             <p id="waiver-success-body" class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
-              Thanks — your signed participant agreement is on file. You’re all set for the retreat.
+              Waiver signed. Taking you to create your retreat account…
             </p>
             <a
               id="waiver-success-cta"
-              href={fromCheckIn ? `/join?email=${encodeURIComponent(prefillEmail)}` : '/'}
+              href={prefillEmail ? `/join?email=${encodeURIComponent(prefillEmail)}` : '/join'}
               class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
             >
-              {fromCheckIn ? 'Create your account' : 'Back to homepage'}
+              Continue to create account
             </a>
           </div>
 
@@ -292,23 +290,16 @@ const fromCheckIn = Astro.url.searchParams.get('from') === 'checkin';
       form.classList.add('hidden');
       success.classList.remove('hidden');
 
-      if (success.dataset.fromCheckin === '1') {
-        const title = document.getElementById('waiver-success-title');
-        const body = document.getElementById('waiver-success-body');
-        const cta = document.getElementById('waiver-success-cta') as HTMLAnchorElement | null;
-        const emailValue = success.dataset.email || '';
-        if (title) title.textContent = 'Fully checked in';
-        if (body) {
-          body.textContent =
-            'Waiver signed and check-in complete. Create your account next to open your retreat dashboard.';
-        }
-        if (cta) {
-          cta.textContent = 'Create your account';
-          cta.href = emailValue ? `/join?email=${encodeURIComponent(emailValue)}` : '/join';
-        }
-      }
+      const emailValue =
+        String(data.get('email') ?? '').trim() || success.dataset.email || '';
+      const joinHref = emailValue ? `/join?email=${encodeURIComponent(emailValue)}` : '/join';
+      const cta = document.getElementById('waiver-success-cta') as HTMLAnchorElement | null;
+      if (cta) cta.href = joinHref;
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.setTimeout(() => {
+        window.location.assign(joinHref);
+      }, 700);
     });
   </script>
 </BaseLayout>
