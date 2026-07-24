@@ -386,6 +386,8 @@ export default function AttendeesPanel({
         </button>
       </div>
 
+      <hr className="border-0 border-t-[3px] border-white" />
+
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 space-y-3">
         <div className="flex items-center justify-between gap-3">
           <p className="text-white/50 text-xs font-body uppercase tracking-wider">Filters</p>
