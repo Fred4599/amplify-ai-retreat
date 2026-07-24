@@ -15,6 +15,14 @@ export type AttendeeUpdate = {
   created_at: string;
 };
 
+export type AttendeeQuestion = {
+  id: string;
+  attendee_id: string;
+  body: string;
+  answered_at: string | null;
+  created_at: string;
+};
+
 async function myAttendeeId(): Promise<string | null> {
   const supabase = getSupabaseBrowserClient();
   if (!supabase) return null;
@@ -103,4 +111,37 @@ export async function addMyUpdate(body: string): Promise<AttendeeUpdate> {
 
   if (error) throw new Error(error.message);
   return data as AttendeeUpdate;
+}
+
+export async function listMyQuestions(): Promise<AttendeeQuestion[]> {
+  const supabase = getSupabaseBrowserClient();
+  const attendeeId = await myAttendeeId();
+  if (!supabase || !attendeeId) return [];
+
+  const { data, error } = await supabase
+    .from('attendee_questions')
+    .select('*')
+    .eq('attendee_id', attendeeId)
+    .order('created_at', { ascending: false });
+
+  if (error) throw new Error(error.message);
+  return (data as AttendeeQuestion[]) ?? [];
+}
+
+export async function submitMyQuestion(body: string): Promise<AttendeeQuestion> {
+  const supabase = getSupabaseBrowserClient();
+  const attendeeId = await myAttendeeId();
+  if (!supabase || !attendeeId) throw new Error('Not signed in.');
+
+  const trimmed = body.trim();
+  if (!trimmed) throw new Error('Enter a question.');
+
+  const { data, error } = await supabase
+    .from('attendee_questions')
+    .insert({ attendee_id: attendeeId, body: trimmed })
+    .select('*')
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data as AttendeeQuestion;
 }

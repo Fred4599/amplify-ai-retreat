@@ -4,9 +4,12 @@ import { getMyAttendeeProfile, type AttendeeProfile } from '../../lib/attendee-a
 import {
   addMyUpdate,
   getMyAsk,
+  listMyQuestions,
   listMyUpdates,
   saveMyAsk,
+  submitMyQuestion,
   type AttendeeAsk,
+  type AttendeeQuestion,
   type AttendeeUpdate,
 } from '../../lib/attendee-engagement';
 
@@ -16,7 +19,7 @@ const NAV: { id: Tab; label: string; soon?: boolean }[] = [
   { id: 'home', label: 'Home' },
   { id: 'ask', label: 'My Ask' },
   { id: 'updates', label: 'Updates' },
-  { id: 'questions', label: 'Questions', soon: true },
+  { id: 'questions', label: 'Questions' },
   { id: 'connect', label: 'Connect', soon: true },
 ];
 
@@ -53,6 +56,11 @@ export default function DashboardApp() {
   const [updateSaving, setUpdateSaving] = useState(false);
   const [updateError, setUpdateError] = useState('');
 
+  const [questions, setQuestions] = useState<AttendeeQuestion[]>([]);
+  const [questionDraft, setQuestionDraft] = useState('');
+  const [questionSaving, setQuestionSaving] = useState(false);
+  const [questionError, setQuestionError] = useState('');
+
   useEffect(() => {
     if (!supabase) {
       setLoading(false);
@@ -88,11 +96,16 @@ export default function DashboardApp() {
       setProfile(result);
 
       try {
-        const [askRow, updateRows] = await Promise.all([getMyAsk(), listMyUpdates()]);
+        const [askRow, updateRows, questionRows] = await Promise.all([
+          getMyAsk(),
+          listMyUpdates(),
+          listMyQuestions(),
+        ]);
         if (cancelled) return;
         setAsk(askRow);
         setAskDraft(askRow?.body || '');
         setUpdates(updateRows);
+        setQuestions(questionRows);
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Could not load dashboard data.');
@@ -141,6 +154,20 @@ export default function DashboardApp() {
       setUpdateError(err instanceof Error ? err.message : 'Could not post update.');
     }
     setUpdateSaving(false);
+  }
+
+  async function handleSubmitQuestion(event: FormEvent) {
+    event.preventDefault();
+    setQuestionSaving(true);
+    setQuestionError('');
+    try {
+      const created = await submitMyQuestion(questionDraft);
+      setQuestions((rows) => [created, ...rows]);
+      setQuestionDraft('');
+    } catch (err) {
+      setQuestionError(err instanceof Error ? err.message : 'Could not submit question.');
+    }
+    setQuestionSaving(false);
   }
 
   if (loading) {
@@ -227,7 +254,11 @@ export default function DashboardApp() {
             {[
               { title: 'My Ask', body: ask ? 'Update the challenge you’re here to solve.' : 'Capture the challenge you’re here to solve.', tab: 'ask' as Tab },
               { title: 'Updates', body: `${updates.length} update${updates.length === 1 ? '' : 's'} so far.`, tab: 'updates' as Tab },
-              { title: 'Questions', body: 'Drop a question mid-session so it doesn’t get missed.', tab: 'questions' as Tab },
+              {
+                title: 'Questions',
+                body: `${questions.length} submitted · admins will mark them answered.`,
+                tab: 'questions' as Tab,
+              },
               { title: 'Connect', body: 'Browse checked-in attendees and request contact.', tab: 'connect' as Tab },
             ].map((card) => (
               <button
@@ -320,17 +351,65 @@ export default function DashboardApp() {
         </div>
       )}
 
-      {(tab === 'questions' || tab === 'connect') && (
+      {tab === 'questions' && (
+        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 space-y-6">
+          <div>
+            <p className="text-white/50 text-xs font-body uppercase tracking-wider mb-2">Questions</p>
+            <h2 className="text-2xl font-heading italic text-white mb-2">Don’t let it get missed</h2>
+            <p className="text-white/55 font-body text-sm leading-relaxed">
+              Drop a question during a session. Retreat hosts see it in the admin queue and mark it answered.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmitQuestion} className="space-y-3">
+            <textarea
+              required
+              rows={3}
+              value={questionDraft}
+              onChange={(e) => setQuestionDraft(e.target.value)}
+              placeholder="What’s your question?"
+              className={`${inputClass} resize-y min-h-[100px]`}
+            />
+            {questionError && <p className="text-red-400/90 text-sm font-body">{questionError}</p>}
+            <button
+              type="submit"
+              disabled={questionSaving}
+              className="bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full px-8 py-3 font-medium text-sm"
+            >
+              {questionSaving ? 'Sending…' : 'Submit question'}
+            </button>
+          </form>
+
+          <div className="space-y-3">
+            {questions.length === 0 ? (
+              <p className="text-white/45 font-body text-sm">No questions from you yet.</p>
+            ) : (
+              questions.map((row) => (
+                <article key={row.id} className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    {row.answered_at ? (
+                      <span className="inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-xs font-body text-emerald-200">
+                        Answered
+                      </span>
+                    ) : (
+                      <span className="text-sm font-body text-amber-100/90">Open</span>
+                    )}
+                    <span className="text-white/40 font-body text-xs">{formatDate(row.created_at)}</span>
+                  </div>
+                  <p className="text-white/90 font-body text-sm leading-relaxed whitespace-pre-wrap">{row.body}</p>
+                </article>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+      {tab === 'connect' && (
         <div className="rounded-3xl border border-white/10 bg-white/[0.04] px-6 py-10 text-center">
-          <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-2">
-            {NAV.find((item) => item.id === tab)?.label}
-          </p>
+          <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-2">Connect</p>
           <h2 className="text-2xl font-heading italic text-white mb-3">Building this next</h2>
           <p className="text-white/60 font-body text-sm leading-relaxed max-w-md mx-auto">
-            {tab === 'questions' &&
-              'You’ll submit questions during sessions; admins will track and mark them answered.'}
-            {tab === 'connect' &&
-              'You’ll browse photo, name, company, and bio for checked-in guests, then request email, phone, or both.'}
+            You’ll browse photo, name, company, and bio for checked-in guests, then request email, phone, or both.
           </p>
         </div>
       )}

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { getSupabaseBrowserClient } from '../../lib/supabase';
 import type {
+  AdminQuestion,
   AdminTab,
   ParticipantWaiver,
   RetreatApplication,
@@ -9,6 +10,7 @@ import type {
   WebinarRegistration,
 } from '../../lib/admin-types';
 import AttendeesPanel from './AttendeesPanel';
+import QuestionsPanel from './QuestionsPanel';
 
 const ATTENDEES_AUTO_REFRESH_MS = 60_000;
 
@@ -48,6 +50,7 @@ export default function AdminDashboard() {
   const [tab, setTab] = useState<AdminTab>('attendees');
   const [query, setQuery] = useState('');
   const [attendees, setAttendees] = useState<RetreatAttendee[]>([]);
+  const [questions, setQuestions] = useState<AdminQuestion[]>([]);
   const [applications, setApplications] = useState<RetreatApplication[]>([]);
   const [webinars, setWebinars] = useState<WebinarRegistration[]>([]);
   const [waivers, setWaivers] = useState<ParticipantWaiver[]>([]);
@@ -99,30 +102,42 @@ export default function AdminDashboard() {
         setDataError('');
       }
 
-      const [attendeesResult, appsResult, webinarsResult, waiversResult] = await Promise.all([
-        supabase!
-          .from('retreat_attendees')
-          .select('*')
-          .order('full_name', { ascending: true }),
-        supabase!
-          .from('retreat_applications')
-          .select('*')
-          .order('submitted_at', { ascending: false }),
-        supabase!
-          .from('webinar_registrations')
-          .select('*')
-          .order('submitted_at', { ascending: false }),
-        supabase!
-          .from('participant_waivers')
-          .select('*')
-          .order('signed_at', { ascending: false }),
-      ]);
+      const [attendeesResult, questionsResult, appsResult, webinarsResult, waiversResult] =
+        await Promise.all([
+          supabase!
+            .from('retreat_attendees')
+            .select('*')
+            .order('full_name', { ascending: true }),
+          supabase!
+            .from('attendee_questions')
+            .select('id, attendee_id, body, answered_at, created_at, retreat_attendees(full_name, email, company)')
+            .order('created_at', { ascending: false }),
+          supabase!
+            .from('retreat_applications')
+            .select('*')
+            .order('submitted_at', { ascending: false }),
+          supabase!
+            .from('webinar_registrations')
+            .select('*')
+            .order('submitted_at', { ascending: false }),
+          supabase!
+            .from('participant_waivers')
+            .select('*')
+            .order('signed_at', { ascending: false }),
+        ]);
 
       if (cancelled) return;
 
-      if (attendeesResult.error || appsResult.error || webinarsResult.error || waiversResult.error) {
+      if (
+        attendeesResult.error ||
+        questionsResult.error ||
+        appsResult.error ||
+        webinarsResult.error ||
+        waiversResult.error
+      ) {
         setDataError(
           attendeesResult.error?.message ||
+            questionsResult.error?.message ||
             appsResult.error?.message ||
             webinarsResult.error?.message ||
             waiversResult.error?.message ||
@@ -130,6 +145,7 @@ export default function AdminDashboard() {
         );
         if (!silent) {
           setAttendees([]);
+          setQuestions([]);
           setApplications([]);
           setWebinars([]);
           setWaivers([]);
@@ -147,7 +163,33 @@ export default function AdminDashboard() {
             if (!signedAt) return row;
             return { ...row, form_completed_at: signedAt };
           });
+          const nextQuestions = ((questionsResult.data ?? []) as Array<{
+            id: string;
+            attendee_id: string;
+            body: string;
+            answered_at: string | null;
+            created_at: string;
+            retreat_attendees:
+              | { full_name: string; email: string | null; company: string | null }
+              | { full_name: string; email: string | null; company: string | null }[]
+              | null;
+          }>).map((row) => {
+            const attendee = Array.isArray(row.retreat_attendees)
+              ? row.retreat_attendees[0]
+              : row.retreat_attendees;
+            return {
+              id: row.id,
+              attendee_id: row.attendee_id,
+              body: row.body,
+              answered_at: row.answered_at,
+              created_at: row.created_at,
+              attendee_name: attendee?.full_name || 'Unknown attendee',
+              attendee_email: attendee?.email ?? null,
+              attendee_company: attendee?.company ?? null,
+            } satisfies AdminQuestion;
+          });
           setAttendees(nextAttendees);
+          setQuestions(nextQuestions);
           setApplications((appsResult.data ?? []) as RetreatApplication[]);
           setWebinars((webinarsResult.data ?? []) as WebinarRegistration[]);
           setWaivers((waiversResult.data ?? []) as ParticipantWaiver[]);
@@ -156,6 +198,7 @@ export default function AdminDashboard() {
           setDataError(err instanceof Error ? err.message : 'Could not process attendee data.');
           if (!silent) {
             setAttendees([]);
+            setQuestions([]);
             setApplications([]);
             setWebinars([]);
             setWaivers([]);
@@ -173,7 +216,7 @@ export default function AdminDashboard() {
   }, [supabase, session?.user?.id, refreshKey]);
 
   useEffect(() => {
-    if (!supabase || !session || tab !== 'attendees') return;
+    if (!supabase || !session || (tab !== 'attendees' && tab !== 'questions')) return;
 
     const intervalId = window.setInterval(() => {
       silentRefreshRef.current = true;
@@ -336,7 +379,7 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         <button
           type="button"
           onClick={() => {
@@ -353,6 +396,25 @@ export default function AdminDashboard() {
         >
           <p className="text-white/50 text-xs font-body uppercase tracking-wider">Attendees</p>
           <p className="text-2xl font-heading italic text-white mt-1">{attendees.length}</p>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setTab('questions');
+            setSelectedApp(null);
+            setSelectedWebinar(null);
+            setSelectedWaiver(null);
+          }}
+          className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+            tab === 'questions'
+              ? 'border-white/30 bg-white/10'
+              : 'border-white/10 bg-white/[0.04] hover:bg-white/[0.07]'
+          }`}
+        >
+          <p className="text-white/50 text-xs font-body uppercase tracking-wider">Questions</p>
+          <p className="text-2xl font-heading italic text-white mt-1">
+            {questions.filter((row) => !row.answered_at).length}
+          </p>
         </button>
         <button
           type="button"
@@ -404,7 +466,7 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      {tab !== 'attendees' && (
+      {tab !== 'attendees' && tab !== 'questions' && (
         <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="search"
@@ -437,6 +499,14 @@ export default function AdminDashboard() {
           dataLoading={dataLoading}
           onRefresh={() => setRefreshKey((value) => value + 1)}
           onAttendeesChange={setAttendees}
+        />
+      ) : tab === 'questions' ? (
+        <QuestionsPanel
+          supabase={supabase}
+          questions={questions}
+          dataLoading={dataLoading}
+          onRefresh={() => setRefreshKey((value) => value + 1)}
+          onQuestionsChange={setQuestions}
         />
       ) : (
       <div className="rounded-3xl border border-white/10 bg-white/[0.04] overflow-hidden">

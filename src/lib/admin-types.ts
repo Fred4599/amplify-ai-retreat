@@ -83,4 +83,15 @@ export const ATTENDEE_STATUS_LABEL: Record<AttendeeStatus, string> = {
   fully_checked_in: 'Fully checked in',
 };
 
-export type AdminTab = 'attendees' | 'applications' | 'webinar' | 'waivers';
+export type AdminQuestion = {
+  id: string;
+  attendee_id: string;
+  body: string;
+  answered_at: string | null;
+  created_at: string;
+  attendee_name: string;
+  attendee_email: string | null;
+  attendee_company: string | null;
+};
+
+export type AdminTab = 'attendees' | 'questions' | 'applications' | 'webinar' | 'waivers';
