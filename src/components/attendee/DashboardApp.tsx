@@ -12,15 +12,16 @@ import {
   type AttendeeQuestion,
   type AttendeeUpdate,
 } from '../../lib/attendee-engagement';
+import ConnectPanel from './ConnectPanel';
 
 type Tab = 'home' | 'ask' | 'updates' | 'questions' | 'connect';
 
-const NAV: { id: Tab; label: string; soon?: boolean }[] = [
+const NAV: { id: Tab; label: string }[] = [
   { id: 'home', label: 'Home' },
   { id: 'ask', label: 'My Ask' },
   { id: 'updates', label: 'Updates' },
   { id: 'questions', label: 'Questions' },
-  { id: 'connect', label: 'Connect', soon: true },
+  { id: 'connect', label: 'Connect' },
 ];
 
 const inputClass =
@@ -259,7 +260,11 @@ export default function DashboardApp() {
                 body: `${questions.length} submitted · admins will mark them answered.`,
                 tab: 'questions' as Tab,
               },
-              { title: 'Connect', body: 'Browse checked-in attendees and request contact.', tab: 'connect' as Tab },
+              {
+                title: 'Connect',
+                body: 'Browse the room, request contact, approve email / phone / both.',
+                tab: 'connect' as Tab,
+              },
             ].map((card) => (
               <button
                 key={card.title}
@@ -404,15 +409,7 @@ export default function DashboardApp() {
         </div>
       )}
 
-      {tab === 'connect' && (
-        <div className="rounded-3xl border border-white/10 bg-white/[0.04] px-6 py-10 text-center">
-          <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-2">Connect</p>
-          <h2 className="text-2xl font-heading italic text-white mb-3">Building this next</h2>
-          <p className="text-white/60 font-body text-sm leading-relaxed max-w-md mx-auto">
-            You’ll browse photo, name, company, and bio for checked-in guests, then request email, phone, or both.
-          </p>
-        </div>
-      )}
+      {tab === 'connect' && <ConnectPanel />}
     </div>
   );
 }
