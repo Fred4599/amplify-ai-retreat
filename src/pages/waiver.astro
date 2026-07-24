@@ -17,6 +17,8 @@ const initialsClass =
   'w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-center font-body text-sm uppercase tracking-widest focus:outline-none focus:border-white/30';
 
 const prefillEmail = Astro.url.searchParams.get('email')?.trim() ?? '';
+const fromCheckIn = Astro.url.searchParams.get('from') === 'checkin';
+const lockEmail = Boolean(prefillEmail && fromCheckIn);
 ---
 
 <BaseLayout
@@ -121,9 +123,15 @@ const prefillEmail = Astro.url.searchParams.get('email')?.trim() ?? '';
                   type="email"
                   required
                   autocomplete="email"
-                  class={inputClass}
+                  class:list={[inputClass, lockEmail && 'opacity-80 cursor-not-allowed']}
                   value={prefillEmail}
+                  readonly={lockEmail}
                 />
+                {lockEmail && (
+                  <p class="mt-1.5 text-white/40 font-body text-xs leading-relaxed">
+                    Filled from check-in so this matches your roster email. Ask staff if it looks wrong.
+                  </p>
+                )}
               </div>
               <div>
                 <label for="phone" class={labelClass}>Mobile phone</label>
@@ -242,6 +250,26 @@ const prefillEmail = Astro.url.searchParams.get('email')?.trim() ?? '';
     const success = document.getElementById('waiver-success');
     const errorEl = document.getElementById('waiver-error');
     const submitBtn = document.getElementById('waiver-submit') as HTMLButtonElement | null;
+    const emailInput = document.getElementById('email') as HTMLInputElement | null;
+    const params = new URLSearchParams(window.location.search);
+    const fromCheckIn = params.get('from') === 'checkin';
+
+    // Fallback if URL email was lost; keep check-in email locked to the roster address
+    if (emailInput) {
+      let stored = '';
+      try {
+        stored = sessionStorage.getItem('amplify-checkin-email')?.trim() || '';
+      } catch {
+        stored = '';
+      }
+      if (!emailInput.value && stored) {
+        emailInput.value = stored;
+      }
+      if (fromCheckIn && emailInput.value) {
+        emailInput.readOnly = true;
+        emailInput.classList.add('opacity-80', 'cursor-not-allowed');
+      }
+    }
 
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();

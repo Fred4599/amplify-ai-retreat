@@ -25,6 +25,16 @@ export default function CheckInFlow() {
     return `/join?${params.toString()}`;
   }, [email]);
 
+  function rememberCheckInEmail(value: string) {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    try {
+      sessionStorage.setItem('amplify-checkin-email', trimmed);
+    } catch {
+      // ignore storage failures
+    }
+  }
+
   async function handleLookup(event: FormEvent) {
     event.preventDefault();
     setLoading(true);
@@ -37,6 +47,7 @@ export default function CheckInFlow() {
       return;
     }
 
+    rememberCheckInEmail(email);
     setName(lookup.full_name || '');
     setFullyCheckedIn(Boolean(lookup.fully_checked_in));
     setNeedsForm(!lookup.form_completed_at);
@@ -55,6 +66,7 @@ export default function CheckInFlow() {
       return;
     }
 
+    rememberCheckInEmail(email);
     setName(started.full_name);
     setNeedsForm(started.needs_form);
     setFullyCheckedIn(started.fully_checked_in);
