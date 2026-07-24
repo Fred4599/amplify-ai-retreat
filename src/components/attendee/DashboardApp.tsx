@@ -13,11 +13,13 @@ import {
   type AttendeeUpdate,
 } from '../../lib/attendee-engagement';
 import ConnectPanel from './ConnectPanel';
+import ProfilePanel from './ProfilePanel';
 
-type Tab = 'home' | 'ask' | 'updates' | 'questions' | 'connect';
+type Tab = 'home' | 'profile' | 'ask' | 'updates' | 'questions' | 'connect';
 
 const NAV: { id: Tab; label: string }[] = [
   { id: 'home', label: 'Home' },
+  { id: 'profile', label: 'Profile' },
   { id: 'ask', label: 'My Ask' },
   { id: 'updates', label: 'Updates' },
   { id: 'questions', label: 'Questions' },
@@ -198,11 +200,16 @@ export default function DashboardApp() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div className="flex items-center gap-4 min-w-0">
-          <div className="h-14 w-14 rounded-full overflow-hidden border border-white/15 bg-white/5 shrink-0">
+          <button
+            type="button"
+            onClick={() => setTab('profile')}
+            className="h-14 w-14 rounded-full overflow-hidden border border-white/15 bg-white/5 shrink-0 hover:border-white/30 transition-colors"
+            aria-label="Edit profile photo"
+          >
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
             ) : null}
-          </div>
+          </button>
           <div className="min-w-0">
             <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-1">Attendee dashboard</p>
             <h1 className="text-3xl sm:text-4xl font-heading italic text-white tracking-tight truncate">
@@ -253,6 +260,11 @@ export default function DashboardApp() {
           )}
           <div className="grid sm:grid-cols-2 gap-3">
             {[
+              {
+                title: 'Profile',
+                body: 'Update your photo, company, bio, or phone.',
+                tab: 'profile' as Tab,
+              },
               { title: 'My Ask', body: ask ? 'Update the challenge you’re here to solve.' : 'Capture the challenge you’re here to solve.', tab: 'ask' as Tab },
               { title: 'Updates', body: `${updates.length} update${updates.length === 1 ? '' : 's'} so far.`, tab: 'updates' as Tab },
               {
@@ -278,6 +290,10 @@ export default function DashboardApp() {
             ))}
           </div>
         </div>
+      )}
+
+      {tab === 'profile' && (
+        <ProfilePanel profile={profile} onProfileChange={setProfile} />
       )}
 
       {tab === 'ask' && (
