@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { getSupabaseBrowserClient } from '../../lib/supabase';
 import type {
@@ -9,6 +9,8 @@ import type {
   WebinarRegistration,
 } from '../../lib/admin-types';
 import AttendeesPanel from './AttendeesPanel';
+
+const ATTENDEES_AUTO_REFRESH_MS = 60_000;
 
 function formatDate(value: string) {
   try {
@@ -55,6 +57,7 @@ export default function AdminDashboard() {
   const [selectedWebinar, setSelectedWebinar] = useState<WebinarRegistration | null>(null);
   const [selectedWaiver, setSelectedWaiver] = useState<ParticipantWaiver | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const silentRefreshRef = useRef(false);
 
   useEffect(() => {
     if (!supabase) {
@@ -87,10 +90,14 @@ export default function AdminDashboard() {
     if (!supabase || !session) return;
 
     let cancelled = false;
+    const silent = silentRefreshRef.current;
+    silentRefreshRef.current = false;
 
     async function load() {
-      setDataLoading(true);
-      setDataError('');
+      if (!silent) {
+        setDataLoading(true);
+        setDataError('');
+      }
 
       const [attendeesResult, appsResult, webinarsResult, waiversResult] = await Promise.all([
         supabase!
@@ -121,10 +128,12 @@ export default function AdminDashboard() {
             waiversResult.error?.message ||
             'Could not load submissions. Confirm this email is on the admin allowlist.',
         );
-        setAttendees([]);
-        setApplications([]);
-        setWebinars([]);
-        setWaivers([]);
+        if (!silent) {
+          setAttendees([]);
+          setApplications([]);
+          setWebinars([]);
+          setWaivers([]);
+        }
       } else {
         try {
           const waiverByEmail = new Map(
@@ -142,16 +151,19 @@ export default function AdminDashboard() {
           setApplications((appsResult.data ?? []) as RetreatApplication[]);
           setWebinars((webinarsResult.data ?? []) as WebinarRegistration[]);
           setWaivers((waiversResult.data ?? []) as ParticipantWaiver[]);
+          if (silent) setDataError('');
         } catch (err) {
           setDataError(err instanceof Error ? err.message : 'Could not process attendee data.');
-          setAttendees([]);
-          setApplications([]);
-          setWebinars([]);
-          setWaivers([]);
+          if (!silent) {
+            setAttendees([]);
+            setApplications([]);
+            setWebinars([]);
+            setWaivers([]);
+          }
         }
       }
 
-      setDataLoading(false);
+      if (!silent) setDataLoading(false);
     }
 
     load();
@@ -159,6 +171,17 @@ export default function AdminDashboard() {
       cancelled = true;
     };
   }, [supabase, session?.user?.id, refreshKey]);
+
+  useEffect(() => {
+    if (!supabase || !session || tab !== 'attendees') return;
+
+    const intervalId = window.setInterval(() => {
+      silentRefreshRef.current = true;
+      setRefreshKey((value) => value + 1);
+    }, ATTENDEES_AUTO_REFRESH_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, [supabase, session?.user?.id, tab]);
 
   const filteredApplications = useMemo(() => {
     const q = query.trim().toLowerCase();

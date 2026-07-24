@@ -3,9 +3,18 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   ATTENDEE_STATUS_LABEL,
   getAttendeeStatus,
+  type AttendeeStatus,
   type RetreatApplication,
   type RetreatAttendee,
 } from '../../lib/admin-types';
+
+type TriFilter = 'all' | 'yes' | 'no';
+type StatusFilter = 'all' | AttendeeStatus;
+
+const filterInputClass =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30';
+const filterSelectClass =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white font-body text-sm focus:outline-none focus:border-white/30';
 
 function formatDate(value: string) {
   try {
@@ -21,18 +30,22 @@ function formatDate(value: string) {
   }
 }
 
-function StatusPill({ attendee }: { attendee: RetreatAttendee }) {
+function StatusCell({ attendee }: { attendee: RetreatAttendee }) {
   const status = getAttendeeStatus(attendee);
+  const label = ATTENDEE_STATUS_LABEL[status];
+
+  if (status === 'expected') {
+    return <span className="text-sm font-body text-white/55">{label}</span>;
+  }
+
   const styles =
     status === 'fully_checked_in'
       ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200'
-      : status === 'checked_in'
-        ? 'border-amber-400/30 bg-amber-400/10 text-amber-100'
-        : 'border-white/15 bg-white/5 text-white/70';
+      : 'border-amber-400/30 bg-amber-400/10 text-amber-100';
 
   return (
     <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-body ${styles}`}>
-      {ATTENDEE_STATUS_LABEL[status]}
+      {label}
     </span>
   );
 }
@@ -64,7 +77,11 @@ export default function AttendeesPanel({
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
   const [notes, setNotes] = useState('');
-  const [localQuery, setLocalQuery] = useState('');
+  const [nameFilter, setNameFilter] = useState('');
+  const [emailFilter, setEmailFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [checkedInFilter, setCheckedInFilter] = useState<TriFilter>('all');
+  const [formFilter, setFormFilter] = useState<TriFilter>('all');
 
   const emailSet = useMemo(
     () =>
@@ -85,17 +102,32 @@ export default function AttendeesPanel({
     [applications, emailSet],
   );
 
+  const filtersActive =
+    Boolean(nameFilter.trim()) ||
+    Boolean(emailFilter.trim()) ||
+    statusFilter !== 'all' ||
+    checkedInFilter !== 'all' ||
+    formFilter !== 'all';
+
   const filtered = useMemo(() => {
-    const q = localQuery.trim().toLowerCase();
-    const rows = !q
-      ? attendees
-      : attendees.filter((row) =>
-          [row.full_name, row.email, row.phone, row.company, row.notes]
-            .filter(Boolean)
-            .join(' ')
-            .toLowerCase()
-            .includes(q),
-        );
+    const nameQ = nameFilter.trim().toLowerCase();
+    const emailQ = emailFilter.trim().toLowerCase();
+
+    const rows = attendees.filter((row) => {
+      if (nameQ && !row.full_name.toLowerCase().includes(nameQ)) return false;
+      if (emailQ && !(row.email || '').toLowerCase().includes(emailQ)) return false;
+
+      const status = getAttendeeStatus(row);
+      if (statusFilter !== 'all' && status !== statusFilter) return false;
+
+      if (checkedInFilter === 'yes' && !row.checked_in_at) return false;
+      if (checkedInFilter === 'no' && row.checked_in_at) return false;
+
+      if (formFilter === 'yes' && !row.form_completed_at) return false;
+      if (formFilter === 'no' && row.form_completed_at) return false;
+
+      return true;
+    });
 
     return [...rows].sort((a, b) => {
       const rank = (row: RetreatAttendee) => {
@@ -108,7 +140,19 @@ export default function AttendeesPanel({
       if (diff !== 0) return diff;
       return a.full_name.localeCompare(b.full_name);
     });
-  }, [attendees, localQuery]);
+  }, [attendees, nameFilter, emailFilter, statusFilter, checkedInFilter, formFilter]);
+
+  function clearFilters() {
+    setNameFilter('');
+    setEmailFilter('');
+    setStatusFilter('all');
+    setCheckedInFilter('all');
+    setFormFilter('all');
+  }
+
+  function setStatusFromCount(status: StatusFilter) {
+    setStatusFilter((current) => (current === status ? 'all' : status));
+  }
 
   const counts = useMemo(() => {
     let expected = 0;
@@ -224,27 +268,136 @@ export default function AttendeesPanel({
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+        <button
+          type="button"
+          onClick={() => setStatusFromCount('expected')}
+          className={`rounded-2xl border px-4 py-3 text-left transition-colors ${
+            statusFilter === 'expected'
+              ? 'border-white/30 bg-white/10'
+              : 'border-white/10 bg-white/[0.04] hover:bg-white/[0.07]'
+          }`}
+        >
           <p className="text-white/45 text-xs font-body uppercase tracking-wider">Expected</p>
           <p className="text-xl font-heading italic text-white mt-1">{counts.expected}</p>
-        </div>
-        <div className="rounded-2xl border border-amber-400/20 bg-amber-400/5 px-4 py-3">
+        </button>
+        <button
+          type="button"
+          onClick={() => setStatusFromCount('checked_in')}
+          className={`rounded-2xl border px-4 py-3 text-left transition-colors ${
+            statusFilter === 'checked_in'
+              ? 'border-amber-400/40 bg-amber-400/10'
+              : 'border-amber-400/20 bg-amber-400/5 hover:bg-amber-400/10'
+          }`}
+        >
           <p className="text-amber-100/70 text-xs font-body uppercase tracking-wider">Needs form</p>
           <p className="text-xl font-heading italic text-amber-100 mt-1">{counts.checkedIn}</p>
-        </div>
-        <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">
+        </button>
+        <button
+          type="button"
+          onClick={() => setStatusFromCount('fully_checked_in')}
+          className={`rounded-2xl border px-4 py-3 text-left transition-colors ${
+            statusFilter === 'fully_checked_in'
+              ? 'border-emerald-400/40 bg-emerald-400/10'
+              : 'border-emerald-400/20 bg-emerald-400/5 hover:bg-emerald-400/10'
+          }`}
+        >
           <p className="text-emerald-200/70 text-xs font-body uppercase tracking-wider">Fully in</p>
           <p className="text-xl font-heading italic text-emerald-200 mt-1">{counts.fully}</p>
-        </div>
+        </button>
       </div>
 
-      <input
-        type="search"
-        placeholder="Search attendees…"
-        value={localQuery}
-        onChange={(e) => setLocalQuery(e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
-      />
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-white/50 text-xs font-body uppercase tracking-wider">Filters</p>
+          {filtersActive && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="text-xs font-body text-white/60 hover:text-white transition-colors"
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div>
+            <label htmlFor="filter-name" className="block text-white/45 text-xs font-body mb-1.5">
+              Name
+            </label>
+            <input
+              id="filter-name"
+              type="search"
+              placeholder="Filter by name"
+              value={nameFilter}
+              onChange={(e) => setNameFilter(e.target.value)}
+              className={filterInputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="filter-email" className="block text-white/45 text-xs font-body mb-1.5">
+              Email
+            </label>
+            <input
+              id="filter-email"
+              type="search"
+              placeholder="Filter by email"
+              value={emailFilter}
+              onChange={(e) => setEmailFilter(e.target.value)}
+              className={filterInputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="filter-status" className="block text-white/45 text-xs font-body mb-1.5">
+              Status
+            </label>
+            <select
+              id="filter-status"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+              className={filterSelectClass}
+            >
+              <option value="all">All statuses</option>
+              <option value="expected">Expected</option>
+              <option value="checked_in">Checked in — needs form</option>
+              <option value="fully_checked_in">Fully checked in</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="filter-checked-in" className="block text-white/45 text-xs font-body mb-1.5">
+              Checked in
+            </label>
+            <select
+              id="filter-checked-in"
+              value={checkedInFilter}
+              onChange={(e) => setCheckedInFilter(e.target.value as TriFilter)}
+              className={filterSelectClass}
+            >
+              <option value="all">All</option>
+              <option value="yes">Checked in</option>
+              <option value="no">Not checked in</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="filter-form" className="block text-white/45 text-xs font-body mb-1.5">
+              Form
+            </label>
+            <select
+              id="filter-form"
+              value={formFilter}
+              onChange={(e) => setFormFilter(e.target.value as TriFilter)}
+              className={filterSelectClass}
+            >
+              <option value="all">All</option>
+              <option value="yes">Form done</option>
+              <option value="no">Form missing</option>
+            </select>
+          </div>
+        </div>
+        <p className="text-white/40 font-body text-xs">
+          Showing {filtered.length} of {attendees.length}
+          {dataLoading ? ' · Updating…' : ' · Auto-refreshes every 60s'}
+        </p>
+      </div>
 
       <div className="flex flex-wrap gap-2">
         <button
@@ -267,7 +420,7 @@ export default function AttendeesPanel({
           onClick={onRefresh}
           className="rounded-full border border-white/15 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-body text-white/85 transition-colors"
         >
-          Refresh
+          Refresh now
         </button>
       </div>
 
@@ -360,11 +513,13 @@ export default function AttendeesPanel({
       )}
 
       <div className="rounded-3xl border border-white/10 bg-white/[0.04] overflow-hidden">
-        {dataLoading ? (
+        {dataLoading && attendees.length === 0 ? (
           <p className="p-8 text-center text-white/50 font-body text-sm">Loading attendees…</p>
         ) : filtered.length === 0 ? (
           <p className="p-8 text-center text-white/50 font-body text-sm">
-            No attendees on the roster yet. Add confirmed guests above.
+            {attendees.length === 0
+              ? 'No attendees on the roster yet. Add confirmed guests above.'
+              : 'No attendees match these filters.'}
           </p>
         ) : (
           <div className="overflow-x-auto">
@@ -389,7 +544,7 @@ export default function AttendeesPanel({
                     </td>
                     <td className="px-4 py-3 text-sm text-white/75 font-body">{row.email || '—'}</td>
                     <td className="px-4 py-3">
-                      <StatusPill attendee={row} />
+                      <StatusCell attendee={row} />
                     </td>
                     <td className="px-4 py-3 text-sm text-white/55 font-body whitespace-nowrap">
                       {row.checked_in_at ? formatDate(row.checked_in_at) : '—'}
@@ -457,7 +612,7 @@ export default function AttendeesPanel({
                 <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-1">Attendee</p>
                 <h2 className="text-2xl font-heading italic text-white">{selected.full_name}</h2>
                 <div className="mt-3">
-                  <StatusPill attendee={selected} />
+                  <StatusCell attendee={selected} />
                 </div>
               </div>
               <button
