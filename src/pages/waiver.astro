@@ -15,6 +15,9 @@ const inputClass =
 const labelClass = 'block text-sm font-medium text-white/90 font-body mb-1.5';
 const initialsClass =
   'w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-center font-body text-sm uppercase tracking-widest focus:outline-none focus:border-white/30';
+
+const prefillEmail = Astro.url.searchParams.get('email')?.trim() ?? '';
+const fromCheckIn = Astro.url.searchParams.get('from') === 'checkin';
 ---
 
 <BaseLayout
@@ -56,16 +59,17 @@ const initialsClass =
         </div>
 
         <div class="px-6 py-6">
-          <div id="waiver-success" class="hidden py-12 text-center">
-            <p class="text-2xl font-heading italic text-white mb-3">Waiver received</p>
-            <p class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
+          <div id="waiver-success" class="hidden py-12 text-center" data-from-checkin={fromCheckIn ? '1' : '0'}>
+            <p id="waiver-success-title" class="text-2xl font-heading italic text-white mb-3">Waiver received</p>
+            <p id="waiver-success-body" class="text-white/60 font-body font-light text-sm leading-relaxed max-w-sm mx-auto">
               Thanks — your signed participant agreement is on file. You’re all set for the retreat.
             </p>
             <a
-              href="/"
+              id="waiver-success-cta"
+              href={fromCheckIn ? '/check-in' : '/'}
               class="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3 font-medium text-sm"
             >
-              Back to homepage
+              {fromCheckIn ? 'Back to check-in' : 'Back to homepage'}
             </a>
           </div>
 
@@ -108,7 +112,15 @@ const initialsClass =
               </div>
               <div>
                 <label for="email" class={labelClass}>Email</label>
-                <input id="email" name="email" type="email" required autocomplete="email" class={inputClass} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  class={inputClass}
+                  value={prefillEmail}
+                />
               </div>
               <div>
                 <label for="phone" class={labelClass}>Mobile phone</label>
@@ -274,6 +286,17 @@ const initialsClass =
 
       form.classList.add('hidden');
       success.classList.remove('hidden');
+
+      if (success.dataset.fromCheckin === '1') {
+        const title = document.getElementById('waiver-success-title');
+        const body = document.getElementById('waiver-success-body');
+        if (title) title.textContent = 'Fully checked in';
+        if (body) {
+          body.textContent =
+            'Waiver signed and check-in complete. You’re all set for the retreat.';
+        }
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>

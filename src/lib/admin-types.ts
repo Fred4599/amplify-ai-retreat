@@ -49,4 +49,35 @@ export type ParticipantWaiver = {
   created_at: string;
 };
 
-export type AdminTab = 'applications' | 'webinar' | 'waivers';
+export type RetreatAttendee = {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  company: string | null;
+  notes: string | null;
+  application_id: string | null;
+  checked_in_at: string | null;
+  form_completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AttendeeStatus = 'expected' | 'checked_in' | 'fully_checked_in';
+
+export function getAttendeeStatus(row: {
+  checked_in_at: string | null;
+  form_completed_at: string | null;
+}): AttendeeStatus {
+  if (row.checked_in_at && row.form_completed_at) return 'fully_checked_in';
+  if (row.checked_in_at) return 'checked_in';
+  return 'expected';
+}
+
+export const ATTENDEE_STATUS_LABEL: Record<AttendeeStatus, string> = {
+  expected: 'Expected',
+  checked_in: 'Checked in — needs form',
+  fully_checked_in: 'Fully checked in',
+};
+
+export type AdminTab = 'attendees' | 'applications' | 'webinar' | 'waivers';

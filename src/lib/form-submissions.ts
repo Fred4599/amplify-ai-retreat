@@ -1,3 +1,4 @@
+import { completeAttendeeForm } from './check-in';
 import { getSupabaseBrowserClient } from './supabase';
 
 type DestinationResult = { ok: true } | { ok: false; error: string };
@@ -170,5 +171,9 @@ export async function submitParticipantWaiver(input: {
   });
 
   if (error) return { ok: false, error: error.message };
+
+  // Mark roster form complete when this email matches a retreat attendee
+  await completeAttendeeForm(payload.email);
+
   return { ok: true };
 }

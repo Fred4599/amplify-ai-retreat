@@ -13,7 +13,10 @@ export default defineConfig({
     tailwind(),
     sitemap({
       filter: (page) =>
-        !page.includes('/apply') && !page.includes('/admin') && !page.includes('/waiver'),
+        !page.includes('/apply') &&
+        !page.includes('/admin') &&
+        !page.includes('/waiver') &&
+        !page.includes('/check-in'),
     }),
   ],
 });

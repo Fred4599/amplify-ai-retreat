@@ -5,8 +5,10 @@ import type {
   AdminTab,
   ParticipantWaiver,
   RetreatApplication,
+  RetreatAttendee,
   WebinarRegistration,
 } from '../../lib/admin-types';
+import AttendeesPanel from './AttendeesPanel';
 
 function formatDate(value: string) {
   try {
@@ -41,8 +43,9 @@ export default function AdminDashboard() {
   const [authError, setAuthError] = useState('');
   const [signingIn, setSigningIn] = useState(false);
 
-  const [tab, setTab] = useState<AdminTab>('applications');
+  const [tab, setTab] = useState<AdminTab>('attendees');
   const [query, setQuery] = useState('');
+  const [attendees, setAttendees] = useState<RetreatAttendee[]>([]);
   const [applications, setApplications] = useState<RetreatApplication[]>([]);
   const [webinars, setWebinars] = useState<WebinarRegistration[]>([]);
   const [waivers, setWaivers] = useState<ParticipantWaiver[]>([]);
@@ -89,7 +92,11 @@ export default function AdminDashboard() {
       setDataLoading(true);
       setDataError('');
 
-      const [appsResult, webinarsResult, waiversResult] = await Promise.all([
+      const [attendeesResult, appsResult, webinarsResult, waiversResult] = await Promise.all([
+        supabase!
+          .from('retreat_attendees')
+          .select('*')
+          .order('full_name', { ascending: true }),
         supabase!
           .from('retreat_applications')
           .select('*')
@@ -106,17 +113,32 @@ export default function AdminDashboard() {
 
       if (cancelled) return;
 
-      if (appsResult.error || webinarsResult.error || waiversResult.error) {
+      if (attendeesResult.error || appsResult.error || webinarsResult.error || waiversResult.error) {
         setDataError(
-          appsResult.error?.message ||
+          attendeesResult.error?.message ||
+            appsResult.error?.message ||
             webinarsResult.error?.message ||
             waiversResult.error?.message ||
             'Could not load submissions. Confirm this email is on the admin allowlist.',
         );
+        setAttendees([]);
         setApplications([]);
         setWebinars([]);
         setWaivers([]);
       } else {
+        const waiverByEmail = new Map(
+          ((waiversResult.data ?? []) as ParticipantWaiver[]).map((row) => [
+            row.email.trim().toLowerCase(),
+            row.signed_at,
+          ]),
+        );
+        const nextAttendees = ((attendeesResult.data ?? []) as RetreatAttendee[]).map((row) => {
+          if (row.form_completed_at) return row;
+          const signedAt = waiverByEmail.get(row.email.trim().toLowerCase());
+          if (!signedAt) return row;
+          return { ...row, form_completed_at: signedAt };
+        });
+        setAttendees(nextAttendees);
         setApplications((appsResult.data ?? []) as RetreatApplication[]);
         setWebinars((webinarsResult.data ?? []) as WebinarRegistration[]);
         setWaivers((waiversResult.data ?? []) as ParticipantWaiver[]);
@@ -270,7 +292,9 @@ export default function AdminDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
           <p className="text-white/50 text-xs font-body uppercase tracking-widest mb-1">Internal</p>
-          <h1 className="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">Submissions</h1>
+          <h1 className="text-3xl sm:text-4xl font-heading italic text-white tracking-tight">
+            Retreat admin
+          </h1>
           <p className="text-white/55 font-body text-sm mt-1">{session.user.email}</p>
         </div>
         <button
@@ -282,7 +306,24 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button
+          type="button"
+          onClick={() => {
+            setTab('attendees');
+            setSelectedApp(null);
+            setSelectedWebinar(null);
+            setSelectedWaiver(null);
+          }}
+          className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+            tab === 'attendees'
+              ? 'border-white/30 bg-white/10'
+              : 'border-white/10 bg-white/[0.04] hover:bg-white/[0.07]'
+          }`}
+        >
+          <p className="text-white/50 text-xs font-body uppercase tracking-wider">Attendees</p>
+          <p className="text-2xl font-heading italic text-white mt-1">{attendees.length}</p>
+        </button>
         <button
           type="button"
           onClick={() => {
@@ -333,22 +374,24 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="search"
-          placeholder="Search name, email, company…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
-        />
-        <button
-          type="button"
-          onClick={() => setRefreshKey((value) => value + 1)}
-          className="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 text-sm font-body text-white/80 transition-colors"
-        >
-          Refresh
-        </button>
-      </div>
+      {tab !== 'attendees' && (
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="search"
+            placeholder="Search name, email, company…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
+          />
+          <button
+            type="button"
+            onClick={() => setRefreshKey((value) => value + 1)}
+            className="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-3 text-sm font-body text-white/80 transition-colors"
+          >
+            Refresh
+          </button>
+        </div>
+      )}
 
       {dataError && (
         <p className="text-red-400/90 text-sm font-body rounded-xl border border-red-400/20 bg-red-400/10 px-4 py-3">
@@ -356,6 +399,16 @@ export default function AdminDashboard() {
         </p>
       )}
 
+      {tab === 'attendees' ? (
+        <AttendeesPanel
+          supabase={supabase}
+          attendees={attendees}
+          applications={applications}
+          dataLoading={dataLoading}
+          onRefresh={() => setRefreshKey((value) => value + 1)}
+          onAttendeesChange={setAttendees}
+        />
+      ) : (
       <div className="rounded-3xl border border-white/10 bg-white/[0.04] overflow-hidden">
         {dataLoading ? (
           <p className="p-8 text-center text-white/50 font-body text-sm">Loading submissions…</p>
@@ -460,6 +513,7 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
+      )}
 
       {(selectedApp || selectedWebinar || selectedWaiver) && (
         <div

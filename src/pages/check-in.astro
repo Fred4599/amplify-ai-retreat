@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ApplyNavbar from '../components/ApplyNavbar.astro';
+import CheckInFlow from '../components/check-in/CheckInFlow';
+---
+
+<BaseLayout
+  title="Check in — Amplify AI Retreat"
+  description="Check in for the Amplify AI Retreat and complete your participant waiver."
+  path="/check-in"
+  noindex={true}
+>
+  <ApplyNavbar />
+
+  <main
+    id="main-content"
+    class="min-h-screen w-full max-w-full overflow-x-hidden pt-[max(6.5rem,env(safe-area-inset-top))] pb-[max(4rem,env(safe-area-inset-bottom))] px-4 sm:px-6 relative"
+  >
+    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent pointer-events-none"></div>
+    <div class="relative max-w-lg mx-auto w-full">
+      <CheckInFlow client:load />
+    </div>
+  </main>
+</BaseLayout>
