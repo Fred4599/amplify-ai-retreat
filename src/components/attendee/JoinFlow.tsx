@@ -259,7 +259,6 @@ export default function JoinFlow() {
                   id="join-avatar"
                   type="file"
                   accept="image/*"
-                  capture="user"
                   onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
                   className="block w-full text-sm font-body text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white file:text-black file:px-4 file:py-2 file:text-sm file:font-medium hover:file:bg-white/90"
                 />
