@@ -4,6 +4,7 @@ import {
   uploadAttendeeAvatar,
   type AttendeeProfile,
 } from '../../lib/attendee-auth';
+import AvatarCropModal from './AvatarCropModal';
 
 const inputClass =
   'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30';
@@ -20,6 +21,7 @@ export default function ProfilePanel({ profile, onProfileChange }: Props) {
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url || '');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState(profile.avatar_url || '');
+  const [cropSource, setCropSource] = useState<{ src: string; name: string } | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -34,14 +36,27 @@ export default function ProfilePanel({ profile, onProfileChange }: Props) {
   }, [profile.id, profile.company, profile.bio, profile.phone, profile.avatar_url]);
 
   function handleAvatarChange(file: File | null) {
-    setAvatarFile(file);
+    if (!file) return;
     setMessage('');
-    setError('');
-    if (!file) {
-      setAvatarPreview(avatarUrl);
+    if (!file.type.startsWith('image/')) {
+      setError('Please choose an image file.');
       return;
     }
-    setAvatarPreview(URL.createObjectURL(file));
+    setError('');
+    setCropSource({ src: URL.createObjectURL(file), name: file.name });
+  }
+
+  function handleCropCancel() {
+    if (cropSource) URL.revokeObjectURL(cropSource.src);
+    setCropSource(null);
+  }
+
+  function handleCropComplete(file: File, previewUrl: string) {
+    if (cropSource) URL.revokeObjectURL(cropSource.src);
+    if (avatarPreview.startsWith('blob:')) URL.revokeObjectURL(avatarPreview);
+    setCropSource(null);
+    setAvatarFile(file);
+    setAvatarPreview(previewUrl);
   }
 
   async function handleSave(event: FormEvent) {
@@ -117,13 +132,27 @@ export default function ProfilePanel({ profile, onProfileChange }: Props) {
                 id="dash-avatar"
                 type="file"
                 accept="image/*"
-                onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
+                onChange={(e) => {
+                  handleAvatarChange(e.target.files?.[0] ?? null);
+                  e.target.value = '';
+                }}
                 className="block w-full text-sm font-body text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white file:text-black file:px-4 file:py-2 file:text-sm file:font-medium hover:file:bg-white/90"
               />
-              <p className="text-white/40 font-body text-xs mt-2">JPEG, PNG, or HEIC · under 5MB</p>
+              <p className="text-white/40 font-body text-xs mt-2">
+                You’ll crop to a circle next · JPEG/PNG · under 5MB
+              </p>
             </div>
           </div>
         </div>
+
+        {cropSource && (
+          <AvatarCropModal
+            imageSrc={cropSource.src}
+            fileName={cropSource.name}
+            onCancel={handleCropCancel}
+            onComplete={handleCropComplete}
+          />
+        )}
 
         <div>
           <label htmlFor="dash-company" className="block text-sm font-medium text-white/90 font-body mb-1.5">

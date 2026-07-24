@@ -8,6 +8,7 @@ import {
   uploadAttendeeAvatar,
   type AttendeeProfile,
 } from '../../lib/attendee-auth';
+import AvatarCropModal from './AvatarCropModal';
 
 type Mode = 'create' | 'signin';
 type Step = 'auth' | 'profile' | 'confirm_email';
@@ -32,6 +33,7 @@ export default function JoinFlow() {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState('');
+  const [cropSource, setCropSource] = useState<{ src: string; name: string } | null>(null);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -85,13 +87,26 @@ export default function JoinFlow() {
   }
 
   function handleAvatarChange(file: File | null) {
-    setAvatarFile(file);
-    if (!file) {
-      setAvatarPreview(avatarUrl);
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('Please choose an image file.');
       return;
     }
-    const objectUrl = URL.createObjectURL(file);
-    setAvatarPreview(objectUrl);
+    setError('');
+    setCropSource({ src: URL.createObjectURL(file), name: file.name });
+  }
+
+  function handleCropCancel() {
+    if (cropSource) URL.revokeObjectURL(cropSource.src);
+    setCropSource(null);
+  }
+
+  function handleCropComplete(file: File, previewUrl: string) {
+    if (cropSource) URL.revokeObjectURL(cropSource.src);
+    if (avatarPreview.startsWith('blob:')) URL.revokeObjectURL(avatarPreview);
+    setCropSource(null);
+    setAvatarFile(file);
+    setAvatarPreview(previewUrl);
   }
 
   async function handleAuth(event: FormEvent) {
@@ -259,13 +274,26 @@ export default function JoinFlow() {
                   id="join-avatar"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
+                  onChange={(e) => {
+                    handleAvatarChange(e.target.files?.[0] ?? null);
+                    e.target.value = '';
+                  }}
                   className="block w-full text-sm font-body text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white file:text-black file:px-4 file:py-2 file:text-sm file:font-medium hover:file:bg-white/90"
                 />
-                <p className="text-white/40 font-body text-xs mt-2">JPEG, PNG, or HEIC · under 5MB</p>
+                <p className="text-white/40 font-body text-xs mt-2">
+                  You’ll crop to a circle next · JPEG/PNG · under 5MB
+                </p>
               </div>
             </div>
           </div>
+          {cropSource && (
+            <AvatarCropModal
+              imageSrc={cropSource.src}
+              fileName={cropSource.name}
+              onCancel={handleCropCancel}
+              onComplete={handleCropComplete}
+            />
+          )}
           <div>
             <label htmlFor="join-company" className="block text-sm font-medium text-white/90 font-body mb-1.5">
               Company
