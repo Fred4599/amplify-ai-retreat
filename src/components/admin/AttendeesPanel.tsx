@@ -68,6 +68,10 @@ export default function AttendeesPanel({
   onAttendeesChange,
 }: Props) {
   const [selected, setSelected] = useState<RetreatAttendee | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editSaving, setEditSaving] = useState(false);
+  const [editMessage, setEditMessage] = useState('');
   const [showAdd, setShowAdd] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [formError, setFormError] = useState('');
@@ -82,6 +86,18 @@ export default function AttendeesPanel({
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [checkedInFilter, setCheckedInFilter] = useState<TriFilter>('all');
   const [formFilter, setFormFilter] = useState<TriFilter>('all');
+
+  function openAttendee(row: RetreatAttendee) {
+    setSelected(row);
+    setEditName(row.full_name);
+    setEditEmail(row.email || '');
+    setEditMessage('');
+  }
+
+  function closeAttendee() {
+    setSelected(null);
+    setEditMessage('');
+  }
 
   const emailSet = useMemo(
     () =>
@@ -249,7 +265,71 @@ export default function AttendeesPanel({
 
     const next = data as RetreatAttendee;
     onAttendeesChange(attendees.map((row) => (row.id === id ? next : row)));
-    if (selected?.id === id) setSelected(next);
+    if (selected?.id === id) {
+      setSelected(next);
+      setEditName(next.full_name);
+      setEditEmail(next.email || '');
+    }
+  }
+
+  async function handleSaveDetails(event: FormEvent) {
+    event.preventDefault();
+    if (!selected) return;
+
+    const nextName = editName.trim();
+    const nextEmail = editEmail.trim().toLowerCase() || null;
+    if (!nextName) {
+      setEditMessage('Name is required.');
+      return;
+    }
+
+    const currentEmail = selected.email?.trim().toLowerCase() || null;
+    if (nextName === selected.full_name && nextEmail === currentEmail) {
+      setEditMessage('No changes to save.');
+      return;
+    }
+
+    if (nextEmail) {
+      const duplicate = attendees.some(
+        (row) => row.id !== selected.id && row.email?.trim().toLowerCase() === nextEmail,
+      );
+      if (duplicate) {
+        setEditMessage('That email is already on the attendee list.');
+        return;
+      }
+    }
+
+    setEditSaving(true);
+    setEditMessage('');
+
+    const { data, error } = await supabase
+      .from('retreat_attendees')
+      .update({
+        full_name: nextName,
+        email: nextEmail,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', selected.id)
+      .select('*')
+      .single();
+
+    setEditSaving(false);
+
+    if (error) {
+      setEditMessage(
+        error.message.includes('retreat_attendees_email_lower_idx')
+          ? 'That email is already on the attendee list.'
+          : error.message,
+      );
+      return;
+    }
+
+    const next = data as RetreatAttendee;
+    onAttendeesChange(attendees.map((row) => (row.id === selected.id ? next : row)));
+    setSelected(next);
+    setEditName(next.full_name);
+    setEditEmail(next.email || '');
+    setEditMessage('Saved.');
   }
 
   async function removeAttendee(id: string) {
@@ -262,7 +342,7 @@ export default function AttendeesPanel({
       return;
     }
     onAttendeesChange(attendees.filter((row) => row.id !== id));
-    setSelected(null);
+    closeAttendee();
   }
 
   return (
@@ -538,7 +618,7 @@ export default function AttendeesPanel({
                 {filtered.map((row) => (
                   <tr key={row.id} className="border-b border-white/5 hover:bg-white/[0.04]">
                     <td className="px-4 py-3 text-sm text-white font-body">
-                      <button type="button" onClick={() => setSelected(row)} className="text-left hover:underline">
+                      <button type="button" onClick={() => openAttendee(row)} className="text-left hover:underline">
                         {row.full_name}
                       </button>
                     </td>
@@ -604,7 +684,7 @@ export default function AttendeesPanel({
             type="button"
             className="absolute inset-0 bg-black/75 backdrop-blur-sm"
             aria-label="Close details"
-            onClick={() => setSelected(null)}
+            onClick={closeAttendee}
           />
           <div className="relative w-full sm:max-w-lg max-h-[90svh] overflow-y-auto rounded-t-3xl sm:rounded-3xl border border-white/10 bg-black/95 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4 mb-6">
@@ -617,18 +697,66 @@ export default function AttendeesPanel({
               </div>
               <button
                 type="button"
-                onClick={() => setSelected(null)}
+                onClick={closeAttendee}
                 className="rounded-full border border-white/10 bg-white/5 p-2 text-white/80 hover:bg-white/10 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Close"
               >
                 ×
               </button>
             </div>
-            <dl className="space-y-4 text-sm font-body">
+
+            <form onSubmit={handleSaveDetails} className="space-y-4 mb-6">
               <div>
-                <dt className="text-white/40 text-xs uppercase tracking-wider mb-1">Email</dt>
-                <dd className="text-white/90">{selected.email || 'No email on file'}</dd>
+                <label htmlFor="edit-attendee-name" className="block text-white/40 text-xs uppercase tracking-wider font-body mb-1.5">
+                  Name
+                </label>
+                <input
+                  id="edit-attendee-name"
+                  required
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
+                />
               </div>
+              <div>
+                <label htmlFor="edit-attendee-email" className="block text-white/40 text-xs uppercase tracking-wider font-body mb-1.5">
+                  Email
+                </label>
+                <input
+                  id="edit-attendee-email"
+                  type="email"
+                  value={editEmail}
+                  onChange={(e) => setEditEmail(e.target.value)}
+                  placeholder="Optional"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 font-body text-sm focus:outline-none focus:border-white/30"
+                />
+                {selected.user_id && (
+                  <p className="mt-1.5 text-white/40 font-body text-xs leading-relaxed">
+                    This guest already has a dashboard account. Roster email updates check-in lookup; their login email stays whatever they signed up with.
+                  </p>
+                )}
+              </div>
+              {editMessage && (
+                <p
+                  className={`text-sm font-body ${
+                    editMessage === 'Saved.' || editMessage === 'No changes to save.'
+                      ? 'text-emerald-200'
+                      : 'text-red-400/90'
+                  }`}
+                >
+                  {editMessage}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={editSaving}
+                className="bg-white text-black hover:bg-white/90 disabled:opacity-60 transition-colors rounded-full px-6 py-2.5 font-medium text-sm"
+              >
+                {editSaving ? 'Saving…' : 'Save name & email'}
+              </button>
+            </form>
+
+            <dl className="space-y-4 text-sm font-body">
               {selected.phone && (
                 <div>
                   <dt className="text-white/40 text-xs uppercase tracking-wider mb-1">Phone</dt>
