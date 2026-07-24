@@ -10,6 +10,8 @@ import {
 
 type Section = 'directory' | 'inbox';
 
+const CONNECT_AUTO_REFRESH_MS = 60_000;
+
 function formatDate(value: string) {
   try {
     return new Intl.DateTimeFormat('en-US', {
@@ -71,6 +73,13 @@ export default function ConnectPanel() {
 
   useEffect(() => {
     void reload();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      void reload(true);
+    }, CONNECT_AUTO_REFRESH_MS);
+    return () => window.clearInterval(intervalId);
   }, []);
 
   const people = useMemo(() => {
