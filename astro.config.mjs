@@ -16,7 +16,9 @@ export default defineConfig({
         !page.includes('/apply') &&
         !page.includes('/admin') &&
         !page.includes('/waiver') &&
-        !page.includes('/check-in'),
+        !page.includes('/check-in') &&
+        !page.includes('/join') &&
+        !page.includes('/dashboard'),
     }),
   ],
 });

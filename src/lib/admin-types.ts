@@ -55,8 +55,10 @@ export type RetreatAttendee = {
   email: string | null;
   phone: string | null;
   company: string | null;
+  bio: string | null;
   notes: string | null;
   application_id: string | null;
+  user_id: string | null;
   checked_in_at: string | null;
   form_completed_at: string | null;
   created_at: string;

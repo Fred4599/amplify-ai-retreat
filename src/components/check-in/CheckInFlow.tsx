@@ -20,6 +20,11 @@ export default function CheckInFlow() {
     return `/waiver?${params.toString()}`;
   }, [email]);
 
+  const joinHref = useMemo(() => {
+    const params = new URLSearchParams({ email: email.trim() });
+    return `/join?${params.toString()}`;
+  }, [email]);
+
   async function handleLookup(event: FormEvent) {
     event.preventDefault();
     setLoading(true);
@@ -62,7 +67,20 @@ export default function CheckInFlow() {
         <p className="text-emerald-200/80 text-xs font-body uppercase tracking-widest mb-2">You’re in</p>
         <h2 className="text-3xl font-heading italic text-white mb-3">Fully checked in</h2>
         <p className="text-white/65 font-body text-sm leading-relaxed max-w-sm mx-auto">
-          {name ? `${name}, you’re` : 'You’re'} checked in and your waiver is on file. Enjoy the retreat.
+          {name ? `${name}, you’re` : 'You’re'} checked in and your waiver is on file. Next, create your
+          account for the attendee dashboard.
+        </p>
+        <a
+          href={joinHref}
+          className="mt-8 inline-block bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3.5 font-medium text-sm"
+        >
+          Create your account
+        </a>
+        <p className="mt-4 text-white/45 font-body text-xs">
+          Already have an account?{' '}
+          <a href={joinHref} className="underline underline-offset-2 hover:text-white/70">
+            Sign in
+          </a>
         </p>
       </div>
     );
@@ -100,13 +118,12 @@ export default function CheckInFlow() {
               Continue to waiver
             </a>
           ) : (
-            <button
-              type="button"
-              onClick={() => setStep('done')}
-              className="w-full bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3.5 font-medium text-sm"
+            <a
+              href={joinHref}
+              className="block text-center bg-white text-black hover:bg-white/90 transition-colors rounded-full px-8 py-3.5 font-medium text-sm"
             >
-              Finish check-in
-            </button>
+              Create your account
+            </a>
           )}
 
           <button
@@ -164,7 +181,7 @@ export default function CheckInFlow() {
         <ol className="text-white/45 font-body text-xs leading-relaxed space-y-1 list-decimal list-inside">
           <li>Check in with your email</li>
           <li>Sign the participant waiver</li>
-          <li>You’re fully checked in</li>
+          <li>Create your account for the dashboard</li>
         </ol>
       </form>
     </div>
